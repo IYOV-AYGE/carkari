@@ -1,24 +1,27 @@
 import Link from "next/link";
+import { getDict } from "@/lib/i18n/server";
 
 /** Green check pill shown next to agency names. */
-export function VerifiedBadge({ small = false }: { small?: boolean }) {
+export async function VerifiedBadge({ small = false }: { small?: boolean }) {
+  const t = await getDict();
   return (
     <span
       className={`inline-flex items-center gap-1 rounded-full bg-green-100 font-medium text-green-800 ${small ? "px-1.5 py-0 text-[11px]" : "px-2 py-0.5 text-xs"}`}
-      title="Agence vérifiée par CarKari"
+      title={`CarKari — ${t.card.verified}`}
     >
-      ✓ vérifiée
+      ✓ {t.card.verified}
     </span>
   );
 }
 
 /** Promo bar above the navbar. */
-export function AnnouncementBanner() {
+export async function AnnouncementBanner() {
+  const t = await getDict();
   return (
     <div className="bg-accent-600 px-4 py-2 text-center text-sm font-medium text-white">
-      Lancement CarKari — annulation gratuite 24 h sur toutes les réservations.{" "}
+      {t.banner.text}{" "}
       <Link href="/aide" className="underline underline-offset-2 hover:opacity-90">
-        En savoir plus
+        {t.banner.link}
       </Link>
     </div>
   );
@@ -31,7 +34,7 @@ export function WhatsAppButton() {
       href="https://wa.me/212600000000?text=Bonjour%20CarKari%20!"
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Nous contacter sur WhatsApp"
+      aria-label="WhatsApp"
       className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition hover:scale-105"
     >
       <svg viewBox="0 0 24 24" fill="currentColor" className="h-7 w-7" aria-hidden>

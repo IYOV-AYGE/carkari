@@ -3,12 +3,6 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { getLang } from "@/lib/i18n/server";
 
-export const metadata = {
-  title: "Devenir agence partenaire",
-  description:
-    "Agences de location au Maroc : mettez votre flotte sur CarKari. Inscription gratuite, commission uniquement sur les locations réalisées.",
-};
-
 const L = {
   fr: {
     h1: "Votre flotte mérite plus de clients",
@@ -100,4 +94,9 @@ export default async function PartnersPage() {
       <Footer />
     </>
   );
+}
+
+export async function generateMetadata() {
+  const t = L[await getLang()];
+  return { title: t.h1, description: t.sub };
 }

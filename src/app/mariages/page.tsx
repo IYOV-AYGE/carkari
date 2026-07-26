@@ -4,11 +4,6 @@ import { VehicleCard } from "@/components/VehicleCard";
 import { MOCK_VEHICLES } from "@/lib/mock/vehicles";
 import { getLang } from "@/lib/i18n/server";
 
-export const metadata = {
-  title: "Voitures de mariage",
-  description: "Louez une voiture de prestige pour votre mariage au Maroc : Mercedes, Bentley, Maybach, Porsche avec ou sans chauffeur.",
-};
-
 const L = {
   fr: {
     title: "Votre mariage mérite une entrée remarquée",
@@ -51,4 +46,9 @@ export default async function WeddingsPage() {
       <Section h={t.s3}><p>{t.p3}</p></Section>
     </ContentPage>
   );
+}
+
+export async function generateMetadata() {
+  const t = L[await getLang()];
+  return { title: t.title, description: t.sub };
 }

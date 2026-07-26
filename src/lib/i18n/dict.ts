@@ -35,6 +35,14 @@ const fr = {
     btn: "Devenir partenaire",
   },
   card: { perDay: "/ jour", seats: "places", verified: "vérifiée" },
+  banner: { text: "Lancement CarKari — annulation gratuite 24 h sur toutes les réservations.", link: "En savoir plus" },
+  auth: {
+    login: "Connexion", signup: "Créer un compte", fullName: "Nom complet",
+    email: "Email", password: "Mot de passe", submitLogin: "Se connecter",
+    submitSignup: "Créer mon compte",
+    agencyQ: "Agence de location ?", agencyLink: "Devenez partenaire",
+    agencyNote: "— créez d'abord un compte, nous vous contactons ensuite.",
+  },
   results: { count: "{n} véhicule(s)", inMorocco: "au Maroc", at: "à", none: "Aucun véhicule pour ces critères. Essayez une autre ville ou catégorie." },
   filters: {
     allPrices: "Tous les prix", under: "Moins de 350 MAD/j", mid: "350 – 1 000 MAD/j", high: "1 000 – 3 000 MAD/j", lux: "3 000+ MAD/j",
@@ -82,6 +90,14 @@ const en: typeof fr = {
     btn: "Become a partner",
   },
   card: { perDay: "/ day", seats: "seats", verified: "verified" },
+  banner: { text: "CarKari launch — free 24h cancellation on all bookings.", link: "Learn more" },
+  auth: {
+    login: "Sign in", signup: "Create account", fullName: "Full name",
+    email: "Email", password: "Password", submitLogin: "Sign in",
+    submitSignup: "Create my account",
+    agencyQ: "Rental agency?", agencyLink: "Become a partner",
+    agencyNote: "— create an account first, we'll contact you after.",
+  },
   results: { count: "{n} vehicle(s)", inMorocco: "in Morocco", at: "in", none: "No vehicles match these criteria. Try another city or category." },
   filters: {
     allPrices: "All prices", under: "Under 350 MAD/day", mid: "350 – 1,000 MAD/day", high: "1,000 – 3,000 MAD/day", lux: "3,000+ MAD/day",

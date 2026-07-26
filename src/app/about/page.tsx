@@ -1,11 +1,6 @@
 import { ContentPage, Section } from "@/components/ContentPage";
 import { getLang } from "@/lib/i18n/server";
 
-export const metadata = {
-  title: "À propos",
-  description: "CarKari connecte les voyageurs aux meilleures agences de location de voiture du Maroc.",
-};
-
 const L = {
   fr: {
     title: "À propos de CarKari",
@@ -36,4 +31,9 @@ export default async function AboutPage() {
       ))}
     </ContentPage>
   );
+}
+
+export async function generateMetadata() {
+  const t = L[await getLang()];
+  return { title: t.title, description: t.sub };
 }

@@ -6,7 +6,10 @@ import { CATEGORIES, MOCK_VEHICLES } from "@/lib/mock/vehicles";
 import Link from "next/link";
 import { getDict, tpl } from "@/lib/i18n/server";
 
-export const metadata = { title: "Rechercher une voiture" };
+export async function generateMetadata() {
+  const { getLang } = await import("@/lib/i18n/server");
+  return { title: (await getLang()) === "fr" ? "Rechercher une voiture" : "Find a car" };
+}
 
 type Params = {
   city?: string;

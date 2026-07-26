@@ -1,8 +1,6 @@
 import { ContentPage, Section } from "@/components/ContentPage";
 import { getLang } from "@/lib/i18n/server";
 
-export const metadata = { title: "Conditions d'utilisation" };
-
 const L = {
   fr: {
     title: "Conditions d'utilisation",
@@ -41,4 +39,9 @@ export default async function TermsPage() {
       ))}
     </ContentPage>
   );
+}
+
+export async function generateMetadata() {
+  const t = L[await getLang()];
+  return { title: t.title, description: t.sub };
 }

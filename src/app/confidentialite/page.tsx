@@ -1,8 +1,6 @@
 import { ContentPage, Section } from "@/components/ContentPage";
 import { getLang } from "@/lib/i18n/server";
 
-export const metadata = { title: "Confidentialité" };
-
 const L = {
   fr: {
     title: "Politique de confidentialité",
@@ -35,4 +33,9 @@ export default async function PrivacyPage() {
       ))}
     </ContentPage>
   );
+}
+
+export async function generateMetadata() {
+  const t = L[await getLang()];
+  return { title: t.title, description: t.sub };
 }

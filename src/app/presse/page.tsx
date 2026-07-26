@@ -1,8 +1,6 @@
 import { ContentPage, Section } from "@/components/ContentPage";
 import { getLang } from "@/lib/i18n/server";
 
-export const metadata = { title: "Presse" };
-
 const L = {
   fr: {
     title: "Presse",
@@ -30,4 +28,9 @@ export default async function PressPage() {
       <Section h={t.s2}><p>{t.p2}</p></Section>
     </ContentPage>
   );
+}
+
+export async function generateMetadata() {
+  const t = L[await getLang()];
+  return { title: t.title, description: t.sub };
 }
