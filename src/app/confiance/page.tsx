@@ -1,46 +1,41 @@
 import { ContentPage, Section } from "@/components/ContentPage";
+import { getLang } from "@/lib/i18n/server";
 
 export const metadata = {
   title: "Confiance et sécurité",
   description: "Comment CarKari vérifie ses agences partenaires et protège vos réservations.",
 };
 
-export default function TrustPage() {
+const L = {
+  fr: {
+    title: "Confiance et sécurité",
+    sub: "Votre réservation est protégée à chaque étape.",
+    sections: [
+      ["Agences vérifiées", "Avant d'apparaître sur CarKari, chaque agence fournit son registre de commerce, son attestation d'assurance et des informations sur sa flotte. Le badge « vérifiée » signifie que ces contrôles sont passés."],
+      ["Paiement sécurisé", "L'acompte est traité par un prestataire de paiement international certifié PCI-DSS. CarKari ne stocke jamais votre numéro de carte. Le solde se paie directement à l'agence — vous ne payez jamais la totalité avant d'avoir vu le véhicule."],
+      ["Avis authentiques", "Seuls les clients ayant réellement terminé une location peuvent laisser un avis. Pas d'avis achetés, pas d'avis anonymes."],
+      ["En cas de problème", "Véhicule non conforme, agence en retard, litige ? Contactez-nous sur WhatsApp pendant la prise du véhicule — nous intervenons directement auprès de l'agence. Les agences accumulant des incidents sont suspendues de la plateforme."],
+    ] as [string, string][],
+  },
+  en: {
+    title: "Trust and safety",
+    sub: "Your booking is protected at every step.",
+    sections: [
+      ["Verified agencies", "Before appearing on CarKari, every agency provides its business registry, insurance certificate, and fleet information. The \"verified\" badge means these checks passed."],
+      ["Secure payment", "The deposit is processed by a PCI-DSS certified international payment provider. CarKari never stores your card number. The balance is paid directly to the agency — you never pay the full amount before seeing the vehicle."],
+      ["Authentic reviews", "Only customers who actually completed a rental can leave a review. No bought reviews, no anonymous reviews."],
+      ["If something goes wrong", "Wrong vehicle, late agency, dispute? Contact us on WhatsApp at pickup — we intervene directly with the agency. Agencies accumulating incidents are suspended from the platform."],
+    ] as [string, string][],
+  },
+};
+
+export default async function TrustPage() {
+  const t = L[await getLang()];
   return (
-    <ContentPage
-      title="Confiance et sécurité"
-      subtitle="Votre réservation est protégée à chaque étape."
-    >
-      <Section h="Agences vérifiées">
-        <p>
-          Avant d&apos;apparaître sur CarKari, chaque agence fournit son registre
-          de commerce, son attestation d&apos;assurance et des informations sur
-          sa flotte. Le badge <span className="font-medium text-green-700">✓ vérifiée</span>{" "}
-          signifie que ces contrôles sont passés.
-        </p>
-      </Section>
-      <Section h="Paiement sécurisé">
-        <p>
-          L&apos;acompte est traité par un prestataire de paiement international
-          certifié PCI-DSS. CarKari ne stocke jamais votre numéro de carte. Le
-          solde se paie directement à l&apos;agence — vous ne payez jamais la
-          totalité avant d&apos;avoir vu le véhicule.
-        </p>
-      </Section>
-      <Section h="Avis authentiques">
-        <p>
-          Seuls les clients ayant réellement terminé une location peuvent
-          laisser un avis. Pas d&apos;avis achetés, pas d&apos;avis anonymes.
-        </p>
-      </Section>
-      <Section h="En cas de problème">
-        <p>
-          Véhicule non conforme, agence en retard, litige ? Contactez-nous sur
-          WhatsApp pendant la prise du véhicule — nous intervenons directement
-          auprès de l&apos;agence. Les agences accumulant des incidents sont
-          suspendues de la plateforme.
-        </p>
-      </Section>
+    <ContentPage title={t.title} subtitle={t.sub}>
+      {t.sections.map(([h, p]) => (
+        <Section key={h} h={h}><p>{p}</p></Section>
+      ))}
     </ContentPage>
   );
 }

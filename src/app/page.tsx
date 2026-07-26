@@ -157,7 +157,7 @@ export default async function HomePage() {
             <h2 className="text-2xl font-bold">{t.cta.title}</h2>
             <p className="mx-auto mt-3 max-w-xl text-brand-100/80">{t.cta.sub}</p>
             <Link
-              href="/auth"
+              href="/partenaires"
               className="mt-6 inline-block rounded-full bg-accent-500 px-8 py-3 font-semibold text-white transition hover:bg-accent-400"
             >
               {t.cta.btn}

@@ -27,7 +27,7 @@ export async function Navbar() {
         <div className="hidden items-center gap-6 text-sm font-medium text-brand-950/80 sm:flex">
           <Link href="/search" className="hover:text-brand-950">{t.nav.cars}</Link>
           <Link href="/#villes" className="hover:text-brand-950">{t.nav.cities}</Link>
-          <Link href="/#agences" className="hover:text-brand-950">{t.nav.partner}</Link>
+          <Link href="/partenaires" className="hover:text-brand-950">{t.nav.partner}</Link>
         </div>
         <div className="flex items-center gap-3">
           <a

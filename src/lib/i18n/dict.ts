@@ -45,8 +45,8 @@ const fr = {
   footer: {
     tagline: "La location de voiture au Maroc, auprès d'agences vérifiées.",
     col1: "CarKari", col2: "Aide et confiance", col3: "Villes",
-    links1: [["/search", "Rechercher une voiture"], ["/mariages", "Voitures de mariage"], ["/carculator", "Carculator — estimez votre budget"], ["/about", "À propos"], ["/#agences", "Devenir agence partenaire"]] as [string, string][],
-    links2: [["/aide", "Centre d'aide"], ["/confiance", "Confiance et sécurité"], ["/assurance", "Assurance"], ["/aide", "Politique d'annulation"]] as [string, string][],
+    links1: [["/search", "Rechercher une voiture"], ["/mariages", "Voitures de mariage"], ["/carculator", "Carculator — estimez votre budget"], ["/blog", "Blog"], ["/about", "À propos"], ["/partenaires", "Devenir agence partenaire"], ["/carrieres", "Carrières"], ["/presse", "Presse"]] as [string, string][],
+    links2: [["/aide", "Centre d'aide"], ["/confiance", "Confiance et sécurité"], ["/assurance", "Assurance"], ["/contact", "Contact"], ["/conditions", "Conditions d'utilisation"], ["/confidentialite", "Confidentialité"]] as [string, string][],
   },
 };
 
@@ -92,8 +92,8 @@ const en: typeof fr = {
   footer: {
     tagline: "Car rental in Morocco, from verified agencies.",
     col1: "CarKari", col2: "Help and trust", col3: "Cities",
-    links1: [["/search", "Find a car"], ["/mariages", "Wedding cars"], ["/carculator", "Carculator — estimate your budget"], ["/about", "About"], ["/#agences", "Become a partner agency"]] as [string, string][],
-    links2: [["/aide", "Help center"], ["/confiance", "Trust and safety"], ["/assurance", "Insurance"], ["/aide", "Cancellation policy"]] as [string, string][],
+    links1: [["/search", "Find a car"], ["/mariages", "Wedding cars"], ["/carculator", "Carculator — estimate your budget"], ["/blog", "Blog"], ["/about", "About"], ["/partenaires", "Become a partner agency"], ["/carrieres", "Careers"], ["/presse", "Press"]] as [string, string][],
+    links2: [["/aide", "Help center"], ["/confiance", "Trust and safety"], ["/assurance", "Insurance"], ["/contact", "Contact"], ["/conditions", "Terms of use"], ["/confidentialite", "Privacy"]] as [string, string][],
   },
 };
 

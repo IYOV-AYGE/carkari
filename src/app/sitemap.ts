@@ -19,7 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/search`, changeFrequency: "daily", priority: 0.9 },
     ...cities,
     ...vehicles,
-    ...["/about", "/aide", "/assurance", "/confiance", "/mariages", "/carculator"].map(
+    ...["/about", "/aide", "/assurance", "/confiance", "/mariages", "/carculator", "/partenaires", "/contact", "/conditions", "/confidentialite", "/blog", "/carrieres", "/presse"].map(
       (p) => ({ url: BASE + p, changeFrequency: "monthly" as const, priority: 0.5 })
     ),
   ];
