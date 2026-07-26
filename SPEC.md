@@ -108,5 +108,6 @@ favorites(profile_id, vehicle_id)
 - [ ] Step 2b: run migration 00001 in Supabase SQL editor + auth pages
 - [x] Step 3: public pages (home, search, vehicle details) — mock data
 - [ ] Step 4: booking flow + Stripe deposit
-- [ ] Step 5: agency dashboard
+- [x] Step 4a: agency onboarding (application form, doc uploads, admin approval)
+- [ ] Step 5: agency dashboard (fleet CRUD)
 - [ ] Step 6: admin panel

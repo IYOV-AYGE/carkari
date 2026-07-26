@@ -58,7 +58,7 @@ export default async function PartnersPage() {
           <h1 className="mx-auto max-w-2xl text-4xl font-extrabold">{t.h1}</h1>
           <p className="mx-auto mt-4 max-w-xl text-brand-100/80">{t.sub}</p>
           <Link
-            href="/auth"
+            href="/partenaires/inscription"
             className="mt-8 inline-block rounded-full bg-accent-500 px-8 py-3 font-semibold text-white transition hover:bg-accent-400"
           >
             {t.cta}
