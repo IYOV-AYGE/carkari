@@ -1,6 +1,13 @@
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
+import { signOut } from "@/app/auth/actions";
 
-export function Navbar() {
+export async function Navbar() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <header className="sticky top-0 z-40 border-b border-emerald-950/10 bg-white/90 backdrop-blur">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
@@ -13,12 +20,25 @@ export function Navbar() {
           <Link href="/#agences" className="hover:text-emerald-950">Devenir partenaire</Link>
         </div>
         <div className="flex items-center gap-3">
-          <Link
-            href="/auth"
-            className="rounded-full border border-emerald-950/15 px-4 py-2 text-sm font-medium text-emerald-950 hover:bg-emerald-950/5"
-          >
-            Connexion
-          </Link>
+          {user ? (
+            <>
+              <span className="hidden text-sm text-emerald-950/70 sm:inline">
+                {user.user_metadata?.full_name || user.email}
+              </span>
+              <form action={signOut}>
+                <button className="rounded-full border border-emerald-950/15 px-4 py-2 text-sm font-medium text-emerald-950 hover:bg-emerald-950/5">
+                  Déconnexion
+                </button>
+              </form>
+            </>
+          ) : (
+            <Link
+              href="/auth"
+              className="rounded-full border border-emerald-950/15 px-4 py-2 text-sm font-medium text-emerald-950 hover:bg-emerald-950/5"
+            >
+              Connexion
+            </Link>
+          )}
         </div>
       </nav>
     </header>
