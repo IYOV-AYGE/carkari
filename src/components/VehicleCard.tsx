@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { formatMad, type MockVehicle } from "@/lib/mock/vehicles";
+import { VerifiedBadge } from "@/components/badges";
 
 export function VehicleCard({ v }: { v: MockVehicle }) {
   return (
@@ -22,7 +23,9 @@ export function VehicleCard({ v }: { v: MockVehicle }) {
       </div>
       <div className="space-y-2 p-4">
         <div className="flex items-center justify-between text-sm text-brand-950/70">
-          <span>{v.city} · {v.agency}</span>
+          <span className="flex items-center gap-1.5">
+            {v.city} · {v.agency} <VerifiedBadge small />
+          </span>
           <span className="font-medium text-brand-950">
             ★ {v.rating} <span className="text-brand-950/50">({v.reviewCount})</span>
           </span>

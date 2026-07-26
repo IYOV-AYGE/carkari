@@ -15,16 +15,19 @@ export function Footer() {
           <p className="mb-3 font-semibold text-white">CarKari</p>
           <ul className="space-y-2 text-brand-200/80">
             <li><Link href="/search" className="hover:text-white">Rechercher une voiture</Link></li>
+            <li><Link href="/mariages" className="hover:text-white">Voitures de mariage</Link></li>
+            <li><Link href="/carculator" className="hover:text-white">Carculator — estimez votre budget</Link></li>
+            <li><Link href="/about" className="hover:text-white">À propos</Link></li>
             <li><Link href="/#agences" className="hover:text-white">Devenir agence partenaire</Link></li>
-            <li><Link href="/#" className="hover:text-white">Aide</Link></li>
           </ul>
         </div>
         <div className="text-sm">
-          <p className="mb-3 font-semibold text-white">Légal</p>
+          <p className="mb-3 font-semibold text-white">Aide et confiance</p>
           <ul className="space-y-2 text-brand-200/80">
-            <li><Link href="/#" className="hover:text-white">Conditions d&apos;utilisation</Link></li>
-            <li><Link href="/#" className="hover:text-white">Politique d&apos;annulation</Link></li>
-            <li><Link href="/#" className="hover:text-white">Confidentialité</Link></li>
+            <li><Link href="/aide" className="hover:text-white">Centre d&apos;aide</Link></li>
+            <li><Link href="/confiance" className="hover:text-white">Confiance et sécurité</Link></li>
+            <li><Link href="/assurance" className="hover:text-white">Assurance</Link></li>
+            <li><Link href="/aide" className="hover:text-white">Politique d&apos;annulation</Link></li>
           </ul>
         </div>
       </div>

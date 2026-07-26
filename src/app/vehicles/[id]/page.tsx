@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { VerifiedBadge } from "@/components/badges";
 import {
   COMMISSION_RATE,
   MOCK_VEHICLES,
@@ -47,7 +48,8 @@ export default async function VehiclePage({
               {v.make} {v.model} <span className="font-medium text-brand-950/50">{v.year}</span>
             </h1>
             <p className="mt-1 text-brand-950/70">
-              {v.city} · proposé par <span className="font-semibold">{v.agency}</span> · ★ {v.rating} ({v.reviewCount} avis)
+              {v.city} · proposé par <span className="font-semibold">{v.agency}</span>{" "}
+              <VerifiedBadge /> · ★ {v.rating} ({v.reviewCount} avis)
             </p>
 
             <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
