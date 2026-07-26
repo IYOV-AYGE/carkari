@@ -12,10 +12,19 @@ export async function signIn(
 ): Promise<AuthState> {
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({
-    email: String(formData.get("email") ?? ""),
+    email: String(formData.get("email") ?? "").trim().toLowerCase(),
     password: String(formData.get("password") ?? ""),
   });
-  if (error) return { error: "Email ou mot de passe incorrect." };
+  if (error) {
+    // Surface the real cause — a generic message hides fixable problems
+    // (unconfirmed email, rate limit, provider disabled...).
+    const msg = error.message.toLowerCase();
+    if (msg.includes("not confirmed"))
+      return { error: "Email non confirmé. Vérifiez votre boîte mail (ou confirmez le compte dans Supabase)." };
+    if (msg.includes("invalid login"))
+      return { error: "Email ou mot de passe incorrect." };
+    return { error: `Connexion impossible : ${error.message}` };
+  }
   revalidatePath("/", "layout");
   redirect("/");
 }
