@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { formatMad, type MockVehicle } from "@/lib/mock/vehicles";
 
 export function VehicleCard({ v }: { v: MockVehicle }) {
@@ -7,11 +8,15 @@ export function VehicleCard({ v }: { v: MockVehicle }) {
       href={`/vehicles/${v.id}`}
       className="group overflow-hidden rounded-2xl border border-emerald-950/10 bg-white transition hover:-translate-y-0.5 hover:shadow-lg"
     >
-      <div
-        className={`flex h-40 items-end bg-gradient-to-br p-4 ${v.tone}`}
-        aria-hidden
-      >
-        <span className="text-lg font-bold text-white/95 drop-shadow">
+      <div className="relative h-44 overflow-hidden">
+        <Image
+          src={v.image}
+          alt={`${v.make} ${v.model}`}
+          fill
+          sizes="(max-width: 640px) 100vw, 33vw"
+          className="object-cover transition duration-300 group-hover:scale-105"
+        />
+        <span className="absolute bottom-2 left-3 rounded-md bg-black/50 px-2 py-0.5 text-sm font-semibold text-white">
           {v.make} {v.model}
         </span>
       </div>

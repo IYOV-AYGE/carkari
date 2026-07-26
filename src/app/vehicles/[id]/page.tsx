@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import {
@@ -31,13 +32,15 @@ export default async function VehiclePage({
 
         <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
           <div>
-            <div
-              className={`flex h-72 items-end rounded-2xl bg-gradient-to-br p-6 sm:h-96 ${v.tone}`}
-              aria-hidden
-            >
-              <span className="text-3xl font-extrabold text-white/95 drop-shadow">
-                {v.make} {v.model}
-              </span>
+            <div className="relative h-72 overflow-hidden rounded-2xl sm:h-96">
+              <Image
+                src={v.image}
+                alt={`${v.make} ${v.model}`}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 60vw"
+                className="object-cover"
+              />
             </div>
 
             <h1 className="mt-6 text-3xl font-extrabold text-emerald-950">

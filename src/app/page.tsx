@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { SearchBar } from "@/components/SearchBar";
@@ -11,8 +12,16 @@ export default function HomePage() {
     <>
       <Navbar />
       <main className="flex-1">
-        <section className="bg-emerald-950 px-4 pb-20 pt-16 text-white">
-          <div className="mx-auto max-w-6xl">
+        <section className="relative overflow-hidden bg-emerald-950 px-4 pb-20 pt-16 text-white">
+          <Image
+            src="/hero-car.jpg"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover opacity-25"
+          />
+          <div className="relative mx-auto max-w-6xl">
             <h1 className="max-w-2xl text-4xl font-extrabold leading-tight sm:text-5xl">
               Louez la bonne voiture,{" "}
               <span className="text-amber-400">partout au Maroc</span>
