@@ -4,12 +4,19 @@ import { useActionState, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { signIn, signUp, type AuthState } from "@/app/auth/actions";
+import { GoogleButton } from "@/components/GoogleButton";
 import type { Dict } from "@/lib/i18n/dict";
 
 const initial: AuthState = {};
 
-export function AuthForm({ t }: { t: Dict["auth"] }) {
-  const [mode, setMode] = useState<"login" | "signup">("login");
+export function AuthForm({
+  t,
+  defaultMode = "login",
+}: {
+  t: Dict["auth"];
+  defaultMode?: "login" | "signup";
+}) {
+  const [mode, setMode] = useState<"login" | "signup">(defaultMode);
   const [loginState, loginAction, loginPending] = useActionState(signIn, initial);
   const [signupState, signupAction, signupPending] = useActionState(signUp, initial);
 
@@ -37,10 +44,17 @@ export function AuthForm({ t }: { t: Dict["auth"] }) {
         ))}
       </div>
 
-      <form
-        action={mode === "login" ? loginAction : signupAction}
-        className="mt-6 space-y-4"
-      >
+      <div className="mt-6">
+        <GoogleButton label={t.google} />
+      </div>
+
+      <div className="my-5 flex items-center gap-3 text-xs uppercase tracking-wide text-brand-950/40">
+        <span className="h-px flex-1 bg-brand-950/10" />
+        {t.or}
+        <span className="h-px flex-1 bg-brand-950/10" />
+      </div>
+
+      <form action={mode === "login" ? loginAction : signupAction} className="space-y-4">
         {mode === "signup" && (
           <label className="block text-sm font-medium text-brand-950">
             {t.fullName}

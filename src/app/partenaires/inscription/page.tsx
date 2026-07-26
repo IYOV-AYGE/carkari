@@ -12,49 +12,75 @@ const L: Record<"fr" | "en", {
 }> = {
   fr: {
     title: "Inscription agence",
-    sub: "Remplissez ce formulaire — vérification sous 48 h.",
+    sub: "Un seul formulaire — vérification sous 48 h.",
     loginFirst: "Créez d'abord un compte (gratuit), puis revenez ici pour inscrire votre agence.",
     loginBtn: "Créer un compte / Connexion",
     statusTitle: "Votre agence",
     pending: "Dossier reçu — vérification en cours (sous 48 h). Nous vous contactons par email.",
-    verified: "Agence vérifiée ! Votre tableau de bord arrive très bientôt — vous pourrez y gérer votre flotte.",
+    verified: "Agence vérifiée ! Rendez-vous dans votre espace agence pour ajouter vos véhicules.",
     suspended: "Compte suspendu. Contactez-nous pour plus d'informations.",
-    dashboard: "Tableau de bord (bientôt)",
+    dashboard: "Ouvrir mon espace agence",
     form: {
+      secCompany: "1. L'agence",
+      secRep: "2. Représentant légal",
+      secDocs: "3. Documents",
       legalName: "Raison sociale de l'agence",
       city: "Ville principale",
-      phone: "Téléphone (WhatsApp de préférence)",
+      phone: "Téléphone de l'agence",
       rcNumber: "Numéro de registre de commerce (RC)",
-      rcDoc: "Registre de commerce (PDF ou photo)",
-      insuranceDoc: "Attestation d'assurance flotte (PDF ou photo)",
-      docHint: "Fichiers acceptés : PDF, JPG, PNG — 10 Mo max. Vos documents restent privés et ne sont visibles que par l'équipe CarKari.",
+      repFirst: "Prénom du représentant",
+      repLast: "Nom du représentant",
+      repBirth: "Date de naissance",
+      repBirthCity: "Ville de naissance",
+      repPhone: "Téléphone (WhatsApp de préférence)",
+      repEmail: "Email du représentant",
+      rcDoc: "Registre de commerce",
+      insuranceDoc: "Attestation d'assurance flotte",
+      idFront: "Pièce d'identité — recto",
+      idBack: "Pièce d'identité — verso",
+      docHint: "PDF ou photo (JPG, PNG). Vous pouvez photographier vos documents directement avec votre téléphone — les images sont compressées automatiquement.",
+      privacyNote: "Vos documents et données personnelles sont stockés de façon privée et chiffrée. Seule l'équipe de vérification CarKari peut y accéder ; ils ne sont jamais publics ni partagés avec les clients.",
       submit: "Envoyer mon dossier",
       uploading: "Envoi en cours…",
       errGeneric: "Une erreur est survenue. Vérifiez les fichiers et réessayez, ou contactez-nous sur WhatsApp.",
+      errAge: "Le représentant légal doit être majeur (18 ans ou plus).",
       done: "Dossier envoyé ! Nous vérifions vos documents sous 48 h et revenons vers vous par email.",
     },
   },
   en: {
     title: "Agency registration",
-    sub: "Fill in this form — verification within 48h.",
+    sub: "One single form — verification within 48h.",
     loginFirst: "Create a free account first, then come back here to register your agency.",
     loginBtn: "Create account / Sign in",
     statusTitle: "Your agency",
     pending: "Application received — verification in progress (within 48h). We'll contact you by email.",
-    verified: "Agency verified! Your dashboard is coming very soon — you'll manage your fleet there.",
+    verified: "Agency verified! Head to your agency space to add your vehicles.",
     suspended: "Account suspended. Contact us for more information.",
-    dashboard: "Dashboard (soon)",
+    dashboard: "Open my agency space",
     form: {
+      secCompany: "1. The agency",
+      secRep: "2. Legal representative",
+      secDocs: "3. Documents",
       legalName: "Agency legal name",
       city: "Main city",
-      phone: "Phone (WhatsApp preferred)",
+      phone: "Agency phone",
       rcNumber: "Business registry number (RC)",
-      rcDoc: "Business registry document (PDF or photo)",
-      insuranceDoc: "Fleet insurance certificate (PDF or photo)",
-      docHint: "Accepted files: PDF, JPG, PNG — 10 MB max. Your documents stay private and are only visible to the CarKari team.",
+      repFirst: "Representative first name",
+      repLast: "Representative last name",
+      repBirth: "Date of birth",
+      repBirthCity: "City of birth",
+      repPhone: "Phone (WhatsApp preferred)",
+      repEmail: "Representative email",
+      rcDoc: "Business registry document",
+      insuranceDoc: "Fleet insurance certificate",
+      idFront: "Government ID — front",
+      idBack: "Government ID — back",
+      docHint: "PDF or photo (JPG, PNG). You can photograph your documents directly with your phone — images are compressed automatically.",
+      privacyNote: "Your documents and personal data are stored privately and encrypted. Only the CarKari verification team can access them; they are never public nor shared with customers.",
       submit: "Submit my application",
       uploading: "Uploading…",
       errGeneric: "Something went wrong. Check the files and try again, or contact us on WhatsApp.",
+      errAge: "The legal representative must be 18 or older.",
       done: "Application sent! We verify your documents within 48h and get back to you by email.",
     },
   },
@@ -82,11 +108,11 @@ export default async function AgencyApplyPage() {
     <>
       <Navbar />
       <main className="flex-1 bg-brand-950/[0.03] px-4 py-12">
-        <div className="mx-auto max-w-xl rounded-2xl border border-brand-950/10 bg-white p-8 shadow-sm">
+        <div className="mx-auto max-w-2xl rounded-2xl border border-brand-950/10 bg-white p-8 shadow-sm">
           <h1 className="text-2xl font-extrabold text-brand-950">{t.title}</h1>
           <p className="mt-1 text-sm text-brand-950/60">{t.sub}</p>
 
-          <div className="mt-6">
+          <div className="mt-8">
             {!user ? (
               <div className="space-y-4">
                 <p className="text-brand-950/80">{t.loginFirst}</p>
@@ -117,6 +143,14 @@ export default async function AgencyApplyPage() {
                       ? t.suspended
                       : t.pending}
                 </p>
+                {existing.status === "verified" && (
+                  <Link
+                    href="/agence"
+                    className="mt-4 inline-block rounded-xl bg-accent-500 px-6 py-3 font-semibold text-white hover:bg-accent-400"
+                  >
+                    {t.dashboard}
+                  </Link>
+                )}
               </div>
             ) : (
               <AgencyApplyForm t={t.form} userId={user.id} />

@@ -37,7 +37,11 @@ const L: Record<"fr" | "en", {
       heading: "Ajouter un véhicule",
       make: "Marque", model: "Modèle", year: "Année", category: "Catégorie",
       transmission: "Boîte", fuel: "Carburant", seats: "Places",
-      price: "Prix par jour (MAD)", photo: "Photo du véhicule",
+      price: "Prix par jour (MAD)",
+      photos: "Photos du véhicule (5 angles obligatoires)",
+      photosHint: "Prenez les photos avec votre téléphone ou choisissez-les dans votre galerie. Elles sont optimisées automatiquement (plus légères, même qualité).",
+      photosMissing: "Les 5 photos sont obligatoires : avant, arrière, côté gauche, côté droit, intérieur.",
+      slots: { add: "Ajouter", replace: "Remplacer", optimizing: "Optimisation…", savedPct: "réduit" },
       submit: "Ajouter le véhicule", saving: "Enregistrement…",
       err: "Erreur lors de l'enregistrement. Vérifiez les champs et réessayez.",
       cats: { citadine: "Citadine", compacte: "Compacte", suv: "SUV", luxe: "Luxe", utilitaire: "Utilitaire" },
@@ -65,7 +69,11 @@ const L: Record<"fr" | "en", {
       heading: "Add a vehicle",
       make: "Make", model: "Model", year: "Year", category: "Category",
       transmission: "Gearbox", fuel: "Fuel", seats: "Seats",
-      price: "Price per day (MAD)", photo: "Vehicle photo",
+      price: "Price per day (MAD)",
+      photos: "Vehicle photos (5 angles required)",
+      photosHint: "Take photos with your phone or pick them from your gallery. They are optimized automatically (smaller files, same quality).",
+      photosMissing: "All 5 photos are required: front, rear, left side, right side, interior.",
+      slots: { add: "Add", replace: "Replace", optimizing: "Optimizing…", savedPct: "smaller" },
       submit: "Add vehicle", saving: "Saving…",
       err: "Error while saving. Check the fields and try again.",
       cats: { citadine: "City car", compacte: "Compact", suv: "SUV", luxe: "Luxury", utilitaire: "Van" },
@@ -80,7 +88,8 @@ export async function generateMetadata() {
 }
 
 export default async function AgencyDashboard() {
-  const t = L[await getLang()];
+  const lang = await getLang();
+  const t = L[lang];
   const supabase = await createClient();
   const {
     data: { user },
@@ -221,7 +230,7 @@ export default async function AgencyDashboard() {
             )}
 
             <div className="mt-10 rounded-2xl border border-brand-950/10 bg-white p-6">
-              <AddVehicleForm L={t.form} agencyId={agency.id} city={agency.city} />
+              <AddVehicleForm L={t.form} lang={lang} agencyId={agency.id} city={agency.city} />
             </div>
           </>
         )}

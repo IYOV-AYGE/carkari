@@ -112,4 +112,11 @@ favorites(profile_id, vehicle_id)
 - [x] Step 5: agency dashboard /agence (fleet CRUD, photo upload, publish toggle)
 - [x] Step 6: admin panel /admin (approve/suspend agencies)
 - Public pages now merge live DB vehicles (src/lib/vehicles/live.ts) with mock demo fleet.
-- Migrations to run in order: 00001, 00002, 00003.
+- Migrations to run in order: 00001, 00002, 00003, 00004.
+- Vehicles require 5 photos (front, rear, left, right, interior) before going
+  live — enforced by trigger enforce_min_photos() AND in the UI.
+- All client-side image uploads pass through src/lib/images/compress.ts
+  (canvas resize + WebP/JPEG re-encode). Never upload raw phone photos.
+- Agency onboarding captures legal representative KYC: name, birth date/city,
+  phone, email, gov ID front+back (private bucket agency-docs).
+- Auth: email/password + Google OAuth (configure provider in Supabase dash).

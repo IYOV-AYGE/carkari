@@ -35,6 +35,13 @@ const fr = {
     btn: "Devenir partenaire",
   },
   card: { perDay: "/ jour", seats: "places", verified: "vérifiée" },
+  menu: {
+    login: "Connexion", signup: "Créer un compte", partner: "Devenir partenaire",
+    dashboard: "Mon espace agence", admin: "Administration",
+    why: "Pourquoi CarKari", help: "Aide", legal: "Mentions légales",
+    insurance: "Assurance et protection", carculator: "Carculator",
+    logout: "Déconnexion", open: "Menu",
+  },
   banner: { text: "Lancement CarKari — annulation gratuite 24 h sur toutes les réservations.", link: "En savoir plus" },
   auth: {
     login: "Connexion", signup: "Créer un compte", fullName: "Nom complet",
@@ -42,6 +49,7 @@ const fr = {
     submitSignup: "Créer mon compte",
     agencyQ: "Agence de location ?", agencyLink: "Devenez partenaire",
     agencyNote: "— créez d'abord un compte, nous vous contactons ensuite.",
+    google: "Continuer avec Google", or: "ou",
   },
   results: { count: "{n} véhicule(s)", inMorocco: "au Maroc", at: "à", none: "Aucun véhicule pour ces critères. Essayez une autre ville ou catégorie." },
   filters: {
@@ -90,6 +98,13 @@ const en: typeof fr = {
     btn: "Become a partner",
   },
   card: { perDay: "/ day", seats: "seats", verified: "verified" },
+  menu: {
+    login: "Log in", signup: "Sign up", partner: "Become a partner",
+    dashboard: "My agency space", admin: "Admin",
+    why: "Why CarKari", help: "Get help", legal: "Legal",
+    insurance: "Insurance & protection", carculator: "Carculator",
+    logout: "Sign out", open: "Menu",
+  },
   banner: { text: "CarKari launch — free 24h cancellation on all bookings.", link: "Learn more" },
   auth: {
     login: "Sign in", signup: "Create account", fullName: "Full name",
@@ -97,6 +112,7 @@ const en: typeof fr = {
     submitSignup: "Create my account",
     agencyQ: "Rental agency?", agencyLink: "Become a partner",
     agencyNote: "— create an account first, we'll contact you after.",
+    google: "Continue with Google", or: "or",
   },
   results: { count: "{n} vehicle(s)", inMorocco: "in Morocco", at: "in", none: "No vehicles match these criteria. Try another city or category." },
   filters: {

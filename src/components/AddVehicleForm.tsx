@@ -3,11 +3,19 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import {
+  PhotoSlots,
+  ANGLE_SLOTS_FR,
+  ANGLE_SLOTS_EN,
+  type PhotoMap,
+} from "@/components/PhotoSlots";
 
 export type VehicleFormLabels = {
   heading: string; make: string; model: string; year: string; category: string;
   transmission: string; fuel: string; seats: string; price: string;
-  photo: string; submit: string; saving: string; err: string;
+  photos: string; photosHint: string; photosMissing: string;
+  submit: string; saving: string; err: string;
+  slots: { add: string; replace: string; optimizing: string; savedPct: string };
   cats: Record<string, string>;
   manual: string; auto: string;
   diesel: string; petrol: string; hybrid: string; electric: string;
@@ -15,19 +23,29 @@ export type VehicleFormLabels = {
 
 export function AddVehicleForm({
   L,
+  lang,
   agencyId,
   city,
 }: {
   L: VehicleFormLabels;
+  lang: "fr" | "en";
   agencyId: string;
   city: string;
 }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [photos, setPhotos] = useState<PhotoMap>({});
+
+  const slots = lang === "fr" ? ANGLE_SLOTS_FR : ANGLE_SLOTS_EN;
+  const missing = slots.filter((s) => !photos[s.key]).length;
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (missing > 0) {
+      setError(L.photosMissing);
+      return;
+    }
     setBusy(true);
     setError("");
     const form = e.currentTarget;
@@ -56,21 +74,22 @@ export function AddVehicleForm({
         .single();
       if (insErr || !vehicle) throw insErr ?? new Error("insert");
 
-      const file = fd.get("photo") as File | null;
-      if (file && file.size > 0) {
-        if (file.size > 8 * 1024 * 1024) throw new Error("too large");
-        const path = `${agencyId}/${vehicle.id}-${Date.now()}-${file.name.replace(/[^\w.-]/g, "_")}`;
+      // upload the 5 angles in slot order (sort keeps galleries consistent)
+      const rows: { vehicle_id: string; path: string; sort: number }[] = [];
+      for (let i = 0; i < slots.length; i++) {
+        const file = photos[slots[i].key];
+        const path = `${agencyId}/${vehicle.id}/${slots[i].key}-${Date.now()}.${file.name.split(".").pop()}`;
         const { error: upErr } = await supabase.storage
           .from("vehicle-photos")
-          .upload(path, file);
+          .upload(path, file, { contentType: file.type });
         if (upErr) throw upErr;
-        const { error: imgErr } = await supabase
-          .from("vehicle_images")
-          .insert({ vehicle_id: vehicle.id, path, sort: 0 });
-        if (imgErr) throw imgErr;
+        rows.push({ vehicle_id: vehicle.id, path, sort: i });
       }
+      const { error: imgErr } = await supabase.from("vehicle_images").insert(rows);
+      if (imgErr) throw imgErr;
 
       form.reset();
+      setPhotos({});
       router.refresh();
     } catch {
       setError(L.err);
@@ -84,7 +103,7 @@ export function AddVehicleForm({
   const label = "block text-sm font-medium text-brand-950";
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
+    <form onSubmit={onSubmit} className="space-y-5">
       <p className="font-bold text-brand-950">{L.heading}</p>
       <div className="grid gap-4 sm:grid-cols-2">
         <label className={label}>
@@ -132,10 +151,13 @@ export function AddVehicleForm({
           <input name="price_mad" type="number" min={1} step={10} required className={input} placeholder="350" />
         </label>
       </div>
-      <label className={label}>
-        {L.photo}
-        <input name="photo" type="file" accept="image/*" className={input} />
-      </label>
+
+      <div>
+        <p className={label}>{L.photos}</p>
+        <p className="mb-2 text-xs text-brand-950/50">{L.photosHint}</p>
+        <PhotoSlots slots={slots} value={photos} onChange={setPhotos} labels={L.slots} />
+      </div>
+
       <p className="text-xs text-brand-950/50">{city}</p>
 
       {error && (
