@@ -4,6 +4,7 @@ import { SearchBar } from "@/components/SearchBar";
 import { VehicleCard } from "@/components/VehicleCard";
 import { CATEGORIES, MOCK_VEHICLES } from "@/lib/mock/vehicles";
 import Link from "next/link";
+import { getDict, tpl } from "@/lib/i18n/server";
 
 export const metadata = { title: "Rechercher une voiture" };
 
@@ -29,6 +30,7 @@ export default async function SearchPage({
 }) {
   const { city = "", category = "", price = "", trans = "", sort = "" } =
     await searchParams;
+  const t = await getDict();
 
   let results = MOCK_VEHICLES.filter(
     (v) =>
@@ -77,7 +79,7 @@ export default async function SearchPage({
               href={`/search${qs({ category: "" })}`}
               className={`rounded-full px-4 py-1.5 text-sm font-medium ${!category ? "bg-brand-950 text-white" : "bg-brand-950/5 text-brand-950 hover:bg-brand-950/10"}`}
             >
-              Tous
+              {t.cats.all}
             </Link>
             {CATEGORIES.map((c) => (
               <Link
@@ -85,7 +87,7 @@ export default async function SearchPage({
                 href={`/search${qs({ category: c.key })}`}
                 className={`rounded-full px-4 py-1.5 text-sm font-medium ${category === c.key ? "bg-brand-950 text-white" : "bg-brand-950/5 text-brand-950 hover:bg-brand-950/10"}`}
               >
-                {c.label}
+                {t.cats[c.key]}
               </Link>
             ))}
           </div>
@@ -97,44 +99,44 @@ export default async function SearchPage({
             {city && <input type="hidden" name="city" value={city} />}
             {category && <input type="hidden" name="category" value={category} />}
             <select name="price" defaultValue={price} className={sel}>
-              <option value="">Tous les prix</option>
-              <option value="eco">Moins de 350 MAD/j</option>
-              <option value="mid">350 – 1 000 MAD/j</option>
-              <option value="high">1 000 – 3 000 MAD/j</option>
-              <option value="lux">3 000+ MAD/j</option>
+              <option value="">{t.filters.allPrices}</option>
+              <option value="eco">{t.filters.under}</option>
+              <option value="mid">{t.filters.mid}</option>
+              <option value="high">{t.filters.high}</option>
+              <option value="lux">{t.filters.lux}</option>
             </select>
             <select name="trans" defaultValue={trans} className={sel}>
-              <option value="">Toute boîte</option>
-              <option value="manuelle">Manuelle</option>
-              <option value="automatique">Automatique</option>
+              <option value="">{t.filters.anyTrans}</option>
+              <option value="manuelle">{t.filters.manual}</option>
+              <option value="automatique">{t.filters.auto}</option>
             </select>
             <select name="sort" defaultValue={sort} className={sel}>
-              <option value="">Tri : pertinence</option>
-              <option value="price_asc">Prix croissant</option>
-              <option value="price_desc">Prix décroissant</option>
-              <option value="rating">Meilleures notes</option>
+              <option value="">{t.filters.sort}</option>
+              <option value="price_asc">{t.filters.priceAsc}</option>
+              <option value="price_desc">{t.filters.priceDesc}</option>
+              <option value="rating">{t.filters.rating}</option>
             </select>
             <button className="rounded-lg bg-brand-950 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-800">
-              Filtrer
+              {t.filters.apply}
             </button>
             {(price || trans || sort) && (
               <Link
                 href={`/search${qs({ price: "", trans: "", sort: "" })}`}
                 className="text-sm text-brand-950/60 hover:underline"
               >
-                Réinitialiser
+                {t.filters.reset}
               </Link>
             )}
           </form>
 
           <p className="mb-4 text-sm text-brand-950/60">
-            {results.length} véhicule{results.length > 1 ? "s" : ""}
-            {city ? ` à ${city}` : " au Maroc"}
+            {tpl(t.results.count, { n: results.length })}{" "}
+            {city ? `${t.results.at} ${city}` : t.results.inMorocco}
           </p>
 
           {results.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-brand-950/20 p-12 text-center text-brand-950/60">
-              Aucun véhicule pour ces critères. Essayez une autre ville ou catégorie.
+              {t.results.none}
             </div>
           ) : (
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

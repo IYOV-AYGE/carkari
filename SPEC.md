@@ -86,7 +86,10 @@ favorites(profile_id, vehicle_id)
 - Supabase: Postgres, Auth, Storage (vehicle images). Migrations in
   `supabase/migrations/`.
 - Server components by default; `"use client"` only when interactive.
-- Languages: FR first, then AR (RTL) and EN. Currency display: MAD.
+- Languages: FR + EN live (auto-detect by IP country via x-vercel-ip-country in
+  middleware, FR_COUNTRIES set in src/lib/i18n/dict.ts, cookie `lang`, manual
+  switcher /lang/[code]). AR (RTL) later. Currency display: MAD.
+- UI strings live in src/lib/i18n/dict.ts — add keys to BOTH fr and en.
 - SEO matters: server-render public pages, per-city landing pages later.
 
 ## 6. Build phases
