@@ -32,7 +32,7 @@ export default async function SearchPage({
     <>
       <Navbar />
       <main className="flex-1">
-        <div className="bg-emerald-950 px-4 py-8">
+        <div className="bg-brand-950 px-4 py-8">
           <div className="mx-auto max-w-6xl">
             <SearchBar defaultCity={city} />
           </div>
@@ -42,7 +42,7 @@ export default async function SearchPage({
           <div className="mb-6 flex flex-wrap gap-2">
             <Link
               href={`/search${qs("")}`}
-              className={`rounded-full px-4 py-1.5 text-sm font-medium ${!category ? "bg-emerald-950 text-white" : "bg-emerald-950/5 text-emerald-950 hover:bg-emerald-950/10"}`}
+              className={`rounded-full px-4 py-1.5 text-sm font-medium ${!category ? "bg-brand-950 text-white" : "bg-brand-950/5 text-brand-950 hover:bg-brand-950/10"}`}
             >
               Tous
             </Link>
@@ -50,20 +50,20 @@ export default async function SearchPage({
               <Link
                 key={c.key}
                 href={`/search${qs(c.key)}`}
-                className={`rounded-full px-4 py-1.5 text-sm font-medium ${category === c.key ? "bg-emerald-950 text-white" : "bg-emerald-950/5 text-emerald-950 hover:bg-emerald-950/10"}`}
+                className={`rounded-full px-4 py-1.5 text-sm font-medium ${category === c.key ? "bg-brand-950 text-white" : "bg-brand-950/5 text-brand-950 hover:bg-brand-950/10"}`}
               >
                 {c.label}
               </Link>
             ))}
           </div>
 
-          <p className="mb-4 text-sm text-emerald-950/60">
+          <p className="mb-4 text-sm text-brand-950/60">
             {results.length} véhicule{results.length > 1 ? "s" : ""}
             {city ? ` à ${city}` : " au Maroc"}
           </p>
 
           {results.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-emerald-950/20 p-12 text-center text-emerald-950/60">
+            <div className="rounded-2xl border border-dashed border-brand-950/20 p-12 text-center text-brand-950/60">
               Aucun véhicule pour ces critères. Essayez une autre ville ou catégorie.
             </div>
           ) : (
