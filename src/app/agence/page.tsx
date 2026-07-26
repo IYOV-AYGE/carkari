@@ -10,9 +10,16 @@ import { setVehicleStatus, updateVehiclePrice, deleteVehicle } from "./actions";
 
 const SUPA = process.env.NEXT_PUBLIC_SUPABASE_URL;
 
+type AgencyBooking = {
+  id: string; start_date: string; end_date: string; status: string;
+  total_mad: number; deposit_mad: number; balance_due_mad: number;
+  make: string; model: string; customer_name: string | null;
+  customer_phone: string | null;
+};
+
 const L: Record<"fr" | "en", {
   title: string; noAgency: string; apply: string; pending: string;
-  suspended: string; fleet: string; empty: string; price: string;
+  suspended: string; bookings: string; noBookings: string; fleet: string; empty: string; price: string;
   save: string; publish: string; unpublish: string; remove: string;
   statusDraft: string; statusLive: string; statusPaused: string;
   form: VehicleFormLabels;
@@ -23,6 +30,7 @@ const L: Record<"fr" | "en", {
     apply: "Inscrire mon agence",
     pending: "Votre dossier est en cours de vérification. Vous pourrez ajouter vos véhicules dès validation (sous 48 h).",
     suspended: "Compte suspendu — contactez-nous.",
+    bookings: "Réservations reçues", noBookings: "Aucune réservation pour le moment.",
     fleet: "Ma flotte",
     empty: "Aucun véhicule pour le moment. Ajoutez votre premier véhicule ci-dessous.",
     price: "Prix / jour (MAD)",
@@ -55,6 +63,7 @@ const L: Record<"fr" | "en", {
     apply: "Register my agency",
     pending: "Your application is being verified. You'll be able to add vehicles once approved (within 48h).",
     suspended: "Account suspended — please contact us.",
+    bookings: "Incoming bookings", noBookings: "No bookings yet.",
     fleet: "My fleet",
     empty: "No vehicles yet. Add your first vehicle below.",
     price: "Price / day (MAD)",
@@ -119,6 +128,8 @@ export default async function AgencyDashboard() {
     );
   }
 
+  const { data: agencyBookings } = await supabase.rpc("agency_bookings");
+
   const { data: vehicles } = await supabase
     .from("vehicles")
     .select("id, make, model, year, category, transmission, fuel, seats, daily_price_mad, status, vehicle_images(path, sort)")
@@ -154,6 +165,32 @@ export default async function AgencyDashboard() {
           </p>
         ) : (
           <>
+            <h2 className="mt-10 text-xl font-bold text-brand-950">{t.bookings}</h2>
+            {((agencyBookings ?? []) as AgencyBooking[]).length === 0 ? (
+              <p className="mt-3 rounded-2xl border border-dashed border-brand-950/20 p-6 text-center text-sm text-brand-950/60">
+                {t.noBookings}
+              </p>
+            ) : (
+              <div className="mt-4 space-y-2">
+                {((agencyBookings ?? []) as AgencyBooking[]).map((b) => (
+                  <div key={b.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-brand-950/10 bg-white p-4 text-sm">
+                    <div>
+                      <p className="font-semibold text-brand-950">{b.make} {b.model}</p>
+                      <p className="text-brand-950/60">
+                        {b.start_date} → {b.end_date} · {b.customer_name ?? "—"} · {b.customer_phone ?? "—"}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-semibold text-brand-950">
+                        {(b.balance_due_mad / 100).toLocaleString("fr-MA")} MAD
+                      </p>
+                      <p className="text-xs text-brand-950/50">{b.status}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
             <h2 className="mt-10 text-xl font-bold text-brand-950">{t.fleet}</h2>
             {(vehicles ?? []).length === 0 ? (
               <p className="mt-3 rounded-2xl border border-dashed border-brand-950/20 p-8 text-center text-brand-950/60">

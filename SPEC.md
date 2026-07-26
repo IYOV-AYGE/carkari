@@ -107,7 +107,8 @@ favorites(profile_id, vehicle_id)
 - [x] Step 2a: Supabase clients wired (project vjcmzkraaeijsiwekhcr, us-east-1)
 - [ ] Step 2b: run migration 00001 in Supabase SQL editor + auth pages
 - [x] Step 3: public pages (home, search, vehicle details) — mock data
-- [ ] Step 4: booking flow + Stripe deposit
+- [x] Step 4: booking flow (quote → create_booking → Stripe deposit → webhook
+      confirms). Cancellation applies refund policy via cancel_booking().
 - [x] Step 4a: agency onboarding (application form, doc uploads, admin approval)
 - [x] Step 5: agency dashboard /agence (fleet CRUD, photo upload, publish toggle)
 - [x] Step 6: admin panel /admin (approve/suspend agencies)
@@ -120,3 +121,7 @@ favorites(profile_id, vehicle_id)
 - Agency onboarding captures legal representative KYC: name, birth date/city,
   phone, email, gov ID front+back (private bucket agency-docs).
 - Auth: email/password + Google OAuth (configure provider in Supabase dash).
+- Env needed in Vercel: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, SUPABASE_SERVICE_ROLE_KEY.
+- Webhook endpoint: POST /api/webhooks/stripe (checkout.session.completed).
+  It is the ONLY place bookings become `confirmed`.

@@ -7,10 +7,11 @@ import { VerifiedBadge } from "@/components/badges";
 import {
   COMMISSION_RATE,
   MOCK_VEHICLES,
-  formatMad,
 } from "@/lib/mock/vehicles";
 import { getLang } from "@/lib/i18n/server";
 import { getLiveVehicles } from "@/lib/vehicles/live";
+import { createClient } from "@/lib/supabase/server";
+import { BookingWidget, type BookingLabels } from "@/components/BookingWidget";
 
 const L = {
   fr: {
@@ -28,8 +29,21 @@ const L = {
     perDay: "/ jour",
     depositLine: "Acompte en ligne (par jour)",
     balanceLine: "Solde à la prise du véhicule",
-    book: "Réserver — bientôt",
-    bookNote: "La réservation en ligne arrive très prochainement.",
+    booking: {
+      perDay: "/ jour", from: "Départ", to: "Retour",
+      days: "{n} jour(s)", total: "Total", deposit: "Acompte en ligne",
+      balance: "Solde à l'agence",
+      policyTitle: "Annulation", policyLines: [],
+      accept: "J'accepte les conditions et la politique d'annulation ci-dessus.",
+      book: "Réserver", booking: "Réservation…",
+      loginFirst: "Se connecter pour réserver",
+      unavailable: "Ce véhicule n'est pas disponible sur ces dates.",
+      pickDates: "Choisissez vos dates pour voir le prix total.",
+      errGeneric: "La réservation a échoué. Réessayez ou contactez-nous.",
+      mockNote: "Véhicule de démonstration — réservation désactivée.",
+      freeCancel: "Annulation gratuite pendant 24 h après la réservation.",
+      noRefund: "Départ dans moins de 48 h : l'acompte n'est pas remboursable.",
+    } as BookingLabels,
   },
   en: {
     crumb: "Cars",
@@ -46,8 +60,21 @@ const L = {
     perDay: "/ day",
     depositLine: "Online deposit (per day)",
     balanceLine: "Balance due at pickup",
-    book: "Book — coming soon",
-    bookNote: "Online booking is coming very soon.",
+    booking: {
+      perDay: "/ day", from: "Pick-up", to: "Return",
+      days: "{n} day(s)", total: "Total", deposit: "Online deposit",
+      balance: "Balance at agency",
+      policyTitle: "Cancellation", policyLines: [],
+      accept: "I accept the terms and the cancellation policy above.",
+      book: "Book now", booking: "Booking…",
+      loginFirst: "Sign in to book",
+      unavailable: "This vehicle is not available for these dates.",
+      pickDates: "Pick your dates to see the total price.",
+      errGeneric: "Booking failed. Please try again or contact us.",
+      mockNote: "Demo vehicle — booking disabled.",
+      freeCancel: "Free cancellation for 24h after booking.",
+      noRefund: "Pickup within 48h: the deposit is non-refundable.",
+    } as BookingLabels,
   },
 };
 
@@ -58,11 +85,14 @@ export default async function VehiclePage({
 }) {
   const { id } = await params;
   const live = await getLiveVehicles();
-  const v = live.find((x) => x.id === id) ?? MOCK_VEHICLES.find((x) => x.id === id);
+  const liveHit = live.find((x) => x.id === id);
+  const v = liveHit ?? MOCK_VEHICLES.find((x) => x.id === id);
   if (!v) notFound();
+  const isMock = !liveHit;
   const t = L[await getLang()];
 
-  const deposit = Math.ceil(v.dailyPriceMad * COMMISSION_RATE);
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
 
   return (
     <>
@@ -117,29 +147,14 @@ export default async function VehiclePage({
             </div>
           </div>
 
-          <aside className="h-fit rounded-2xl border border-brand-950/10 p-6 shadow-sm lg:sticky lg:top-24">
-            <p className="text-brand-950">
-              <span className="text-3xl font-extrabold">{formatMad(v.dailyPriceMad)}</span>
-              <span className="text-brand-950/60"> {t.perDay}</span>
-            </p>
-            <div className="mt-4 space-y-2 border-t border-brand-950/10 pt-4 text-sm text-brand-950/80">
-              <div className="flex justify-between">
-                <span>{t.depositLine}</span>
-                <span className="font-semibold">{formatMad(deposit)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>{t.balanceLine}</span>
-                <span className="font-semibold">{formatMad(v.dailyPriceMad - deposit)}</span>
-              </div>
-            </div>
-            <button
-              className="mt-6 w-full cursor-not-allowed rounded-xl bg-accent-500/60 py-3 font-semibold text-white"
-              disabled
-            >
-              {t.book}
-            </button>
-            <p className="mt-3 text-center text-xs text-brand-950/50">{t.bookNote}</p>
-          </aside>
+          <BookingWidget
+            t={t.booking}
+            vehicleId={v.id}
+            dailyPriceMad={v.dailyPriceMad}
+            commissionRate={COMMISSION_RATE}
+            isMock={isMock}
+            signedIn={Boolean(user)}
+          />
         </div>
       </main>
       <Footer />

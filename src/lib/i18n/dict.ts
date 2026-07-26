@@ -37,7 +37,7 @@ const fr = {
   card: { perDay: "/ jour", seats: "places", verified: "vérifiée" },
   menu: {
     login: "Connexion", signup: "Créer un compte", partner: "Devenir partenaire",
-    dashboard: "Mon espace agence", admin: "Administration",
+    dashboard: "Mon espace agence", myBookings: "Mes réservations", admin: "Administration",
     why: "Pourquoi CarKari", help: "Aide", legal: "Mentions légales",
     insurance: "Assurance et protection", carculator: "Carculator",
     logout: "Déconnexion", open: "Menu",
@@ -100,7 +100,7 @@ const en: typeof fr = {
   card: { perDay: "/ day", seats: "seats", verified: "verified" },
   menu: {
     login: "Log in", signup: "Sign up", partner: "Become a partner",
-    dashboard: "My agency space", admin: "Admin",
+    dashboard: "My agency space", myBookings: "My bookings", admin: "Admin",
     why: "Why CarKari", help: "Get help", legal: "Legal",
     insurance: "Insurance & protection", carculator: "Carculator",
     logout: "Sign out", open: "Menu",
