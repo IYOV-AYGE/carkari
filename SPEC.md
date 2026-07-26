@@ -109,5 +109,7 @@ favorites(profile_id, vehicle_id)
 - [x] Step 3: public pages (home, search, vehicle details) — mock data
 - [ ] Step 4: booking flow + Stripe deposit
 - [x] Step 4a: agency onboarding (application form, doc uploads, admin approval)
-- [ ] Step 5: agency dashboard (fleet CRUD)
-- [ ] Step 6: admin panel
+- [x] Step 5: agency dashboard /agence (fleet CRUD, photo upload, publish toggle)
+- [x] Step 6: admin panel /admin (approve/suspend agencies)
+- Public pages now merge live DB vehicles (src/lib/vehicles/live.ts) with mock demo fleet.
+- Migrations to run in order: 00001, 00002, 00003.

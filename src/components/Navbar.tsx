@@ -39,9 +39,12 @@ export async function Navbar() {
           </a>
           {user ? (
             <>
-              <span className="hidden text-sm text-brand-950/70 sm:inline">
-                {user.user_metadata?.full_name || user.email}
-              </span>
+              <Link
+                href="/agence"
+                className="hidden text-sm font-medium text-brand-950/80 hover:text-brand-950 sm:inline"
+              >
+                {t.nav.dashboard}
+              </Link>
               <form action={signOut}>
                 <button className="rounded-full border border-brand-950/15 px-4 py-2 text-sm font-medium text-brand-950 hover:bg-brand-950/5">
                   {t.nav.logout}

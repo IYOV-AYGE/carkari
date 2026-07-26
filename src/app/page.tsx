@@ -6,6 +6,7 @@ import { SearchBar } from "@/components/SearchBar";
 import { VehicleCardCompact } from "@/components/VehicleCard";
 import { CATEGORIES, CITIES, MOCK_VEHICLES, type MockVehicle } from "@/lib/mock/vehicles";
 import { getDict, tpl } from "@/lib/i18n/server";
+import { getLiveVehicles } from "@/lib/vehicles/live";
 
 function Row({
   title,
@@ -38,11 +39,13 @@ function Row({
 
 export default async function HomePage() {
   const t = await getDict();
-  const byRating = [...MOCK_VEHICLES].sort((a, b) => b.rating - a.rating);
+  const live = await getLiveVehicles();
+  const ALL = [...live, ...MOCK_VEHICLES];
+  const byRating = [...ALL].sort((a, b) => b.rating - a.rating);
   const casa = byRating.filter((v) => v.city === "Casablanca");
   const suvMarrakech = byRating.filter((v) => v.category === "suv");
   const luxe = byRating.filter((v) => v.category === "luxe");
-  const budget = [...MOCK_VEHICLES].sort((a, b) => a.dailyPriceMad - b.dailyPriceMad);
+  const budget = [...ALL].sort((a, b) => a.dailyPriceMad - b.dailyPriceMad);
   const vans = byRating.filter((v) => v.category === "utilitaire");
 
   return (

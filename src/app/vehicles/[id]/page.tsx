@@ -10,6 +10,7 @@ import {
   formatMad,
 } from "@/lib/mock/vehicles";
 import { getLang } from "@/lib/i18n/server";
+import { getLiveVehicles } from "@/lib/vehicles/live";
 
 const L = {
   fr: {
@@ -56,7 +57,8 @@ export default async function VehiclePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const v = MOCK_VEHICLES.find((x) => x.id === id);
+  const live = await getLiveVehicles();
+  const v = live.find((x) => x.id === id) ?? MOCK_VEHICLES.find((x) => x.id === id);
   if (!v) notFound();
   const t = L[await getLang()];
 

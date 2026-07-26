@@ -7,6 +7,7 @@ import { SearchBar } from "@/components/SearchBar";
 import { VehicleCard } from "@/components/VehicleCard";
 import { CITIES, MOCK_VEHICLES } from "@/lib/mock/vehicles";
 import { getLang } from "@/lib/i18n/server";
+import { getLiveVehicles } from "@/lib/vehicles/live";
 
 const slugify = (c: string) =>
   c.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
@@ -66,7 +67,8 @@ export default async function CityPage({
   if (!city) notFound();
   const t = L[await getLang()];
 
-  const cars = MOCK_VEHICLES.filter((v) => v.city === city);
+  const live = await getLiveVehicles();
+  const cars = [...live, ...MOCK_VEHICLES].filter((v) => v.city === city);
   const minPrice = (
     Math.min(...cars.map((v) => v.dailyPriceMad)) / 100
   ).toLocaleString("fr-MA");

@@ -5,6 +5,7 @@ import { VehicleCard } from "@/components/VehicleCard";
 import { CATEGORIES, MOCK_VEHICLES } from "@/lib/mock/vehicles";
 import Link from "next/link";
 import { getDict, tpl } from "@/lib/i18n/server";
+import { getLiveVehicles } from "@/lib/vehicles/live";
 
 export async function generateMetadata() {
   const { getLang } = await import("@/lib/i18n/server");
@@ -34,8 +35,10 @@ export default async function SearchPage({
   const { city = "", category = "", price = "", trans = "", sort = "" } =
     await searchParams;
   const t = await getDict();
+  const live = await getLiveVehicles();
+  const ALL = [...live, ...MOCK_VEHICLES];
 
-  let results = MOCK_VEHICLES.filter(
+  let results = ALL.filter(
     (v) =>
       (!city || v.city === city) &&
       (!category || v.category === category) &&

@@ -4,7 +4,7 @@
 export type Lang = "fr" | "en";
 
 const fr = {
-  nav: { cars: "Voitures", cities: "Villes", partner: "Devenir partenaire", login: "Connexion", logout: "Déconnexion" },
+  nav: { cars: "Voitures", cities: "Villes", partner: "Devenir partenaire", login: "Connexion", logout: "Déconnexion", dashboard: "Mon espace" },
   hero: {
     title: "La location réinventée,",
     titleAccent: "partout au Maroc",
@@ -59,7 +59,7 @@ const fr = {
 };
 
 const en: typeof fr = {
-  nav: { cars: "Cars", cities: "Cities", partner: "Become a partner", login: "Sign in", logout: "Sign out" },
+  nav: { cars: "Cars", cities: "Cities", partner: "Become a partner", login: "Sign in", logout: "Sign out", dashboard: "My space" },
   hero: {
     title: "Rental reinvented,",
     titleAccent: "all across Morocco",
