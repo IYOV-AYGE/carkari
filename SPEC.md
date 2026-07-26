@@ -101,8 +101,9 @@ favorites(profile_id, vehicle_id)
 ## 7. Status log (update as we finish steps)
 
 - [x] Step 1: skeleton, SPEC.md, DB schema + RLS, PaymentProvider interface
-- [ ] Step 2: Supabase project connect + auth
-- [ ] Step 3: public pages (home, search, vehicle details)
+- [x] Step 2a: Supabase clients wired (project vjcmzkraaeijsiwekhcr, us-east-1)
+- [ ] Step 2b: run migration 00001 in Supabase SQL editor + auth pages
+- [x] Step 3: public pages (home, search, vehicle details) — mock data
 - [ ] Step 4: booking flow + Stripe deposit
 - [ ] Step 5: agency dashboard
 - [ ] Step 6: admin panel

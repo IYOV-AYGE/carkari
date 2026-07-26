@@ -1,65 +1,97 @@
-import Image from "next/image";
+import Link from "next/link";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+import { SearchBar } from "@/components/SearchBar";
+import { VehicleCard } from "@/components/VehicleCard";
+import { CITIES, MOCK_VEHICLES } from "@/lib/mock/vehicles";
 
-export default function Home() {
+export default function HomePage() {
+  const featured = MOCK_VEHICLES.slice(0, 6);
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <>
+      <Navbar />
+      <main className="flex-1">
+        <section className="bg-emerald-950 px-4 pb-20 pt-16 text-white">
+          <div className="mx-auto max-w-6xl">
+            <h1 className="max-w-2xl text-4xl font-extrabold leading-tight sm:text-5xl">
+              Louez la bonne voiture,{" "}
+              <span className="text-amber-400">partout au Maroc</span>
+            </h1>
+            <p className="mt-4 max-w-xl text-lg text-emerald-100/80">
+              Des agences vérifiées, des prix clairs, une réservation en ligne.
+              Payez un simple acompte — le reste à la prise du véhicule.
+            </p>
+            <div className="mt-8">
+              <SearchBar />
+            </div>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-6xl px-4 py-14">
+          <div className="mb-6 flex items-end justify-between">
+            <h2 className="text-2xl font-bold text-emerald-950">Véhicules populaires</h2>
+            <Link href="/search" className="text-sm font-semibold text-emerald-800 hover:underline">
+              Tout voir →
+            </Link>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {featured.map((v) => <VehicleCard key={v.id} v={v} />)}
+          </div>
+        </section>
+
+        <section id="villes" className="bg-emerald-950/[0.03] py-14">
+          <div className="mx-auto max-w-6xl px-4">
+            <h2 className="mb-6 text-2xl font-bold text-emerald-950">Par ville</h2>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+              {CITIES.map((c) => (
+                <Link
+                  key={c}
+                  href={`/search?city=${encodeURIComponent(c)}`}
+                  className="rounded-xl border border-emerald-950/10 bg-white px-4 py-6 text-center font-semibold text-emerald-950 transition hover:border-amber-400 hover:shadow"
+                >
+                  {c}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-6xl px-4 py-14">
+          <h2 className="mb-8 text-center text-2xl font-bold text-emerald-950">
+            Comment ça marche
+          </h2>
+          <div className="grid gap-6 sm:grid-cols-3">
+            {[
+              ["1. Choisissez", "Comparez les voitures d'agences vérifiées dans votre ville."],
+              ["2. Réservez", "Payez un acompte en ligne sécurisé pour bloquer vos dates."],
+              ["3. Roulez", "Réglez le solde à la prise du véhicule, directement à l'agence."],
+            ].map(([t, d]) => (
+              <div key={t} className="rounded-2xl border border-emerald-950/10 p-6">
+                <p className="text-lg font-bold text-emerald-950">{t}</p>
+                <p className="mt-2 text-emerald-950/70">{d}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section id="agences" className="bg-emerald-950 py-14 text-white">
+          <div className="mx-auto max-w-6xl px-4 text-center">
+            <h2 className="text-2xl font-bold">Vous êtes une agence de location ?</h2>
+            <p className="mx-auto mt-3 max-w-xl text-emerald-100/80">
+              Mettez votre flotte en ligne sur CarKari et recevez des réservations
+              sans effort. Inscription gratuite, commission uniquement sur les
+              locations réalisées.
+            </p>
+            <Link
+              href="/auth"
+              className="mt-6 inline-block rounded-full bg-amber-500 px-8 py-3 font-semibold text-emerald-950 transition hover:bg-amber-400"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+              Devenir partenaire
+            </Link>
+          </div>
+        </section>
       </main>
-    </div>
+      <Footer />
+    </>
   );
 }
