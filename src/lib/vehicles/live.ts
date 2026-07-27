@@ -48,7 +48,11 @@ export async function getLiveVehicles(): Promise<MockVehicle[]> {
     return rows
       .filter((r) => r.agencies?.status === "verified")
       .map((r) => {
-        const img = (r.vehicle_images ?? []).sort((a, b) => a.sort - b.sort)[0];
+        const sorted = (r.vehicle_images ?? []).slice().sort((a, b) => a.sort - b.sort);
+        const urls = sorted.map(
+          (i) => `${SUPA}/storage/v1/object/public/vehicle-photos/${i.path}`
+        );
+        const img = sorted[0];
         const category = (CATS as readonly string[]).includes(r.category)
           ? (r.category as MockVehicle["category"])
           : "citadine";
@@ -70,9 +74,8 @@ export async function getLiveVehicles(): Promise<MockVehicle[]> {
           agency: r.agencies?.legal_name ?? "CarKari",
           rating: 5,
           reviewCount: 0,
-          image: img
-            ? `${SUPA}/storage/v1/object/public/vehicle-photos/${img.path}`
-            : PLACEHOLDER,
+          image: img ? urls[0] : PLACEHOLDER,
+          images: urls.length ? urls : [PLACEHOLDER],
           tone: "",
         } satisfies MockVehicle;
       });

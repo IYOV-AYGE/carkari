@@ -17,6 +17,8 @@ export type MockVehicle = {
   reviewCount: number;
   /** photo path under /public */
   image: string;
+  /** all photos (gallery). Mock cars have one. */
+  images?: string[];
   tone: string;
 };
 
