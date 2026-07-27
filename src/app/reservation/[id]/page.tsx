@@ -19,6 +19,10 @@ const L = {
     deposit: "Acompte en ligne", balance: "Solde à régler à l'agence",
     pay: "Payer l'acompte", payNote: "Paiement sécurisé. Le solde se règle à la prise du véhicule.",
     mine: "Voir mes réservations",
+    kycTitle: "Vérification d'identité requise avant la prise du véhicule",
+    kycBody: "Les agences doivent vérifier permis et identité. Faites-le maintenant en 3 minutes — sinon le véhicule ne pourra pas vous être remis et l'acompte vous sera remboursé.",
+    kycBtn: "Vérifier mon identité",
+    kycPending: "Vérification en cours — nous validons vos documents sous 24 h.",
     policyTitle: "Politique d'annulation",
     policy: [
       "Annulation gratuite pendant 24 h après la réservation.",
@@ -35,6 +39,10 @@ const L = {
     deposit: "Online deposit", balance: "Balance due at the agency",
     pay: "Pay the deposit", payNote: "Secure payment. The balance is paid at pickup.",
     mine: "See my bookings",
+    kycTitle: "Identity verification required before pickup",
+    kycBody: "Agencies must check licence and ID. Do it now in 3 minutes — otherwise the vehicle cannot be released and your deposit will be refunded.",
+    kycBtn: "Verify my identity",
+    kycPending: "Verification in progress — we review your documents within 24h.",
     policyTitle: "Cancellation policy",
     policy: [
       "Free cancellation for 24h after booking.",
@@ -61,6 +69,9 @@ export default async function BookingPage({
   } = await supabase.auth.getUser();
   if (!user) redirect("/auth");
 
+  const { data: verif } = await supabase.rpc("my_verification");
+  const kyc = (verif?.[0]?.kyc_status ?? "unverified") as string;
+
   const { data } = await supabase.rpc("my_bookings");
   const b = (data ?? []).find(
     (x: { id: string }) => x.id === id
@@ -86,6 +97,23 @@ export default async function BookingPage({
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-12">
         <h1 className="text-2xl font-extrabold text-brand-950">{t.title}</h1>
         <p className={`mt-4 rounded-xl p-4 text-sm ${banner.cls}`}>{banner.text}</p>
+
+        {!b.status.startsWith("cancelled") && kyc !== "verified" && (
+          <div className="mt-4 rounded-2xl border border-amber-400/40 bg-amber-50 p-5">
+            <p className="font-semibold text-amber-900">{t.kycTitle}</p>
+            <p className="mt-1 text-sm text-amber-900/80">
+              {kyc === "pending" ? t.kycPending : t.kycBody}
+            </p>
+            {kyc !== "pending" && (
+              <Link
+                href="/verification"
+                className="mt-3 inline-block rounded-xl bg-brand-950 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-800"
+              >
+                {t.kycBtn}
+              </Link>
+            )}
+          </div>
+        )}
 
         <div className="mt-6 space-y-3 rounded-2xl border border-brand-950/10 bg-white p-6 text-sm">
           <Row k={t.vehicle} v={`${b.make} ${b.model} ${b.year} — ${b.agency_name}, ${b.city}`} />

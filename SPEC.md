@@ -92,6 +92,27 @@ favorites(profile_id, vehicle_id)
 - UI strings live in src/lib/i18n/dict.ts — add keys to BOTH fr and en.
 - SEO matters: server-render public pages, per-city landing pages later.
 
+## 5b. Customer identity verification (KYC)
+
+- **Timing**: verification is required BEFORE PICKUP, not before booking.
+  Customers book + pay the deposit freely, then verify. Unverified at pickup →
+  agency does not release the car, deposit refunded. Best conversion, no risk.
+- **Collected**: first/last name, birth date (21+ enforced), nationality,
+  phone, ID/passport number, licence number + country + issue date (held ≥1
+  year enforced), and 5 photos: licence front/back, ID front/back, selfie.
+- **Phone check (free)**: customer sends a per-user code (`profiles.phone_code`,
+  format CK-XXXXXX) to CarKari on WhatsApp — inbound WhatsApp is free. Admin
+  ticks "tél. OK" when approving. No paid SMS.
+- **Storage**: private bucket `customer-docs`, per-user folders, admin-only
+  read via short-lived signed URLs. Agencies NEVER see documents — only
+  `customer_verified` boolean via agency_bookings().
+- **Retention**: purge_old_kyc_documents() nulls document paths 90 days after
+  the customer's last rental. Decision is kept, images are not.
+- **Fraud signals**: kyc_ip / kyc_country stored silently for chargeback
+  defense alongside policy_accepted_at on the booking.
+- **Review**: manual in /admin/clients (approve / reject with reason).
+  Swappable for Stripe Identity later without schema change.
+
 ## 6. Build phases
 
 - **P1 (MVP)**: public search/browse/vehicle pages, auth, booking + Stripe
@@ -113,7 +134,7 @@ favorites(profile_id, vehicle_id)
 - [x] Step 5: agency dashboard /agence (fleet CRUD, photo upload, publish toggle)
 - [x] Step 6: admin panel /admin (approve/suspend agencies)
 - Public pages now merge live DB vehicles (src/lib/vehicles/live.ts) with mock demo fleet.
-- Migrations to run in order: 00001, 00002, 00003, 00004.
+- Migrations to run in order: 00001 … 00006.
 - Vehicles require 5 photos (front, rear, left, right, interior) before going
   live — enforced by trigger enforce_min_photos() AND in the UI.
 - All client-side image uploads pass through src/lib/images/compress.ts

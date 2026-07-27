@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
 import { createClient } from "@/lib/supabase/server";
@@ -46,9 +47,14 @@ export default async function AdminPage() {
     <>
       <Navbar />
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-10">
-        <h1 className="text-2xl font-extrabold text-brand-950">
-          Admin — Agences ({withUrls.length})
-        </h1>
+        <div className="flex flex-wrap items-center gap-4">
+          <h1 className="text-2xl font-extrabold text-brand-950">
+            Admin — Agences ({withUrls.length})
+          </h1>
+          <Link href="/admin/clients" className="text-sm font-semibold text-accent-600 hover:underline">
+            → Vérifications clients
+          </Link>
+        </div>
 
         <div className="mt-6 space-y-4">
           {withUrls.length === 0 && (

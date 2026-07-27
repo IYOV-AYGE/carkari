@@ -14,7 +14,7 @@ type AgencyBooking = {
   id: string; start_date: string; end_date: string; status: string;
   total_mad: number; deposit_mad: number; balance_due_mad: number;
   make: string; model: string; customer_name: string | null;
-  customer_phone: string | null;
+  customer_phone: string | null; customer_verified?: boolean;
 };
 
 const L: Record<"fr" | "en", {
@@ -178,6 +178,15 @@ export default async function AgencyDashboard() {
                       <p className="font-semibold text-brand-950">{b.make} {b.model}</p>
                       <p className="text-brand-950/60">
                         {b.start_date} → {b.end_date} · {b.customer_name ?? "—"} · {b.customer_phone ?? "—"}
+                        {b.customer_verified ? (
+                          <span className="ml-2 rounded-full bg-green-100 px-2 py-0.5 text-[11px] font-medium text-green-800">
+                            ✓ identité vérifiée
+                          </span>
+                        ) : (
+                          <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-medium text-amber-800">
+                            identité non vérifiée
+                          </span>
+                        )}
                       </p>
                     </div>
                     <div className="text-right">

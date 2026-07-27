@@ -41,7 +41,7 @@ keys not yet set).
 
 1. **Migrations** — run in Supabase SQL editor, in order. Done: 00001, 00002.
    Pending: `00003_vehicle_photos.sql`, `00004_representative_identity.sql`,
-   `00005_booking_flow.sql`.
+   `00005_booking_flow.sql`, `00006_customer_verification.sql`.
 2. **Domain — DONE.** Live at https://www.carkari.com. Cloudflare proxy must
    stay OFF (grey cloud) unless you re-test everything; Vercel needs it off to
    renew certificates, and Vercel geo headers power the FR/EN auto-switch.
@@ -62,7 +62,11 @@ keys not yet set).
    `STRIPE_WEBHOOK_SECRET` (endpoint `/api/webhooks/stripe`, event
    `checkout.session.completed`), plus `SUPABASE_SERVICE_ROLE_KEY`, into Vercel
    env vars, then redeploy.
-5. **WhatsApp number** — placeholder 212600000000 in src/components/badges.tsx.
+5. **WhatsApp number** — placeholder 212600000000 in TWO places:
+   src/components/badges.tsx (floating button) and src/app/verification/page.tsx
+   (WHATSAPP const — customers send their phone code there).
+6. **Customer KYC is live**: /verification for customers, /admin/clients for
+   review. Verification required before pickup, not before booking.
 
 ## TO DO — build queue (next features)
 

@@ -14,6 +14,9 @@ const L = {
     title: "Mes réservations",
     empty: "Aucune réservation pour le moment.",
     browse: "Trouver une voiture",
+    kycTitle: "Vérifiez votre identité avant la prise du véhicule",
+    kycBtn: "Vérifier maintenant",
+    kycPending: "Vérification d'identité en cours (sous 24 h).",
     deposit: "Acompte", balance: "Solde à l'agence",
     cancel: "Annuler", pay: "Payer l'acompte",
     refundable: "Annulation gratuite encore possible",
@@ -32,6 +35,9 @@ const L = {
     title: "My bookings",
     empty: "No bookings yet.",
     browse: "Find a car",
+    kycTitle: "Verify your identity before pickup",
+    kycBtn: "Verify now",
+    kycPending: "Identity verification in progress (within 24h).",
     deposit: "Deposit", balance: "Balance at agency",
     cancel: "Cancel", pay: "Pay deposit",
     refundable: "Free cancellation still available",
@@ -67,14 +73,34 @@ export default async function MyBookingsPage() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/auth");
 
-  const { data } = await supabase.rpc("my_bookings");
+  const [{ data }, { data: verif }] = await Promise.all([
+    supabase.rpc("my_bookings"),
+    supabase.rpc("my_verification"),
+  ]);
   const bookings = (data ?? []) as Booking[];
+  const kyc = (verif?.[0]?.kyc_status ?? "unverified") as string;
 
   return (
     <>
       <Navbar />
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-10">
         <h1 className="text-2xl font-extrabold text-brand-950">{t.title}</h1>
+
+        {bookings.length > 0 && kyc !== "verified" && (
+          <div className="mt-4 flex flex-wrap items-center gap-3 rounded-2xl border border-amber-400/40 bg-amber-50 p-4">
+            <p className="flex-1 text-sm font-medium text-amber-900">
+              {kyc === "pending" ? t.kycPending : t.kycTitle}
+            </p>
+            {kyc !== "pending" && (
+              <Link
+                href="/verification"
+                className="rounded-xl bg-brand-950 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-800"
+              >
+                {t.kycBtn}
+              </Link>
+            )}
+          </div>
+        )}
 
         {bookings.length === 0 ? (
           <div className="mt-8 rounded-2xl border border-dashed border-brand-950/20 p-10 text-center">

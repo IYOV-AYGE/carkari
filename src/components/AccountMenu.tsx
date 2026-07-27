@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export type MenuLabels = {
   login: string; signup: string; partner: string; dashboard: string;
-  myBookings: string;
+  myBookings: string; verification: string;
   admin: string; why: string; help: string; legal: string;
   insurance: string; carculator: string; logout: string; open: string;
 };
@@ -82,6 +82,9 @@ export function AccountMenu({
             <>
               <Link href="/mes-reservations" className={item} onClick={() => setOpen(false)}>
                 <Icon d="M8 2v4M16 2v4M3 10h18M5 6h14a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z" /> {t.myBookings}
+              </Link>
+              <Link href="/verification" className={item} onClick={() => setOpen(false)}>
+                <Icon d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6l7-3ZM9 12l2 2 4-4" /> {t.verification}
               </Link>
               {hasAgency && (
                 <Link href="/agence" className={item} onClick={() => setOpen(false)}>
