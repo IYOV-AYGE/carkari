@@ -13,15 +13,19 @@ export async function Navbar() {
   const t = await getDict();
   const lang = await getLang();
 
+  // Host-only entries are hidden from signed-in customers: they appear for
+  // visitors (discovery) and for accounts that actually own an agency.
   let isAdmin = false;
+  let hasAgency = false;
   if (user) {
-    const { data } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
-    isAdmin = data?.role === "admin";
+    const [{ data: profile }, { data: agencies }] = await Promise.all([
+      supabase.from("profiles").select("role").eq("id", user.id).single(),
+      supabase.rpc("my_agency"),
+    ]);
+    isAdmin = profile?.role === "admin";
+    hasAgency = Array.isArray(agencies) && agencies.length > 0;
   }
+  const showHostLinks = !user || hasAgency;
 
   return (
     <header className="sticky top-0 z-40 border-b border-brand-950/10 bg-white/90 backdrop-blur">
@@ -38,7 +42,11 @@ export async function Navbar() {
         <div className="hidden items-center gap-6 text-sm font-medium text-brand-950/80 sm:flex">
           <Link href="/search" className="hover:text-brand-950">{t.nav.cars}</Link>
           <Link href="/#villes" className="hover:text-brand-950">{t.nav.cities}</Link>
-          <Link href="/partenaires" className="hover:text-brand-950">{t.nav.partner}</Link>
+          {showHostLinks && (
+            <Link href="/partenaires" className="hover:text-brand-950">
+              {t.nav.partner}
+            </Link>
+          )}
         </div>
         <div className="flex items-center gap-3">
           <a
@@ -52,6 +60,7 @@ export async function Navbar() {
             t={t.menu}
             signedIn={Boolean(user)}
             isAdmin={isAdmin}
+            hasAgency={hasAgency}
             onSignOut={
               <form action={signOut}>
                 <button className="w-full rounded-lg px-3 py-2.5 text-left text-[15px] text-brand-950 hover:bg-brand-950/5">

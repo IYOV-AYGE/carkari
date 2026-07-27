@@ -4,7 +4,7 @@
 export type Lang = "fr" | "en";
 
 const fr = {
-  nav: { cars: "Voitures", cities: "Villes", partner: "Devenir partenaire", login: "Connexion", logout: "Déconnexion", dashboard: "Mon espace" },
+  nav: { cars: "Voitures", cities: "Villes", partner: "Devenir hôte", login: "Connexion", logout: "Déconnexion", dashboard: "Mon espace" },
   hero: {
     title: "La location réinventée,",
     titleAccent: "partout au Maroc",
@@ -32,11 +32,11 @@ const fr = {
   cta: {
     title: "Vous êtes une agence de location ?",
     sub: "Mettez votre flotte en ligne sur CarKari et recevez des réservations sans effort. Inscription gratuite, commission uniquement sur les locations réalisées.",
-    btn: "Devenir partenaire",
+    btn: "Devenir hôte",
   },
   card: { perDay: "/ jour", seats: "places", verified: "vérifiée" },
   menu: {
-    login: "Connexion", signup: "Créer un compte", partner: "Devenir partenaire",
+    login: "Connexion", signup: "Créer un compte", partner: "Devenir hôte",
     dashboard: "Mon espace agence", myBookings: "Mes réservations", admin: "Administration",
     why: "Pourquoi CarKari", help: "Aide", legal: "Mentions légales",
     insurance: "Assurance et protection", carculator: "Carculator",
@@ -61,13 +61,13 @@ const fr = {
   footer: {
     tagline: "La location de voiture au Maroc, auprès d'agences vérifiées.",
     col1: "CarKari", col2: "Aide et confiance", col3: "Villes",
-    links1: [["/search", "Rechercher une voiture"], ["/mariages", "Voitures de mariage"], ["/carculator", "Carculator — estimez votre budget"], ["/blog", "Blog"], ["/about", "À propos"], ["/partenaires", "Devenir agence partenaire"], ["/carrieres", "Carrières"], ["/presse", "Presse"]] as [string, string][],
+    links1: [["/search", "Rechercher une voiture"], ["/mariages", "Voitures de mariage"], ["/carculator", "Carculator — estimez votre budget"], ["/blog", "Blog"], ["/about", "À propos"], ["/partenaires", "Devenir hôte"], ["/carrieres", "Carrières"], ["/presse", "Presse"]] as [string, string][],
     links2: [["/aide", "Centre d'aide"], ["/confiance", "Confiance et sécurité"], ["/assurance", "Assurance"], ["/contact", "Contact"], ["/conditions", "Conditions d'utilisation"], ["/confidentialite", "Confidentialité"]] as [string, string][],
   },
 };
 
 const en: typeof fr = {
-  nav: { cars: "Cars", cities: "Cities", partner: "Become a partner", login: "Sign in", logout: "Sign out", dashboard: "My space" },
+  nav: { cars: "Cars", cities: "Cities", partner: "Become a host", login: "Sign in", logout: "Sign out", dashboard: "My space" },
   hero: {
     title: "Rental reinvented,",
     titleAccent: "all across Morocco",
@@ -95,11 +95,11 @@ const en: typeof fr = {
   cta: {
     title: "Are you a rental agency?",
     sub: "Put your fleet on CarKari and receive bookings effortlessly. Free signup, commission only on completed rentals.",
-    btn: "Become a partner",
+    btn: "Become a host",
   },
   card: { perDay: "/ day", seats: "seats", verified: "verified" },
   menu: {
-    login: "Log in", signup: "Sign up", partner: "Become a partner",
+    login: "Log in", signup: "Sign up", partner: "Become a host",
     dashboard: "My agency space", myBookings: "My bookings", admin: "Admin",
     why: "Why CarKari", help: "Get help", legal: "Legal",
     insurance: "Insurance & protection", carculator: "Carculator",
@@ -124,7 +124,7 @@ const en: typeof fr = {
   footer: {
     tagline: "Car rental in Morocco, from verified agencies.",
     col1: "CarKari", col2: "Help and trust", col3: "Cities",
-    links1: [["/search", "Find a car"], ["/mariages", "Wedding cars"], ["/carculator", "Carculator — estimate your budget"], ["/blog", "Blog"], ["/about", "About"], ["/partenaires", "Become a partner agency"], ["/carrieres", "Careers"], ["/presse", "Press"]] as [string, string][],
+    links1: [["/search", "Find a car"], ["/mariages", "Wedding cars"], ["/carculator", "Carculator — estimate your budget"], ["/blog", "Blog"], ["/about", "About"], ["/partenaires", "Become a host"], ["/carrieres", "Careers"], ["/presse", "Press"]] as [string, string][],
     links2: [["/aide", "Help center"], ["/confiance", "Trust and safety"], ["/assurance", "Insurance"], ["/contact", "Contact"], ["/conditions", "Terms of use"], ["/confidentialite", "Privacy"]] as [string, string][],
   },
 };

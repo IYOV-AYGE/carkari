@@ -11,7 +11,7 @@ const carc: Record<"fr" | "en", CarcLabels> = {
     type: "Type de véhicule", days: "Jours loués par mois :",
     perDay: "Prix indicatif / jour", total: "Revenu brut estimé",
     deposit: "Commission CarKari", balance: "Vous encaissez",
-    cta: "Inscrire mon agence",
+    cta: "Devenir hôte",
     cats: [
       "Citadine (Logan, Clio, i10...)",
       "Compacte (Golf, 208...)",
@@ -25,7 +25,7 @@ const carc: Record<"fr" | "en", CarcLabels> = {
     type: "Vehicle type", days: "Rented days per month:",
     perDay: "Indicative price / day", total: "Estimated gross revenue",
     deposit: "CarKari commission", balance: "You collect",
-    cta: "Register my agency",
+    cta: "Become a host",
     cats: [
       "City car (Logan, Clio, i10...)",
       "Compact (Golf, 208...)",
@@ -40,7 +40,7 @@ const L = {
   fr: {
     h1: "Votre flotte mérite plus de clients",
     sub: "CarKari apporte des réservations aux agences de location vérifiées du Maroc. Zéro frais fixes — nous gagnons uniquement quand vous louez.",
-    cta: "Inscrire mon agence",
+    cta: "Devenir hôte",
     ctaSecondary: "Parler à un conseiller",
     stats: [
       ["0 MAD", "frais d'inscription"],
@@ -57,7 +57,7 @@ const L = {
       ["Visibilité nationale", "Pages optimisées Google pour chaque ville, en français et en anglais pour capter les touristes."],
       ["Badge vérifié", "La vérification CarKari rassure les clients et augmente vos conversions."],
     ],
-    how: "Comment devenir partenaire",
+    how: "Comment devenir hôte",
     steps: [
       ["1. Créez un compte", "Gratuitement, avec Google ou votre email professionnel."],
       ["2. Complétez le dossier", "Infos de l'agence, représentant légal, registre de commerce, assurance et pièce d'identité."],
@@ -85,7 +85,7 @@ const L = {
   en: {
     h1: "Your fleet deserves more customers",
     sub: "CarKari brings bookings to verified rental agencies across Morocco. Zero fixed fees — we only earn when you rent.",
-    cta: "Register my agency",
+    cta: "Become a host",
     ctaSecondary: "Talk to us",
     stats: [
       ["0 MAD", "signup fee"],
@@ -102,7 +102,7 @@ const L = {
       ["National visibility", "Google-optimized pages for every city, in French and English to capture tourists."],
       ["Verified badge", "CarKari verification reassures customers and increases your conversions."],
     ],
-    how: "How to become a partner",
+    how: "How to become a host",
     steps: [
       ["1. Create an account", "Free, with Google or your business email."],
       ["2. Complete the application", "Agency info, legal representative, business registry, insurance and government ID."],

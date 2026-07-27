@@ -15,13 +15,19 @@ export function AccountMenu({
   t,
   signedIn,
   isAdmin,
+  hasAgency,
   onSignOut,
 }: {
   t: MenuLabels;
   signedIn: boolean;
   isAdmin: boolean;
+  /** true when this account owns/works for an agency */
+  hasAgency: boolean;
   onSignOut: React.ReactNode;
 }) {
+  // Host entries: visible to visitors (so they can discover the program) and
+  // to real agency accounts — never to signed-in customers.
+  const showHost = !signedIn || hasAgency;
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -77,9 +83,11 @@ export function AccountMenu({
               <Link href="/mes-reservations" className={item} onClick={() => setOpen(false)}>
                 <Icon d="M8 2v4M16 2v4M3 10h18M5 6h14a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z" /> {t.myBookings}
               </Link>
-              <Link href="/agence" className={item} onClick={() => setOpen(false)}>
-                <Icon d="M4 17h16M6 17V9l6-4 6 4v8" /> {t.dashboard}
-              </Link>
+              {hasAgency && (
+                <Link href="/agence" className={item} onClick={() => setOpen(false)}>
+                  <Icon d="M4 17h16M6 17V9l6-4 6 4v8" /> {t.dashboard}
+                </Link>
+              )}
               {isAdmin && (
                 <Link href="/admin" className={item} onClick={() => setOpen(false)}>
                   <Icon d="M12 3l7 4v5c0 4-3 7-7 9-4-2-7-5-7-9V7l7-4Z" /> {t.admin}
@@ -88,9 +96,11 @@ export function AccountMenu({
             </>
           )}
 
-          <Link href="/partenaires" className={item} onClick={() => setOpen(false)}>
-            <Icon d="M3 13h18M5 13V9l2-4h10l2 4v4M7 17h2M15 17h2" /> {t.partner}
-          </Link>
+          {showHost && (
+            <Link href="/partenaires" className={item} onClick={() => setOpen(false)}>
+              <Icon d="M3 13h18M5 13V9l2-4h10l2 4v4M7 17h2M15 17h2" /> {t.partner}
+            </Link>
+          )}
 
           <div className="my-2 border-t border-brand-950/10" />
 
