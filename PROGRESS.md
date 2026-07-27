@@ -7,7 +7,8 @@
 
 - Repo: https://github.com/IYOV-AYGE/carkari (branch `main`)
 - Live preview: https://carkari.vercel.app (Vercel, auto-deploys on push)
-- Domain: carkari.com — DNS at Cloudflare, not yet pointed at Vercel
+- Domain: **https://www.carkari.com — LIVE** (Cloudflare DNS → Vercel,
+  CNAME records, proxy OFF/grey cloud, SSL Full strict)
 - Database/auth/storage: Supabase project `vjcmzkraaeijsiwekhcr` (us-east-1)
 - Admin account on the site: iyov@carkari.com (role=admin in profiles)
 
@@ -41,11 +42,11 @@ keys not yet set).
 1. **Migrations** — run in Supabase SQL editor, in order. Done: 00001, 00002.
    Pending: `00003_vehicle_photos.sql`, `00004_representative_identity.sql`,
    `00005_booking_flow.sql`.
-2. **Domain (current task)** — Vercel → Settings → Domains → add carkari.com.
-   Cloudflare DNS: A `@` → 76.76.21.21 and CNAME `www` → cname.vercel-dns.com,
-   both **DNS only (grey cloud)**; SSL/TLS mode **Full (strict)**.
-   After it resolves, tell Claude to update: Supabase Auth URLs, Google OAuth
-   origins, sitemap/robots base URL (currently the vercel.app address).
+2. **Domain — DONE.** Live at https://www.carkari.com. Cloudflare proxy must
+   stay OFF (grey cloud) unless you re-test everything; Vercel needs it off to
+   renew certificates, and Vercel geo headers power the FR/EN auto-switch.
+   Still to update in dashboards: Supabase Auth Site URL + redirect
+   (https://www.carkari.com/auth/callback) and Google OAuth JS origin.
 3. **Google OAuth** — client created in Google Cloud (redirect URI
    `https://vjcmzkraaeijsiwekhcr.supabase.co/auth/v1/callback`, JS origin
    `https://carkari.vercel.app`). Still to do: paste client ID + secret into
