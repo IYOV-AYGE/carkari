@@ -97,12 +97,23 @@ favorites(profile_id, vehicle_id)
 - **Timing**: verification is required BEFORE PICKUP, not before booking.
   Customers book + pay the deposit freely, then verify. Unverified at pickup →
   agency does not release the car, deposit refunded. Best conversion, no risk.
-- **Collected**: first/last name, birth date (21+ enforced), nationality,
-  phone, ID/passport number, licence number + country + issue date (held ≥1
-  year enforced), and 5 photos: licence front/back, ID front/back, selfie.
-- **Phone check (free)**: customer sends a per-user code (`profiles.phone_code`,
-  format CK-XXXXXX) to CarKari on WhatsApp — inbound WhatsApp is free. Admin
-  ticks "tél. OK" when approving. No paid SMS.
+- **Two paths**, chosen by the customer at step 0 (`profiles.is_resident`):
+  - **Resident in Morocco**: CIN number + CIN recto/verso.
+  - **Visitor / tourist**: passport number + passport photo page, plus an
+    optional International Driving Permit photo.
+- **Collected for everyone**: first/last name, birth date (21+ enforced),
+  nationality, phone (required contact data), full postal address (line, city,
+  postcode, country), driving licence number + issuing country + issue date
+  (held ≥1 year enforced), licence recto/verso photos, and a selfie.
+- **Contact verification = email only.** Supabase Auth's
+  `email_confirmed_at` is the single verification signal; it surfaces in
+  `my_verification()` and `admin_kyc_queue()`. No phone/SMS verification and no
+  WhatsApp code — those were removed (no free, ToS-clean SMS path exists, and
+  Google Voice is US/CA-only with no API). Revisit with a paid provider later.
+- **Camera-only capture**: every document photo and the selfie are taken live
+  through `getUserMedia` (src/components/CameraCapture.tsx). There is
+  deliberately NO file input anywhere in the flow, which blocks recycled scans,
+  screenshots and photos of someone else's papers.
 - **Storage**: private bucket `customer-docs`, per-user folders, admin-only
   read via short-lived signed URLs. Agencies NEVER see documents — only
   `customer_verified` boolean via agency_bookings().

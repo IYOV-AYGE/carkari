@@ -62,11 +62,19 @@ keys not yet set).
    `STRIPE_WEBHOOK_SECRET` (endpoint `/api/webhooks/stripe`, event
    `checkout.session.completed`), plus `SUPABASE_SERVICE_ROLE_KEY`, into Vercel
    env vars, then redeploy.
-5. **WhatsApp number** — placeholder 212600000000 in TWO places:
-   src/components/badges.tsx (floating button) and src/app/verification/page.tsx
-   (WHATSAPP const — customers send their phone code there).
+5. **WhatsApp number** — placeholder 212600000000 in src/components/badges.tsx
+   (floating support button).
 6. **Customer KYC is live**: /verification for customers, /admin/clients for
    review. Verification required before pickup, not before booking.
+   - Contact verification is **email only** (Supabase `email_confirmed_at`).
+     No SMS/WhatsApp code.
+   - Two paths: residents (CIN recto/verso) vs visitors/tourists (passport page
+     + optional international driving permit). Everyone gives phone, full
+     address and driving licence number.
+   - All photos are **camera captures only** — no gallery uploads. This needs
+     HTTPS (fine, we're on Vercel) and camera permission; on desktop laptops the
+     webcam is used, on phones the rear camera for documents and front for the
+     selfie.
 
 ## TO DO — build queue (next features)
 

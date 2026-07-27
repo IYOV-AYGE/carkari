@@ -9,14 +9,19 @@ export const metadata = { title: "Admin — vérifications clients" };
 type Row = {
   id: string; full_name: string | null; first_name: string | null;
   last_name: string | null; birth_date: string | null; nationality: string | null;
-  phone: string | null; phone_verified: boolean; phone_code: string | null;
-  id_number: string | null; licence_number: string | null;
+  is_resident: boolean | null;
+  phone: string | null; email: string | null; email_confirmed: boolean;
+  address_line: string | null; address_city: string | null;
+  address_postcode: string | null; address_country: string | null;
+  id_number: string | null; passport_number: string | null;
+  licence_number: string | null;
   licence_country: string | null; licence_issued_on: string | null;
   licence_front_path: string | null; licence_back_path: string | null;
   id_front_path: string | null; id_back_path: string | null;
-  selfie_path: string | null; kyc_status: string;
+  idp_path: string | null; selfie_path: string | null;
+  kyc_status: string;
   kyc_submitted_at: string | null; kyc_ip: string | null;
-  kyc_country: string | null; email: string | null;
+  kyc_country: string | null;
 };
 
 const STATUS: Record<string, string> = {
@@ -50,8 +55,9 @@ export default async function AdminClientsPage() {
             [
               ["Permis recto", r.licence_front_path],
               ["Permis verso", r.licence_back_path],
-              ["CIN recto", r.id_front_path],
+              [r.is_resident ? "CIN recto" : "Passeport", r.id_front_path],
               ["CIN verso", r.id_back_path],
+              ["Permis international", r.idp_path],
               ["Selfie", r.selfie_path],
             ] as [string, string | null][]
           ).map(async ([label, path]) =>
@@ -78,6 +84,12 @@ export default async function AdminClientsPage() {
           </Link>
         </div>
 
+        <p className="mt-2 text-sm text-brand-950/55">
+          À contrôler : le selfie correspond à la photo du document, le nom et la
+          date de naissance sont identiques partout, le permis est valide et
+          détenu depuis plus d&apos;un an, l&apos;email est confirmé.
+        </p>
+
         <div className="mt-6 space-y-4">
           {withUrls.length === 0 && (
             <p className="rounded-2xl border border-dashed border-brand-950/20 p-10 text-center text-brand-950/60">
@@ -94,24 +106,40 @@ export default async function AdminClientsPage() {
                     <span className={`ml-1 rounded-full px-2 py-0.5 text-xs font-medium ${STATUS[r.kyc_status] ?? ""}`}>
                       {r.kyc_status}
                     </span>
-                    {r.phone_verified && (
-                      <span className="ml-1 rounded-full bg-green-100 px-2 py-0.5 text-[11px] font-medium text-green-800">
-                        ✓ tél
-                      </span>
-                    )}
+                    <span
+                      className={`ml-1 rounded-full px-2 py-0.5 text-[11px] font-medium ${
+                        r.email_confirmed
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
+                    >
+                      {r.email_confirmed ? "✓ email" : "email non confirmé"}
+                    </span>
+                    <span className="ml-1 rounded-full bg-brand-950/[0.06] px-2 py-0.5 text-[11px] font-medium text-brand-950/70">
+                      {r.is_resident ? "résident" : "visiteur"}
+                    </span>
                   </p>
                   <p className="mt-1 text-sm text-brand-950/65">
                     {r.email} · {r.phone ?? "—"} · {r.nationality ?? "—"}
                     {r.birth_date && ` · né(e) ${r.birth_date} (${age(r.birth_date)} ans)`}
                   </p>
                   <p className="text-sm text-brand-950/65">
-                    CIN/Passeport {r.id_number ?? "—"} · Permis {r.licence_number ?? "—"} (
-                    {r.licence_country ?? "—"}, {r.licence_issued_on ?? "—"})
+                    {r.is_resident
+                      ? `CIN ${r.id_number ?? "—"}`
+                      : `Passeport ${r.passport_number ?? "—"}`}{" "}
+                    · Permis {r.licence_number ?? "—"} ({r.licence_country ?? "—"},
+                    délivré {r.licence_issued_on ?? "—"})
+                  </p>
+                  <p className="text-sm text-brand-950/65">
+                    {[r.address_line, r.address_postcode, r.address_city, r.address_country]
+                      .filter(Boolean)
+                      .join(", ") || "Adresse —"}
                   </p>
                   <p className="mt-1 text-xs text-brand-950/45">
-                    Code WhatsApp attendu : <span className="font-mono">{r.phone_code ?? "—"}</span>
-                    {r.kyc_ip && ` · IP ${r.kyc_ip}`}
-                    {r.kyc_submitted_at && ` · ${new Date(r.kyc_submitted_at).toLocaleString("fr-MA")}`}
+                    {r.kyc_ip && `IP ${r.kyc_ip}`}
+                    {r.kyc_country && ` · ${r.kyc_country}`}
+                    {r.kyc_submitted_at &&
+                      ` · ${new Date(r.kyc_submitted_at).toLocaleString("fr-MA")}`}
                   </p>
                   <p className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-sm">
                     {r.docs.map(([label, url]) =>
@@ -131,14 +159,10 @@ export default async function AdminClientsPage() {
 
                 <div className="flex flex-col gap-2">
                   {r.kyc_status !== "verified" && (
-                    <form action={setKyc} className="flex gap-2">
+                    <form action={setKyc}>
                       <input type="hidden" name="id" value={r.id} />
                       <input type="hidden" name="status" value="verified" />
-                      <label className="flex items-center gap-1 text-xs text-brand-950/60">
-                        <input type="checkbox" name="phone_verified" defaultChecked value="1" />
-                        tél. OK
-                      </label>
-                      <button className="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-500">
+                      <button className="w-full rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-500">
                         Approuver
                       </button>
                     </form>

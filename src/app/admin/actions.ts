@@ -41,7 +41,6 @@ export async function setKyc(formData: FormData) {
     p_user: id,
     p_status: status,
     p_reason: String(formData.get("reason") ?? "") || null,
-    p_phone_verified: formData.get("phone_verified") ? true : null,
   });
   revalidatePath("/admin/clients");
 }
