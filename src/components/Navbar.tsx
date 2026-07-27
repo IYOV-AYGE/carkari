@@ -25,7 +25,8 @@ export async function Navbar() {
     isAdmin = profile?.role === "admin";
     hasAgency = Array.isArray(agencies) && agencies.length > 0;
   }
-  const showHostLinks = !user || hasAgency;
+  // Recruitment link is for signed-out visitors only.
+  const showBecomeHost = !user;
 
   return (
     <header className="sticky top-0 z-40 border-b border-brand-950/10 bg-white/90 backdrop-blur">
@@ -42,7 +43,7 @@ export async function Navbar() {
         <div className="hidden items-center gap-6 text-sm font-medium text-brand-950/80 sm:flex">
           <Link href="/search" className="hover:text-brand-950">{t.nav.cars}</Link>
           <Link href="/#villes" className="hover:text-brand-950">{t.nav.cities}</Link>
-          {showHostLinks && (
+          {showBecomeHost && (
             <Link href="/partenaires" className="hover:text-brand-950">
               {t.nav.partner}
             </Link>

@@ -2,12 +2,21 @@ import Link from "next/link";
 import Image from "next/image";
 import { CITIES } from "@/lib/mock/vehicles";
 import { getDict } from "@/lib/i18n/server";
+import { createClient } from "@/lib/supabase/server";
 
 const citySlug = (c: string) =>
   c.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 
 export async function Footer() {
   const t = await getDict();
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  // Hide the host recruitment link from anyone already signed in.
+  const links1 = user
+    ? t.footer.links1.filter(([href]) => href !== "/partenaires")
+    : t.footer.links1;
   return (
     <footer className="mt-auto border-t border-brand-950/10 bg-brand-950 text-brand-100">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
@@ -18,7 +27,7 @@ export async function Footer() {
         <div className="text-sm">
           <p className="mb-3 font-semibold text-white">{t.footer.col1}</p>
           <ul className="space-y-2 text-brand-200/80">
-            {t.footer.links1.map(([href, label]) => (
+            {links1.map(([href, label]) => (
               <li key={label}>
                 <Link href={href} className="hover:text-white">{label}</Link>
               </li>

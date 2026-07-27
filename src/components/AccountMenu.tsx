@@ -25,9 +25,9 @@ export function AccountMenu({
   hasAgency: boolean;
   onSignOut: React.ReactNode;
 }) {
-  // Host entries: visible to visitors (so they can discover the program) and
-  // to real agency accounts — never to signed-in customers.
-  const showHost = !signedIn || hasAgency;
+  // "Become a host" is recruitment: only for signed-out visitors. Customers
+  // don't need it, and existing hosts already have their agency space.
+  const showBecomeHost = !signedIn;
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -96,7 +96,7 @@ export function AccountMenu({
             </>
           )}
 
-          {showHost && (
+          {showBecomeHost && (
             <Link href="/partenaires" className={item} onClick={() => setOpen(false)}>
               <Icon d="M3 13h18M5 13V9l2-4h10l2 4v4M7 17h2M15 17h2" /> {t.partner}
             </Link>
