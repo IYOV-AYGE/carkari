@@ -47,10 +47,17 @@ keys not yet set).
    renew certificates, and Vercel geo headers power the FR/EN auto-switch.
    Still to update in dashboards: Supabase Auth Site URL + redirect
    (https://www.carkari.com/auth/callback) and Google OAuth JS origin.
-3. **Google OAuth** — client created in Google Cloud (redirect URI
-   `https://vjcmzkraaeijsiwekhcr.supabase.co/auth/v1/callback`, JS origin
-   `https://carkari.vercel.app`). Still to do: paste client ID + secret into
-   Supabase → Authentication → Providers → Google.
+3. **Google sign-in** — uses Google Identity Services (in-page token), NOT the
+   Supabase redirect, so the consent screen shows carkari.com instead of the
+   supabase.co project URL. Requires:
+   - Google Cloud OAuth client: Authorized JavaScript origins must include
+     `https://www.carkari.com` and `https://carkari.com` (redirect URI still
+     needed for the fallback flow).
+   - Vercel env var `NEXT_PUBLIC_GOOGLE_CLIENT_ID` = the client ID.
+   - Supabase → Authentication → Providers → Google: enabled, same client ID +
+     secret (used to verify the ID token).
+   If NEXT_PUBLIC_GOOGLE_CLIENT_ID is missing the code falls back to the old
+   redirect flow automatically.
 4. **Stripe (deliberately last)** — get `STRIPE_SECRET_KEY`,
    `STRIPE_WEBHOOK_SECRET` (endpoint `/api/webhooks/stripe`, event
    `checkout.session.completed`), plus `SUPABASE_SERVICE_ROLE_KEY`, into Vercel
