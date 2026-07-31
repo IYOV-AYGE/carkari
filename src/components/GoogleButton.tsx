@@ -35,7 +35,14 @@ async function sha256Hex(input: string) {
     .join("");
 }
 
-export function GoogleButton({ label }: { label: string }) {
+export function GoogleButton({
+  label,
+  next = null,
+}: {
+  label: string;
+  /** Where to land after Google sign-in (already sanitised by the caller). */
+  next?: string | null;
+}) {
   const router = useRouter();
   const holder = useRef<HTMLDivElement>(null);
   const [busy, setBusy] = useState(false);
@@ -75,7 +82,7 @@ export function GoogleButton({ label }: { label: string }) {
               return;
             }
             router.refresh();
-            router.push("/");
+            router.push(next ?? "/");
           },
         });
 
@@ -105,15 +112,18 @@ export function GoogleButton({ label }: { label: string }) {
     return () => {
       cancelled = true;
     };
-  }, [router]);
+  }, [router, next]);
 
   // Fallback: classic Supabase OAuth redirect (shows the Supabase URL).
   async function redirectFlow() {
     setBusy(true);
     const supabase = createClient();
+    const cb =
+      `${window.location.origin}/auth/callback` +
+      (next ? `?next=${encodeURIComponent(next)}` : "");
     await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/auth/callback` },
+      options: { redirectTo: cb },
     });
   }
 

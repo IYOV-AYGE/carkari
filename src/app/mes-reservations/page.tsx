@@ -71,7 +71,7 @@ export default async function MyBookingsPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/auth");
+  if (!user) redirect("/auth?next=%2Fmes-reservations");
 
   const [{ data }, { data: verif }] = await Promise.all([
     supabase.rpc("my_bookings"),

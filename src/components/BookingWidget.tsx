@@ -91,7 +91,9 @@ export function BookingWidget({
 
   async function book() {
     if (!signedIn) {
-      router.push("/auth");
+      // Come back to this exact car after signing in, dates still in the URL.
+      const back = `${window.location.pathname}${window.location.search}`;
+      router.push(`/auth?next=${encodeURIComponent(back)}`);
       return;
     }
     setBusy(true);

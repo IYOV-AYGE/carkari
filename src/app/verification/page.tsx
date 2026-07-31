@@ -167,7 +167,7 @@ export default async function VerificationPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/auth");
+  if (!user) redirect("/auth?next=%2Fverification");
 
   const [{ data: verif }, { data: profile }] = await Promise.all([
     supabase.rpc("my_verification"),

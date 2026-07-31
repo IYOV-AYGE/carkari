@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { authHref } from "@/lib/auth/next";
 
 export type MenuLabels = {
   login: string; signup: string; partner: string; dashboard: string;
@@ -28,6 +30,8 @@ export function AccountMenu({
   // "Become a host" is recruitment: only for signed-out visitors. Customers
   // don't need it, and existing hosts already have their agency space.
   const showBecomeHost = !signedIn;
+  // Signing in from the menu returns you to the page you were reading.
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -71,10 +75,18 @@ export function AccountMenu({
         <div className="absolute right-0 z-50 mt-2 w-72 rounded-2xl border border-brand-950/10 bg-white p-2 shadow-xl">
           {!signedIn ? (
             <>
-              <Link href="/auth" className={item} onClick={() => setOpen(false)}>
+              <Link
+                href={authHref(pathname, "login")}
+                className={item}
+                onClick={() => setOpen(false)}
+              >
                 {t.login}
               </Link>
-              <Link href="/auth?mode=signup" className={item} onClick={() => setOpen(false)}>
+              <Link
+                href={authHref(pathname, "signup")}
+                className={item}
+                onClick={() => setOpen(false)}
+              >
                 {t.signup}
               </Link>
             </>

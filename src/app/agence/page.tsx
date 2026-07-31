@@ -103,7 +103,7 @@ export default async function AgencyDashboard() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/auth");
+  if (!user) redirect("/auth?next=%2Fagence");
 
   const { data: agencies } = await supabase.rpc("my_agency");
   const agency = agencies?.[0] as

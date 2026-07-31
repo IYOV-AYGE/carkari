@@ -35,7 +35,7 @@ export default async function AdminClientsPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/auth");
+  if (!user) redirect("/auth?next=%2Fadmin%2Fclients");
   const { data: me } = await supabase
     .from("profiles")
     .select("role")

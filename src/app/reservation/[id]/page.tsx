@@ -67,7 +67,7 @@ export default async function BookingPage({
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/auth");
+  if (!user) redirect(`/auth?next=${encodeURIComponent(`/reservation/${id}`)}`);
 
   const { data: verif } = await supabase.rpc("my_verification");
   const kyc = (verif?.[0]?.kyc_status ?? "unverified") as string;

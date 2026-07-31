@@ -13,8 +13,8 @@ const L: Record<"fr" | "en", {
   fr: {
     title: "Inscription agence",
     sub: "Un seul formulaire — vérification sous 48 h.",
-    loginFirst: "Créez d'abord un compte (gratuit), puis revenez ici pour inscrire votre agence.",
-    loginBtn: "Créer un compte / Connexion",
+    loginFirst: "Créez d'abord votre compte hôte (gratuit) — vous serez ramené ici automatiquement pour inscrire votre agence.",
+    loginBtn: "Créer mon compte hôte",
     statusTitle: "Votre agence",
     pending: "Dossier reçu — vérification en cours (sous 48 h). Nous vous contactons par email.",
     verified: "Agence vérifiée ! Rendez-vous dans votre espace agence pour ajouter vos véhicules.",
@@ -50,8 +50,8 @@ const L: Record<"fr" | "en", {
   en: {
     title: "Agency registration",
     sub: "One single form — verification within 48h.",
-    loginFirst: "Create a free account first, then come back here to register your agency.",
-    loginBtn: "Create account / Sign in",
+    loginFirst: "Create your free host account first — we'll bring you straight back here to register your agency.",
+    loginBtn: "Create my host account",
     statusTitle: "Your agency",
     pending: "Application received — verification in progress (within 48h). We'll contact you by email.",
     verified: "Agency verified! Head to your agency space to add your vehicles.",
@@ -117,7 +117,7 @@ export default async function AgencyApplyPage() {
               <div className="space-y-4">
                 <p className="text-brand-950/80">{t.loginFirst}</p>
                 <Link
-                  href="/auth"
+                  href="/auth?mode=signup&next=%2Fpartenaires%2Finscription"
                   className="block rounded-xl bg-accent-500 py-3 text-center font-semibold text-white transition hover:bg-accent-400"
                 >
                   {t.loginBtn}

@@ -12,9 +12,13 @@ const initial: AuthState = {};
 export function AuthForm({
   t,
   defaultMode = "login",
+  next = null,
+  asHost = false,
 }: {
   t: Dict["auth"];
   defaultMode?: "login" | "signup";
+  next?: string | null;
+  asHost?: boolean;
 }) {
   const [mode, setMode] = useState<"login" | "signup">(defaultMode);
   const [loginState, loginAction, loginPending] = useActionState(signIn, initial);
@@ -32,10 +36,18 @@ export function AuthForm({
         <Image src="/carkari-logo.png" alt="CarKari" width={180} height={24} />
       </Link>
 
+      {asHost && (
+        <div className="mt-6 rounded-xl bg-accent-500/[0.08] p-4">
+          <p className="text-sm font-bold text-brand-950">{t.hostTitle}</p>
+          <p className="mt-1 text-sm text-brand-950/70">{t.hostBody}</p>
+        </div>
+      )}
+
       <div className="mt-6 grid grid-cols-2 rounded-lg bg-brand-950/5 p-1 text-sm font-semibold">
         {(["login", "signup"] as const).map((m) => (
           <button
             key={m}
+            type="button"
             onClick={() => setMode(m)}
             className={`rounded-md py-2 transition ${mode === m ? "bg-white text-brand-950 shadow" : "text-brand-950/60"}`}
           >
@@ -45,7 +57,7 @@ export function AuthForm({
       </div>
 
       <div className="mt-6">
-        <GoogleButton label={t.google} />
+        <GoogleButton label={t.google} next={next} />
       </div>
 
       <div className="my-5 flex items-center gap-3 text-xs uppercase tracking-wide text-brand-950/40">
@@ -55,6 +67,9 @@ export function AuthForm({
       </div>
 
       <form action={mode === "login" ? loginAction : signupAction} className="space-y-4">
+        {/* Carries the page the visitor was trying to reach through the whole
+            flow, so signing in returns them there instead of the homepage. */}
+        {next && <input type="hidden" name="next" value={next} />}
         {mode === "signup" && (
           <label className="block text-sm font-medium text-brand-950">
             {t.fullName}
@@ -92,17 +107,30 @@ export function AuthForm({
           disabled={pending}
           className="w-full rounded-xl bg-accent-500 py-3 font-semibold text-white transition hover:bg-accent-400 disabled:opacity-60"
         >
-          {pending ? "…" : mode === "login" ? t.submitLogin : t.submitSignup}
+          {pending
+            ? "…"
+            : mode === "login"
+              ? t.submitLogin
+              : asHost
+                ? t.submitSignupHost
+                : t.submitSignup}
         </button>
       </form>
 
-      <p className="mt-6 text-center text-xs text-brand-950/50">
-        {t.agencyQ}{" "}
-        <Link href="/partenaires" className="font-semibold text-brand-800 hover:underline">
-          {t.agencyLink}
-        </Link>{" "}
-        {t.agencyNote}
-      </p>
+      {/* Only shown to people who did NOT arrive from the host flow — pointing
+          a host back at "become a host" would just loop them. */}
+      {!asHost && (
+        <p className="mt-6 text-center text-xs text-brand-950/50">
+          {t.agencyQ}{" "}
+          <Link
+            href="/partenaires"
+            className="font-semibold text-brand-800 hover:underline"
+          >
+            {t.agencyLink}
+          </Link>{" "}
+          {t.agencyNote}
+        </p>
+      )}
     </div>
   );
 }
