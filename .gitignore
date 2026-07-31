@@ -40,3 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .env.local
+
+# graphify: agent-side code map, never part of the product
+graphify-out/
