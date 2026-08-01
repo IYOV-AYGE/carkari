@@ -21,8 +21,15 @@ export async function Footer() {
     <footer className="mt-auto border-t border-brand-950/10 bg-brand-950 text-brand-100">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <Image src="/carkari-logo.png" alt="CarKari" width={165} height={22} />
-          <p className="mt-2 text-sm text-brand-200/70">{t.footer.tagline}</p>
+          <Image
+            src="/carkari-logo.png"
+            alt="CarKari"
+            width={958}
+            height={128}
+            quality={95}
+            className="h-10 w-auto sm:h-12"
+          />
+          <p className="mt-3 text-sm text-brand-200/70">{t.footer.tagline}</p>
         </div>
         <div className="text-sm">
           <p className="mb-3 font-semibold text-white">{t.footer.col1}</p>

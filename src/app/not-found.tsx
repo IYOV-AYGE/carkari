@@ -4,7 +4,14 @@ import Image from "next/image";
 export default function NotFound() {
   return (
     <main className="flex flex-1 flex-col items-center justify-center px-4 py-24 text-center">
-      <Image src="/carkari-logo.png" alt="CarKari" width={200} height={27} />
+      <Image
+        src="/carkari-logo.png"
+        alt="CarKari"
+        width={958}
+        height={128}
+        quality={95}
+        className="h-12 w-auto sm:h-16"
+      />
       <h1 className="mt-8 text-4xl font-extrabold text-brand-950">404</h1>
       <p className="mt-2 max-w-md text-brand-950/70">
         Cette page n&apos;existe pas — mais nos voitures, si. / This page

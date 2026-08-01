@@ -33,7 +33,15 @@ export function AuthForm({
   return (
     <div className="w-full max-w-md rounded-2xl border border-brand-950/10 bg-white p-8 shadow-sm">
       <Link href="/" className="inline-block">
-        <Image src="/carkari-logo.png" alt="CarKari" width={180} height={24} />
+        <Image
+          src="/carkari-logo.png"
+          alt="CarKari"
+          width={958}
+          height={128}
+          quality={95}
+          priority
+          className="h-11 w-auto sm:h-12"
+        />
       </Link>
 
       {asHost && (

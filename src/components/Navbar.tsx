@@ -30,14 +30,19 @@ export async function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-brand-950/10 bg-white/90 backdrop-blur">
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
+      <nav className="mx-auto flex h-20 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="flex items-center">
+          {/* Rendered at the file's native 958x128 and sized with CSS height:
+              the browser gets the full-resolution asset, so the chrome
+              gradients in the wordmark stay sharp on retina screens. */}
           <Image
             src="/carkari-logo.png"
             alt="CarKari"
-            width={165}
-            height={22}
+            width={958}
+            height={128}
+            quality={95}
             priority
+            className="h-9 w-auto sm:h-11"
           />
         </Link>
         <div className="hidden items-center gap-6 text-sm font-medium text-brand-950/80 sm:flex">
