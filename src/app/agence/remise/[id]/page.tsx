@@ -46,7 +46,7 @@ const L = {
 
 type Brief = {
   booking_id: string; customer_name: string | null; customer_phone: string | null;
-  kyc_verified: boolean; selfie_path: string | null; birth_date: string | null;
+  kyc_verified: boolean; birth_date: string | null;
   start_date: string; end_date: string; status: string;
   make: string; model: string; year: number;
 };
@@ -69,15 +69,6 @@ export default async function HandoverPage({
   const b = (data?.[0] ?? null) as Brief | null;
   if (!b) notFound();
 
-  // Signed URL for the verified selfie. Storage policy only allows this for
-  // the owning agency, on a confirmed booking, around the pickup date.
-  let selfieUrl: string | null = null;
-  if (b.selfie_path && b.status === "confirmed") {
-    const { data: s } = await supabase.storage
-      .from("customer-docs")
-      .createSignedUrl(b.selfie_path, 60 * 15);
-    selfieUrl = s?.signedUrl ?? null;
-  }
 
   const isPickup = b.status === "confirmed";
   const isReturn = b.status === "active";
@@ -124,7 +115,6 @@ export default async function HandoverPage({
             <PickupFlow
               t={pickupLabels[lang]}
               bookingId={id}
-              selfieUrl={selfieUrl}
               kycVerified={b.kyc_verified}
             />
           )}

@@ -194,21 +194,27 @@ The chokepoint that actually protects the money. Booking states:
 
 **Pickup, on the host's phone** (`/agence/remise/[id]`):
 1. Host photographs the customer standing at the counter (camera-only).
-2. Side by side with the verified selfie on file; host confirms by eye.
-   **No automated face matching in v1** — deliberate: it keeps us out of GDPR
-   Article 9 biometric processing, and a human holding the physical passport
-   is a better judge than a similarity score. Both photos are stored, so the
-   comparison can be automated later with no schema change.
-3. Only then do the 5 condition photos unlock (front, rear, left, right,
-   interior) plus odometer and fuel in eighths.
-4. `record_handover()` refuses unless: caller is agency, booking confirmed,
-   customer `kyc_status='verified'`, identity ticked, customer photo present,
-   ≥5 photos. Then status → `active`.
+2. **CarKari runs the comparison, not the host.** The photo is matched
+   server-side against the verified selfie and the host sees only a verdict —
+   "identity verified" or "does not match". They never see the stored face.
+   Two reasons: the customer's KYC material stays inside CarKari, which is what
+   we promise them; and a tired clerk at 7am is not a repeatable comparator.
+3. `no_match` is refused **in the database** — keys cannot be released.
+   If the matcher is unconfigured or down the flow degrades to the host
+   confirming the PHYSICAL document (which they must check anyway), and the
+   handover is stamped `unavailable` for audit rather than silently passing.
+4. Only then do the 5 condition photos unlock (front, rear, left, right,
+   interior) plus odometer and fuel in eighths. Status → `active`.
 
-**Agencies still never see documents.** `pickup_brief()` returns the selfie
-path and nothing else identifying — no passport, no CIN, no address, no
-licence number. One narrow storage policy lets the agency load that selfie
-only while the booking is `confirmed` and only within ±1 day of pickup.
+Matching runs through `src/lib/identity/faceMatch.ts` — a provider interface
+with AWS Rekognition behind it (SigV4 signed by hand, no SDK; ~$0.001 per
+check). Needs `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` and
+`SUPABASE_SERVICE_ROLE_KEY`. Swapping engines means writing one function.
+
+**Agencies still never see documents — or faces.** `pickup_brief()` returns
+name, phone, dates and a verified yes/no. No passport, no CIN, no address, no
+licence number, and no selfie. The selfie is fetched only server-side with the
+service role, inside the comparison, and never reaches the agency's browser.
 
 **Return — both parties photograph.** Customer at `/reservation/[id]/retour`
 before handing keys back, agency at the same handover URL. Customer-only

@@ -91,9 +91,15 @@ keys not yet set).
 10. **Migration 00008_liveness.sql** — run it, then redo /verification on a
     phone: the screen flashes colours and asks you to turn your head.
 
-11. **Migration 00009_handover.sql** — run it. Then: agency dashboard shows
-    "Hand over the vehicle" on confirmed bookings, customers get "Return the
-    vehicle" on active ones.
+11. **Migrations 00009_handover.sql then 00010_face_match.sql** — run both, in
+    that order. Then: agency dashboard shows "Hand over the vehicle" on
+    confirmed bookings, customers get "Return the vehicle" on active ones.
+12. **Face matching at the counter (optional but recommended)** — Vercel env:
+    `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` (eu-west-1),
+    plus `SUPABASE_SERVICE_ROLE_KEY`. Costs about $1 per 1,000 pickups.
+    Create an IAM user with ONLY the `rekognition:CompareFaces` permission.
+    Without these the counter check reports "unavailable" and the host falls
+    back to checking the physical ID — nothing breaks.
 
 ## TO DO — build queue (next features)
 
