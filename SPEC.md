@@ -134,6 +134,27 @@ favorites(profile_id, vehicle_id)
 - **Review**: manual in /admin/clients (approve / reject with reason).
   Swappable for Stripe Identity later without schema change.
 
+## 5c. Audit trail and observability
+
+- **Every privileged action is logged** to `audit_log` via `log_audit()`:
+  opening a customer KYC document, opening an agency document, KYC decisions,
+  agency status changes. Actor, subject, IP and timestamp.
+- The table is **append-only by construction**: no INSERT policy (rows arrive
+  only through the security-definer function, so code cannot forge an actor)
+  and UPDATE/DELETE are revoked from client roles, so an admin cannot erase
+  their own tracks. Readable by admins at /admin/journal.
+- `admin_kyc_access_history(user)` answers "who has seen this person's
+  documents" — the query required for a subject access request or to scope a
+  breach.
+- **Error reporting** is SDK-free (src/lib/observability/report.ts): server
+  errors via `onRequestError` in instrumentation.ts, client crashes via
+  global-error.tsx → /api/report. Sends to Sentry's HTTP ingest API if
+  `SENTRY_DSN` is set and/or a Slack/Discord webhook via `ALERT_WEBHOOK_URL`.
+  With neither set it degrades to console logging and never throws.
+- **/api/health** hits the database and returns 200/503 — point uptime
+  monitoring here, not at the homepage, which can serve from cache while
+  Postgres is down.
+
 ## 6. Build phases
 
 - **P1 (MVP)**: public search/browse/vehicle pages, auth, booking + Stripe

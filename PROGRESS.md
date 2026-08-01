@@ -76,6 +76,18 @@ keys not yet set).
      webcam is used, on phones the rear camera for documents and front for the
      selfie.
 
+## TO DO — Isaac's setup steps (observability)
+
+7. **Migration 00007_audit_log.sql** — run it, then check /admin/journal.
+8. **Error alerts (5 min, free)** — either or both, as Vercel env vars:
+   - `SENTRY_DSN` — make a free Sentry project, copy the DSN.
+   - `ALERT_WEBHOOK_URL` — a Slack or Discord incoming webhook; you get a
+     message the moment anything 500s.
+   With neither set, errors only reach the Vercel logs.
+9. **Uptime monitoring (5 min, free)** — point BetterStack or UptimeRobot at
+   https://www.carkari.com/api/health every 5 minutes. It checks the database,
+   so it catches outages the homepage would hide.
+
 ## TO DO — build queue (next features)
 
 - Photo gallery/carousel on vehicle pages (cars now have 5 photos each)
