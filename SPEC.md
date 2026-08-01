@@ -193,28 +193,33 @@ The chokepoint that actually protects the money. Booking states:
 `confirmed` → (agency pickup) → `active` → (BOTH return records) → `completed`.
 
 **Pickup, on the host's phone** (`/agence/remise/[id]`):
-1. Host photographs the customer standing at the counter (camera-only).
-2. **CarKari runs the comparison, not the host.** The photo is matched
-   server-side against the verified selfie and the host sees only a verdict —
-   "identity verified" or "does not match". They never see the stored face.
-   Two reasons: the customer's KYC material stays inside CarKari, which is what
-   we promise them; and a tired clerk at 7am is not a repeatable comparator.
-3. `no_match` is refused **in the database** — keys cannot be released.
-   If the matcher is unconfigured or down the flow degrades to the host
-   confirming the PHYSICAL document (which they must check anyway), and the
-   handover is stamped `unavailable` for audit rather than silently passing.
-4. Only then do the 5 condition photos unlock (front, rear, left, right,
-   interior) plus odometer and fuel in eighths. Status → `active`.
+1. Host photographs the customer at the counter (camera-only).
+2. **The verdict is immediate**, because "do I hand over these keys" is a
+   three-second decision. The device receives the customer's face DESCRIPTOR —
+   128 floats derived from their liveness selfie, from which no usable portrait
+   can be reconstructed — computes one from the fresh capture, and compares
+   locally. Green: hand over the keys. Red: do not.
+3. **The host never sees the passport, the CIN, the licence or the selfie.**
+   CarKari holds every document and is the only party that decides identity.
+   The agency's device only ever receives numbers.
+4. `no_match` is refused **in the database**, so a tampered client cannot talk
+   past it. `unavailable` (no descriptor on file, no face found, model blocked)
+   falls back to the host confirming the PHYSICAL document, which they must
+   check anyway.
+5. Then the 5 condition photos, odometer and fuel. Status → `active`.
 
-Matching runs through `src/lib/identity/faceMatch.ts` — a provider interface
-with AWS Rekognition behind it (SigV4 signed by hand, no SDK; ~$0.001 per
-check). Needs `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` and
-`SUPABASE_SERVICE_ROLE_KEY`. Swapping engines means writing one function.
+**Two verdicts, two jobs.** The device verdict decides whether keys move, now.
+CarKari's own review of the stored photo (`/admin/comptoir`,
+`admin_counter_queue`) decides whether the rental is FLAGGED — because a
+browser check can be tampered with, and because the device verdict is advisory
+evidence, not proof.
 
-**Agencies still never see documents — or faces.** `pickup_brief()` returns
-name, phone, dates and a verified yes/no. No passport, no CIN, no address, no
-licence number, and no selfie. The selfie is fetched only server-side with the
-service role, inside the comparison, and never reaches the agency's browser.
+No third-party matcher: no AWS, no Stripe Identity. The model
+(`@vladmandic/face-api`) runs on the device; only the library and weights come
+from a CDN, and nothing about the customer is sent anywhere.
+**Before launch, vendor the weights into /public/models** rather than trusting
+jsDelivr inside an identity path — see the TODO in
+`src/lib/identity/descriptor.ts`.
 
 **Return — both parties photograph.** Customer at `/reservation/[id]/retour`
 before handing keys back, agency at the same handover URL. Customer-only

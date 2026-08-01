@@ -81,8 +81,10 @@ export function LivenessCapture({
 }: {
   t: LivenessLabels;
   userId: string;
-  /** Called once the check has run; passed=false still lets the user retry. */
-  onDone: (result: { passed: boolean; framePaths: string[] }) => void;
+  /** Called once the check has run; passed=false still lets the user retry.
+   *  frontFile is the centred frame, kept in memory so the caller can derive
+   *  a face descriptor from it without re-downloading anything. */
+  onDone: (result: { passed: boolean; framePaths: string[]; frontFile?: File }) => void;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -243,7 +245,7 @@ export function LivenessCapture({
       const row = data?.[0] as { passed: boolean; score: number; reason: string };
       setResult({ passed: row.passed, reason: row.reason });
       setPhase("done");
-      onDone({ passed: row.passed, framePaths: paths });
+      onDone({ passed: row.passed, framePaths: paths, frontFile: frames[0] });
     } catch {
       setError(t.unsupported);
       setPhase("idle");

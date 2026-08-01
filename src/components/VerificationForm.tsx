@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { CameraCapture, type CamSlot, type CamLabels } from "@/components/CameraCapture";
 import { LivenessCapture, type LivenessLabels } from "@/components/LivenessCapture";
+import { faceDescriptor } from "@/lib/identity/descriptor";
 
 export type VerifLabels = {
   secWho: string; secIdentity: string; secAddress: string;
@@ -50,7 +51,7 @@ export function VerificationForm({
   const [resident, setResident] = useState<boolean | null>(null);
   const [photos, setPhotos] = useState<Record<string, File>>({});
   // The selfie now comes from the liveness run, not a plain snapshot.
-  const [live, setLive] = useState<{ passed: boolean; framePaths: string[] } | null>(null);
+  const [live, setLive] = useState<{ passed: boolean; framePaths: string[]; frontFile?: File } | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
@@ -136,6 +137,18 @@ export function VerificationForm({
         p_selfie: live.framePaths[0],
       });
       if (rpcErr) throw rpcErr;
+
+      // Face descriptor for the counter check: 128 numbers derived from the
+      // liveness frame. Best-effort — a failure here must not cost the
+      // customer their whole submission, it only means the host falls back to
+      // checking the physical document at pickup.
+      try {
+        if (live.frontFile) {
+          const d = await faceDescriptor(live.frontFile);
+          if (d) await supabase.rpc("set_face_descriptor", { p_descriptor: d });
+        }
+      } catch { /* non-fatal */ }
+
       router.refresh();
     } catch {
       setError(t.errGeneric);

@@ -70,19 +70,20 @@ export const pickupLabels: Record<"fr" | "en", PickupLabels> = {
   fr: {
     step1: "1. Vérification du client",
     step1Hint:
-      "Photographiez le client présent devant vous. CarKari compare automatiquement avec l'identité vérifiée et vous indique le résultat.",
+      "Photographiez le client présent devant vous. CarKari vérifie automatiquement qu'il s'agit bien de la personne dont l'identité a été validée.",
     checking: "Vérification en cours…",
-    matched: "✓ Identité vérifiée — c'est bien le client attendu.",
-    notMatched: "✗ La personne photographiée ne correspond pas au client vérifié.",
+    matched: "✓ Identité confirmée — vous pouvez remettre les clés.",
+    notMatched: "✗ Ce n'est PAS le client vérifié. Ne remettez pas les clés.",
     notMatchedWhat:
-      "Ne remettez pas les clés. Reprenez la photo en pleine lumière, visage dégagé. Si le résultat reste négatif, contactez CarKari : l'acompte sera remboursé au client.",
+      "Reprenez la photo en pleine lumière, visage dégagé, sans lunettes de soleil ni casquette. Si le résultat reste négatif, contactez CarKari : l'acompte sera remboursé au client.",
     unavailable:
-      "Vérification automatique indisponible. Contrôlez la pièce d'identité physique du client.",
-    checkFailed:
+      "Vérification automatique impossible sur cet appareil. Contrôlez la pièce d'identité physique du client.",
+    failed:
       "La vérification n'a pas abouti. Contrôlez la pièce d'identité physique du client.",
-    retry: "Reprendre la photo",
     fallbackConfirm:
-      "Je confirme avoir contrôlé la pièce d'identité physique du client et qu'elle correspond à la personne présente.",
+      "Je confirme avoir contrôlé la pièce d'identité physique et qu'elle correspond à la personne présente.",
+    privacy:
+      "Vous ne voyez jamais les pièces d'identité du client : CarKari les conserve et effectue seul la comparaison. Votre appareil ne reçoit qu'une empreinte numérique, jamais la photo.",
     consent:
       "Informez le client : cette photo sert uniquement à confirmer son identité à la remise, elle est conservée comme preuve en cas de litige et supprimée 90 jours après la fin de la location.",
     notVerified:
@@ -91,26 +92,27 @@ export const pickupLabels: Record<"fr" | "en", PickupLabels> = {
     step2Hint:
       "5 photos, toujours les mêmes angles. Elles servent de référence à la restitution.",
     customerSlot: "Photo du client",
-    customerSlotHint: "Visage bien visible, de face",
+    customerSlotHint: "Visage de face, bien éclairé",
     cam: camFr,
     handover: handoverLabels.fr,
   },
   en: {
     step1: "1. Check the customer",
     step1Hint:
-      "Photograph the customer in front of you. CarKari compares it automatically with their verified identity and tells you the result.",
+      "Photograph the customer in front of you. CarKari automatically confirms whether this is the person whose identity we verified.",
     checking: "Checking…",
-    matched: "✓ Identity verified — this is the expected customer.",
-    notMatched: "✗ The person photographed does not match the verified customer.",
+    matched: "✓ Identity confirmed — you may hand over the keys.",
+    notMatched: "✗ This is NOT the verified customer. Do not hand over the keys.",
     notMatchedWhat:
-      "Do not release the keys. Retake the photo in good light with the face clear. If it still fails, contact CarKari — the customer's deposit will be refunded.",
+      "Retake the photo in good light, face clear, no sunglasses or cap. If it still fails, contact CarKari — the customer's deposit will be refunded.",
     unavailable:
-      "Automatic check unavailable. Check the customer's physical ID document.",
-    checkFailed:
+      "Automatic check could not run on this device. Check the customer's physical ID document.",
+    failed:
       "The check did not complete. Check the customer's physical ID document.",
-    retry: "Retake the photo",
     fallbackConfirm:
-      "I confirm I checked the customer's physical ID and it matches the person present.",
+      "I confirm I checked the physical ID and it matches the person present.",
+    privacy:
+      "You never see the customer's identity documents: CarKari holds them and performs the comparison. Your device receives only a numeric fingerprint, never the photo.",
     consent:
       "Tell the customer: this photo is used only to confirm their identity at handover, is kept as evidence in case of a dispute, and is deleted 90 days after the rental ends.",
     notVerified:
@@ -119,7 +121,7 @@ export const pickupLabels: Record<"fr" | "en", PickupLabels> = {
     step2Hint:
       "Five photos, always the same angles. They are the reference for the return.",
     customerSlot: "Customer photo",
-    customerSlotHint: "Face clearly visible, straight on",
+    customerSlotHint: "Face straight on, well lit",
     cam: camEn,
     handover: handoverLabels.en,
   },

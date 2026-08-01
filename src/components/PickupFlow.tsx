@@ -1,20 +1,25 @@
 "use client";
 
 /**
- * Host-side pickup: photograph the customer, CarKari decides, keys released.
+ * Host-side pickup.
  *
- * The host sees a VERDICT and nothing else. They never see the selfie we hold
- * — the comparison happens on our server with the service role, so the
- * agency's session cannot read the customer's KYC material even in principle.
- * That is the promise we make to customers, and it is also more consistent
- * than a tired clerk squinting at two photos at 7am.
+ * The host photographs the customer and gets an immediate verdict, because the
+ * decision "do I hand over these keys" has to be made in three seconds at a
+ * counter. What they never get is the customer's photo or documents: the
+ * device receives a face DESCRIPTOR (128 numbers, not reconstructable into a
+ * portrait) and does the comparison locally.
+ *
+ * Two verdicts with two different jobs:
+ *   device  — decides whether the keys move, now
+ *   CarKari — decides whether the rental gets flagged, from the stored photo,
+ *             because a browser check can be tampered with
  */
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { CameraCapture, type CamSlot, type CamLabels } from "@/components/CameraCapture";
 import { HandoverForm, type HandoverLabels } from "@/components/HandoverForm";
-import { verifyCustomerPhoto } from "@/app/agence/remise/actions";
+import { compareToStored, type DeviceVerdict } from "@/lib/identity/descriptor";
 
 export type PickupLabels = {
   step1: string;
@@ -24,9 +29,9 @@ export type PickupLabels = {
   notMatched: string;
   notMatchedWhat: string;
   unavailable: string;
-  checkFailed: string;
-  retry: string;
+  failed: string;
   fallbackConfirm: string;
+  privacy: string;
   consent: string;
   notVerified: string;
   step2: string;
@@ -37,7 +42,7 @@ export type PickupLabels = {
   handover: HandoverLabels;
 };
 
-type Status = "idle" | "working" | "match" | "no_match" | "unavailable" | "error";
+type State = "idle" | "checking" | DeviceVerdict | "failed";
 
 export function PickupFlow({
   t,
@@ -49,7 +54,7 @@ export function PickupFlow({
   kycVerified: boolean;
 }) {
   const [shot, setShot] = useState<Record<string, File>>({});
-  const [status, setStatus] = useState<Status>("idle");
+  const [state, setState] = useState<State>("idle");
   const [path, setPath] = useState<string | null>(null);
   const [fallbackOk, setFallbackOk] = useState(false);
 
@@ -66,20 +71,35 @@ export function PickupFlow({
     setShot(next);
     const file = next.customer;
     if (!file) return;
-    setStatus("working");
+    setState("checking");
     setFallbackOk(false);
     try {
       const supabase = createClient();
+
+      // Numbers only. The stored photograph stays inside CarKari.
+      const { data: stored } = await supabase.rpc("booking_face_descriptor", {
+        p_booking: bookingId,
+      });
+      const result = await compareToStored(file, (stored as number[] | null) ?? null);
+
       const p = `${bookingId}/customer-${Date.now()}.jpg`;
-      const { error } = await supabase.storage
+      const { error: upErr } = await supabase.storage
         .from("handover-photos")
         .upload(p, file, { contentType: "image/jpeg" });
-      if (error) throw error;
+      if (upErr) throw upErr;
+
+      const { error: rpcErr } = await supabase.rpc("capture_counter_photo", {
+        p_booking: bookingId,
+        p_photo: p,
+        p_device_verdict: result.verdict,
+        p_distance: result.distance,
+      });
+      if (rpcErr) throw rpcErr;
+
       setPath(p);
-      const outcome = await verifyCustomerPhoto(bookingId, p);
-      setStatus(outcome.status);
+      setState(result.verdict);
     } catch {
-      setStatus("error");
+      setState("failed");
     }
   }
 
@@ -91,13 +111,10 @@ export function PickupFlow({
     );
   }
 
-  // Keys may be released on a clean match, or — when our matcher is down —
-  // on the host confirming the physical document, which they must check anyway.
-  const canProceed =
-    status === "match" || ((status === "unavailable" || status === "error") && fallbackOk);
+  const canProceed = state === "match" || (state === "unavailable" && fallbackOk);
 
-  const verdict: Record<string, { text: string; cls: string }> = {
-    working: { text: t.checking, cls: "bg-ink/5 text-ink/70" },
+  const box: Record<string, { text: string; cls: string }> = {
+    checking: { text: t.checking, cls: "bg-ink/5 text-ink/70" },
     match: {
       text: t.matched,
       cls: "bg-green-50 text-green-800 dark:bg-green-500/15 dark:text-green-300",
@@ -110,8 +127,8 @@ export function PickupFlow({
       text: t.unavailable,
       cls: "bg-amber-50 text-amber-900 dark:bg-amber-400/15 dark:text-amber-100",
     },
-    error: {
-      text: t.checkFailed,
+    failed: {
+      text: t.failed,
       cls: "bg-amber-50 text-amber-900 dark:bg-amber-400/15 dark:text-amber-100",
     },
   };
@@ -126,17 +143,17 @@ export function PickupFlow({
 
         <CameraCapture slots={slot} value={shot} onChange={onShot} t={t.cam} />
 
-        {status !== "idle" && (
-          <p className={`rounded-xl px-4 py-3 text-sm font-semibold ${verdict[status].cls}`}>
-            {verdict[status].text}
+        {state !== "idle" && (
+          <p className={`rounded-xl px-4 py-3 text-sm font-semibold ${box[state].cls}`}>
+            {box[state].text}
           </p>
         )}
 
-        {status === "no_match" && (
+        {state === "no_match" && (
           <p className="text-sm text-ink/70">{t.notMatchedWhat}</p>
         )}
 
-        {(status === "unavailable" || status === "error") && path && (
+        {state === "unavailable" && path && (
           <label className="flex items-start gap-3 rounded-xl border border-ink/15 p-4">
             <input
               type="checkbox"
@@ -148,6 +165,9 @@ export function PickupFlow({
           </label>
         )}
 
+        <p className="rounded-lg bg-ink/[0.04] px-3 py-2 text-xs text-ink/60">
+          {t.privacy}
+        </p>
         <p className="rounded-lg bg-ink/[0.04] px-3 py-2 text-xs text-ink/60">
           {t.consent}
         </p>
@@ -163,7 +183,7 @@ export function PickupFlow({
             t={t.handover}
             bookingId={bookingId}
             kind="pickup"
-            identityOk={status === "match" ? true : fallbackOk}
+            identityOk={state === "match" ? true : fallbackOk}
             customerPhotoPath={path}
           />
         )}
