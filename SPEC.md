@@ -187,6 +187,40 @@ over-trusts the badge:
   at pickup. Online liveness is deterrence plus dispute evidence, not the final
   gate.
 
+## 5e. Handover: pickup and return
+
+The chokepoint that actually protects the money. Booking states:
+`confirmed` → (agency pickup) → `active` → (BOTH return records) → `completed`.
+
+**Pickup, on the host's phone** (`/agence/remise/[id]`):
+1. Host photographs the customer standing at the counter (camera-only).
+2. Side by side with the verified selfie on file; host confirms by eye.
+   **No automated face matching in v1** — deliberate: it keeps us out of GDPR
+   Article 9 biometric processing, and a human holding the physical passport
+   is a better judge than a similarity score. Both photos are stored, so the
+   comparison can be automated later with no schema change.
+3. Only then do the 5 condition photos unlock (front, rear, left, right,
+   interior) plus odometer and fuel in eighths.
+4. `record_handover()` refuses unless: caller is agency, booking confirmed,
+   customer `kyc_status='verified'`, identity ticked, customer photo present,
+   ≥5 photos. Then status → `active`.
+
+**Agencies still never see documents.** `pickup_brief()` returns the selfie
+path and nothing else identifying — no passport, no CIN, no address, no
+licence number. One narrow storage policy lets the agency load that selfie
+only while the booking is `confirmed` and only within ±1 day of pickup.
+
+**Return — both parties photograph.** Customer at `/reservation/[id]/retour`
+before handing keys back, agency at the same handover URL. Customer-only
+evidence is self-serving (frame around the dent); agency-only leaves the
+customer defenceless against an invented claim. Status reaches `completed`
+only when both records exist.
+
+**Damage claims close 2 HOURS after the agency records the return**
+(`bookings.returned_at + 2h`, enforced in `file_damage_claim`). A deadline is
+the point: without one, claims arrive a week later when the tourist has flown
+home and nobody can adjudicate.
+
 ## 6. Build phases
 
 - **P1 (MVP)**: public search/browse/vehicle pages, auth, booking + Stripe

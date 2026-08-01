@@ -19,6 +19,7 @@ const L = {
     kycPending: "Vérification d'identité en cours (sous 24 h).",
     deposit: "Acompte", balance: "Solde à l'agence",
     cancel: "Annuler", pay: "Payer l'acompte",
+    returnCar: "Restituer le véhicule",
     refundable: "Annulation gratuite encore possible",
     notRefundable: "Acompte non remboursable",
     status: {
@@ -40,6 +41,7 @@ const L = {
     kycPending: "Identity verification in progress (within 24h).",
     deposit: "Deposit", balance: "Balance at agency",
     cancel: "Cancel", pay: "Pay deposit",
+    returnCar: "Return the vehicle",
     refundable: "Free cancellation still available",
     notRefundable: "Deposit non-refundable",
     status: {
@@ -136,6 +138,19 @@ export default async function MyBookingsPage() {
                       {t.status[b.status] ?? b.status}
                     </span>
                   </div>
+
+                  {/* Car is out: the only action that matters is documenting
+                      its condition before the keys go back. */}
+                  {b.status === "active" && (
+                    <div className="mt-4 border-t border-ink/10 pt-3">
+                      <Link
+                        href={`/reservation/${b.id}/retour`}
+                        className="inline-block rounded-lg bg-accent-500 px-4 py-2 text-sm font-semibold text-white hover:bg-accent-400"
+                      >
+                        {t.returnCar}
+                      </Link>
+                    </div>
+                  )}
 
                   {open && (
                     <div className="mt-4 flex flex-wrap items-center gap-3 border-t border-ink/10 pt-3">

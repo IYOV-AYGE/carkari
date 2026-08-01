@@ -19,7 +19,8 @@ type AgencyBooking = {
 
 const L: Record<"fr" | "en", {
   title: string; noAgency: string; apply: string; pending: string;
-  suspended: string; bookings: string; noBookings: string; fleet: string; empty: string; price: string;
+  suspended: string; bookings: string; noBookings: string;
+  doPickup: string; doReturn: string; fleet: string; empty: string; price: string;
   save: string; publish: string; unpublish: string; remove: string;
   statusDraft: string; statusLive: string; statusPaused: string;
   form: VehicleFormLabels;
@@ -31,6 +32,7 @@ const L: Record<"fr" | "en", {
     pending: "Votre dossier est en cours de vérification. Vous pourrez ajouter vos véhicules dès validation (sous 48 h).",
     suspended: "Compte suspendu — contactez-nous.",
     bookings: "Réservations reçues", noBookings: "Aucune réservation pour le moment.",
+    doPickup: "Remettre le véhicule", doReturn: "Enregistrer la restitution",
     fleet: "Ma flotte",
     empty: "Aucun véhicule pour le moment. Ajoutez votre premier véhicule ci-dessous.",
     price: "Prix / jour (MAD)",
@@ -64,6 +66,7 @@ const L: Record<"fr" | "en", {
     pending: "Your application is being verified. You'll be able to add vehicles once approved (within 48h).",
     suspended: "Account suspended — please contact us.",
     bookings: "Incoming bookings", noBookings: "No bookings yet.",
+    doPickup: "Hand over the vehicle", doReturn: "Record the return",
     fleet: "My fleet",
     empty: "No vehicles yet. Add your first vehicle below.",
     price: "Price / day (MAD)",
@@ -194,6 +197,17 @@ export default async function AgencyDashboard() {
                         {(b.balance_due_mad / 100).toLocaleString("fr-MA")} MAD
                       </p>
                       <p className="text-xs text-ink/50">{b.status}</p>
+                      {/* Handover is the only action on a live booking:
+                          identity check + condition photos at pickup, the
+                          same five angles again at return. */}
+                      {(b.status === "confirmed" || b.status === "active") && (
+                        <Link
+                          href={`/agence/remise/${b.id}`}
+                          className="mt-2 inline-block rounded-lg bg-accent-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-accent-400"
+                        >
+                          {b.status === "confirmed" ? t.doPickup : t.doReturn}
+                        </Link>
+                      )}
                     </div>
                   </div>
                 ))}

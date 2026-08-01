@@ -91,6 +91,10 @@ keys not yet set).
 10. **Migration 00008_liveness.sql** — run it, then redo /verification on a
     phone: the screen flashes colours and asks you to turn your head.
 
+11. **Migration 00009_handover.sql** — run it. Then: agency dashboard shows
+    "Hand over the vehicle" on confirmed bookings, customers get "Return the
+    vehicle" on active ones.
+
 ## TO DO — build queue (next features)
 
 - Photo gallery/carousel on vehicle pages (cars now have 5 photos each)
