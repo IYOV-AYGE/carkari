@@ -137,11 +137,42 @@ export function LivenessCapture({
 
   const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+  /** Poll until React has mounted the <video>, up to ~2s. */
+  async function waitForVideo(): Promise<HTMLVideoElement | null> {
+    for (let i = 0; i < 40; i++) {
+      if (videoRef.current) return videoRef.current;
+      await wait(50);
+    }
+    return null;
+  }
+
+  /** A playing <video> reports 0x0 until the first frame arrives. */
+  async function waitForFrames(video: HTMLVideoElement) {
+    for (let i = 0; i < 60; i++) {
+      if (video.videoWidth > 0 && video.readyState >= 2) return;
+      await wait(50);
+    }
+  }
+
   async function run() {
     setError("");
     setResult(null);
     if (!navigator.mediaDevices?.getUserMedia) {
       setError(t.unsupported);
+      return;
+    }
+
+    // Ask for the camera FIRST. iOS only honours getUserMedia while the user
+    // gesture is still "live"; putting a network round trip before it makes
+    // Safari treat the request as programmatic and refuse silently.
+    let stream: MediaStream;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: "user" }, width: { ideal: 1280 } },
+        audio: false,
+      });
+    } catch {
+      setError(t.denied);
       return;
     }
 
@@ -152,18 +183,8 @@ export function LivenessCapture({
       if (e || !data?.[0]) throw e ?? new Error("no challenge");
       challenge = data[0] as Challenge;
     } catch {
+      stream.getTracks().forEach((tr) => tr.stop());
       setError(t.unsupported);
-      return;
-    }
-
-    let stream: MediaStream;
-    try {
-      stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { ideal: "user" }, width: { ideal: 1280 } },
-        audio: false,
-      });
-    } catch {
-      setError(t.denied);
       return;
     }
 
@@ -178,11 +199,31 @@ export function LivenessCapture({
     } catch { /* label unavailable — continue */ }
 
     streamRef.current = stream;
+    setPrompt(t.holdStill);
     setPhase("run");
-    const video = videoRef.current!;
+
+    // setPhase does NOT render synchronously: on the next line videoRef is
+    // still null, so attaching the stream here silently threw and the user was
+    // left staring at the black overlay. Wait for React to mount the <video>,
+    // then for the camera to actually produce frames.
+    const video = await waitForVideo();
+    if (!video) {
+      stop();
+      setPhase("idle");
+      setError(t.unsupported);
+      return;
+    }
     video.srcObject = stream;
-    await video.play().catch(() => {});
-    await wait(700); // let auto-exposure settle, else the first flash misreads
+    try {
+      await video.play();
+    } catch {
+      stop();
+      setPhase("idle");
+      setError(t.denied);
+      return;
+    }
+    await waitForFrames(video);
+    await wait(500); // let auto-exposure settle, else the first flash misreads
 
     const scratch = document.createElement("canvas");
     const observed: string[] = [];

@@ -64,10 +64,17 @@ export function CameraCapture({
         audio: false,
       });
       streamRef.current = stream;
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        await videoRef.current.play().catch(() => {});
+      // setActive() does not render synchronously — poll until React has
+      // mounted the <video>, otherwise the stream attaches to nothing and the
+      // viewfinder stays black.
+      let video: HTMLVideoElement | null = null;
+      for (let i = 0; i < 40 && !video; i++) {
+        video = videoRef.current;
+        if (!video) await new Promise((r) => setTimeout(r, 50));
       }
+      if (!video) throw new Error("video element never mounted");
+      video.srcObject = stream;
+      await video.play().catch(() => {});
     } catch {
       setError(t.denied);
       setActive(null);
