@@ -77,7 +77,7 @@ export default async function CityPage({
     <>
       <Navbar />
       <main className="flex-1">
-        <section className="bg-brand-950 px-4 pb-16 pt-12 text-white">
+        <section className="bg-band px-4 pb-16 pt-12 text-white">
           <div className="mx-auto max-w-6xl">
             <h1 className="text-3xl font-extrabold sm:text-4xl">
               {t.h1a} <span className="text-accent-400">{city}</span>
@@ -99,8 +99,8 @@ export default async function CityPage({
           </div>
         </section>
 
-        <section className="mx-auto max-w-3xl px-4 pb-14 text-sm leading-relaxed text-brand-950/70">
-          <h2 className="mb-2 text-lg font-bold text-brand-950">{t.h2(city)}</h2>
+        <section className="mx-auto max-w-3xl px-4 pb-14 text-sm leading-relaxed text-ink/70">
+          <h2 className="mb-2 text-lg font-bold text-ink">{t.h2(city)}</h2>
           <p>
             {t.body(city)}
             <Link href="/aide" className="font-medium text-accent-600 hover:underline">

@@ -183,29 +183,29 @@ export default async function VerificationPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-1 bg-brand-950/[0.03] px-4 py-12">
+      <main className="flex-1 bg-ink/[0.03] px-4 py-12">
         <div className="mx-auto max-w-2xl">
-          <div className="rounded-2xl border border-brand-950/10 bg-white p-8 shadow-sm">
-            <h1 className="text-2xl font-extrabold text-brand-950">{t.title}</h1>
-            <p className="mt-1 text-sm text-brand-950/60">{t.sub}</p>
+          <div className="rounded-2xl border border-ink/10 bg-card p-8 shadow-sm">
+            <h1 className="text-2xl font-extrabold text-ink">{t.title}</h1>
+            <p className="mt-1 text-sm text-ink/60">{t.sub}</p>
 
             {!emailOk && (
-              <p className="mt-6 rounded-xl bg-amber-50 p-4 text-sm text-amber-800">
+              <p className="mt-6 rounded-xl bg-amber-50 dark:bg-amber-400/15 p-4 text-sm text-amber-800 dark:text-amber-200">
                 {t.emailWarn}
               </p>
             )}
             {status === "pending" && (
-              <p className="mt-6 rounded-xl bg-amber-50 p-4 text-sm text-amber-800">
+              <p className="mt-6 rounded-xl bg-amber-50 dark:bg-amber-400/15 p-4 text-sm text-amber-800 dark:text-amber-200">
                 {t.pending}
               </p>
             )}
             {status === "verified" && (
-              <p className="mt-6 rounded-xl bg-green-50 p-4 text-sm text-green-800">
+              <p className="mt-6 rounded-xl bg-green-50 dark:bg-green-500/15 p-4 text-sm text-green-800 dark:text-green-300">
                 {t.verified}
               </p>
             )}
             {status === "rejected" && (
-              <p className="mt-6 rounded-xl bg-red-50 p-4 text-sm text-red-700">
+              <p className="mt-6 rounded-xl bg-red-50 dark:bg-red-500/15 p-4 text-sm text-red-700 dark:text-red-300">
                 {t.rejected} {state?.reject_reason}
               </p>
             )}
@@ -232,7 +232,7 @@ export default async function VerificationPage() {
             )}
           </div>
 
-          <ul className="mx-auto mt-8 max-w-xl space-y-3 text-sm text-brand-950/70">
+          <ul className="mx-auto mt-8 max-w-xl space-y-3 text-sm text-ink/70">
             {t.why.map((w) => (
               <li key={w} className="flex gap-3">
                 <span className="mt-0.5 text-accent-600">•</span>

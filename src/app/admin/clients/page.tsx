@@ -25,9 +25,9 @@ type Row = {
 };
 
 const STATUS: Record<string, string> = {
-  pending: "bg-amber-50 text-amber-800",
-  verified: "bg-green-50 text-green-800",
-  rejected: "bg-red-50 text-red-700",
+  pending: "bg-amber-50 dark:bg-amber-400/15 text-amber-800 dark:text-amber-200",
+  verified: "bg-green-50 dark:bg-green-500/15 text-green-800 dark:text-green-300",
+  rejected: "bg-red-50 dark:bg-red-500/15 text-red-700 dark:text-red-300",
 };
 
 export default async function AdminClientsPage() {
@@ -76,7 +76,7 @@ export default async function AdminClientsPage() {
       <Navbar />
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
         <div className="flex flex-wrap items-center gap-4">
-          <h1 className="text-2xl font-extrabold text-brand-950">
+          <h1 className="text-2xl font-extrabold text-ink">
             Vérifications clients ({withUrls.filter((r) => r.kyc_status === "pending").length} en attente)
           </h1>
           <Link href="/admin" className="text-sm font-semibold text-accent-600 hover:underline">
@@ -84,7 +84,7 @@ export default async function AdminClientsPage() {
           </Link>
         </div>
 
-        <p className="mt-2 text-sm text-brand-950/55">
+        <p className="mt-2 text-sm text-ink/55">
           À contrôler : le selfie correspond à la photo du document, le nom et la
           date de naissance sont identiques partout, le permis est valide et
           détenu depuis plus d&apos;un an, l&apos;email est confirmé.
@@ -92,16 +92,16 @@ export default async function AdminClientsPage() {
 
         <div className="mt-6 space-y-4">
           {withUrls.length === 0 && (
-            <p className="rounded-2xl border border-dashed border-brand-950/20 p-10 text-center text-brand-950/60">
+            <p className="rounded-2xl border border-dashed border-ink/20 p-10 text-center text-ink/60">
               Aucune demande de vérification.
             </p>
           )}
 
           {withUrls.map((r) => (
-            <div key={r.id} className="rounded-2xl border border-brand-950/10 bg-white p-5">
+            <div key={r.id} className="rounded-2xl border border-ink/10 bg-card p-5">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <p className="font-bold text-brand-950">
+                  <p className="font-bold text-ink">
                     {r.first_name} {r.last_name}{" "}
                     <span className={`ml-1 rounded-full px-2 py-0.5 text-xs font-medium ${STATUS[r.kyc_status] ?? ""}`}>
                       {r.kyc_status}
@@ -109,33 +109,33 @@ export default async function AdminClientsPage() {
                     <span
                       className={`ml-1 rounded-full px-2 py-0.5 text-[11px] font-medium ${
                         r.email_confirmed
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
+                          ? "bg-green-100 dark:bg-green-500/20 text-green-800 dark:text-green-300"
+                          : "bg-red-100 dark:bg-red-500/20 text-red-800 dark:text-red-300"
                       }`}
                     >
                       {r.email_confirmed ? "✓ email" : "email non confirmé"}
                     </span>
-                    <span className="ml-1 rounded-full bg-brand-950/[0.06] px-2 py-0.5 text-[11px] font-medium text-brand-950/70">
+                    <span className="ml-1 rounded-full bg-ink/[0.06] px-2 py-0.5 text-[11px] font-medium text-ink/70">
                       {r.is_resident ? "résident" : "visiteur"}
                     </span>
                   </p>
-                  <p className="mt-1 text-sm text-brand-950/65">
+                  <p className="mt-1 text-sm text-ink/65">
                     {r.email} · {r.phone ?? "—"} · {r.nationality ?? "—"}
                     {r.birth_date && ` · né(e) ${r.birth_date} (${age(r.birth_date)} ans)`}
                   </p>
-                  <p className="text-sm text-brand-950/65">
+                  <p className="text-sm text-ink/65">
                     {r.is_resident
                       ? `CIN ${r.id_number ?? "—"}`
                       : `Passeport ${r.passport_number ?? "—"}`}{" "}
                     · Permis {r.licence_number ?? "—"} ({r.licence_country ?? "—"},
                     délivré {r.licence_issued_on ?? "—"})
                   </p>
-                  <p className="text-sm text-brand-950/65">
+                  <p className="text-sm text-ink/65">
                     {[r.address_line, r.address_postcode, r.address_city, r.address_country]
                       .filter(Boolean)
                       .join(", ") || "Adresse —"}
                   </p>
-                  <p className="mt-1 text-xs text-brand-950/45">
+                  <p className="mt-1 text-xs text-ink/45">
                     {r.kyc_ip && `IP ${r.kyc_ip}`}
                     {r.kyc_country && ` · ${r.kyc_country}`}
                     {r.kyc_submitted_at &&
@@ -173,7 +173,7 @@ export default async function AdminClientsPage() {
                     <input
                       name="reason"
                       placeholder="Motif du refus"
-                      className="w-40 rounded-lg border border-brand-950/15 px-2 py-1.5 text-sm"
+                      className="w-40 rounded-lg border border-ink/15 px-2 py-1.5 text-sm"
                     />
                     <button className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-500">
                       Refuser

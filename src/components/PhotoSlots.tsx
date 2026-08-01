@@ -66,8 +66,8 @@ export function PhotoSlots({
             key={s.key}
             className={`relative flex aspect-4/3 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-dashed p-2 text-center transition ${
               has
-                ? "border-green-500/40 bg-green-50/40"
-                : "border-brand-950/20 hover:border-accent-400 hover:bg-brand-950/[0.02]"
+                ? "border-green-500/40 bg-green-50 dark:bg-green-500/15/40"
+                : "border-ink/20 hover:border-accent-400 hover:bg-ink/[0.02]"
             }`}
           >
             {previews[s.key] ? (
@@ -85,7 +85,7 @@ export function PhotoSlots({
                 {s.label} {has ? "✓" : "*"}
               </p>
               {!previews[s.key] && (
-                <p className="mt-0.5 text-[11px] leading-tight text-brand-950/50">
+                <p className="mt-0.5 text-[11px] leading-tight text-ink/50">
                   {s.hint}
                 </p>
               )}

@@ -81,12 +81,12 @@ export function AgencyApplyForm({ t, userId }: { t: ApplyLabels; userId: string 
   }
 
   const input =
-    "mt-1 w-full rounded-lg border border-brand-950/15 px-3 py-2.5 text-brand-950";
-  const label = "block text-sm font-medium text-brand-950";
-  const section = "text-sm font-bold uppercase tracking-wide text-brand-950/50";
+    "mt-1 w-full rounded-lg border border-ink/15 px-3 py-2.5 text-ink";
+  const label = "block text-sm font-medium text-ink";
+  const section = "text-sm font-bold uppercase tracking-wide text-ink/50";
 
   if (done) {
-    return <p className="rounded-xl bg-green-50 p-6 text-green-800">{t.done}</p>;
+    return <p className="rounded-xl bg-green-50 dark:bg-green-500/15 p-6 text-green-800 dark:text-green-300">{t.done}</p>;
   }
 
   return (
@@ -167,14 +167,14 @@ export function AgencyApplyForm({ t, userId }: { t: ApplyLabels; userId: string 
             <input name="id_back" type="file" accept="image/*,.pdf" capture="environment" required className={input} />
           </label>
         </div>
-        <p className="text-xs text-brand-950/50">{t.docHint}</p>
-        <p className="rounded-lg bg-brand-950/[0.04] px-3 py-2 text-xs text-brand-950/60">
+        <p className="text-xs text-ink/50">{t.docHint}</p>
+        <p className="rounded-lg bg-ink/[0.04] px-3 py-2 text-xs text-ink/60">
           {t.privacyNote}
         </p>
       </div>
 
       {error && (
-        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>
+        <p className="rounded-lg bg-red-50 dark:bg-red-500/15 px-3 py-2 text-sm text-red-700 dark:text-red-300">{error}</p>
       )}
 
       <button

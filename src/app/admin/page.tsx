@@ -7,9 +7,9 @@ import { setAgencyStatus, getDocUrl } from "./actions";
 export const metadata = { title: "Admin" };
 
 const STATUS_STYLE: Record<string, string> = {
-  pending: "bg-amber-50 text-amber-800",
-  verified: "bg-green-50 text-green-800",
-  suspended: "bg-red-50 text-red-700",
+  pending: "bg-amber-50 dark:bg-amber-400/15 text-amber-800 dark:text-amber-200",
+  verified: "bg-green-50 dark:bg-green-500/15 text-green-800 dark:text-green-300",
+  suspended: "bg-red-50 dark:bg-red-500/15 text-red-700 dark:text-red-300",
 };
 
 export default async function AdminPage() {
@@ -48,7 +48,7 @@ export default async function AdminPage() {
       <Navbar />
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-10">
         <div className="flex flex-wrap items-center gap-4">
-          <h1 className="text-2xl font-extrabold text-brand-950">
+          <h1 className="text-2xl font-extrabold text-ink">
             Admin — Agences ({withUrls.length})
           </h1>
           <Link href="/admin/clients" className="text-sm font-semibold text-accent-600 hover:underline">
@@ -58,29 +58,29 @@ export default async function AdminPage() {
 
         <div className="mt-6 space-y-4">
           {withUrls.length === 0 && (
-            <p className="rounded-2xl border border-dashed border-brand-950/20 p-10 text-center text-brand-950/60">
+            <p className="rounded-2xl border border-dashed border-ink/20 p-10 text-center text-ink/60">
               Aucune candidature pour le moment.
             </p>
           )}
           {withUrls.map((a) => (
             <div
               key={a.id}
-              className="rounded-2xl border border-brand-950/10 bg-white p-5"
+              className="rounded-2xl border border-ink/10 bg-card p-5"
             >
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <p className="font-bold text-brand-950">
+                  <p className="font-bold text-ink">
                     {a.legal_name}{" "}
                     <span className={`ml-1 rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_STYLE[a.status] ?? ""}`}>
                       {a.status}
                     </span>
                   </p>
-                  <p className="mt-1 text-sm text-brand-950/60">
+                  <p className="mt-1 text-sm text-ink/60">
                     {a.city} · {a.contact_email} · {a.phone} · RC {a.rc_number}
                     {a.strikes > 0 && ` · ${a.strikes} strike(s)`}
                   </p>
                   {a.rep_first_name && (
-                    <p className="mt-1 text-sm text-brand-950/70">
+                    <p className="mt-1 text-sm text-ink/70">
                       Représentant : <span className="font-medium">{a.rep_first_name} {a.rep_last_name}</span>
                       {a.rep_birth_date && ` · né(e) le ${a.rep_birth_date}`}
                       {a.rep_birth_city && ` à ${a.rep_birth_city}`}
@@ -134,7 +134,7 @@ export default async function AdminPage() {
                     <form action={setAgencyStatus}>
                       <input type="hidden" name="id" value={a.id} />
                       <input type="hidden" name="status" value="pending" />
-                      <button className="rounded-lg border border-brand-950/15 px-4 py-2 text-sm font-semibold text-brand-950 hover:bg-brand-950/5">
+                      <button className="rounded-lg border border-ink/15 px-4 py-2 text-sm font-semibold text-ink hover:bg-ink/5">
                         Re-vérifier
                       </button>
                     </form>

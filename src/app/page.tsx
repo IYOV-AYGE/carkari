@@ -23,7 +23,7 @@ function Row({
   return (
     <section className="mx-auto max-w-6xl px-4 py-6">
       <div className="mb-3 flex items-end justify-between">
-        <h2 className="text-xl font-bold text-brand-950">{title}</h2>
+        <h2 className="text-xl font-bold text-ink">{title}</h2>
         <Link href={seeAllHref} className="text-sm font-semibold text-accent-600 hover:underline">
           {seeAllLabel} →
         </Link>
@@ -53,7 +53,7 @@ export default async function HomePage() {
       <Navbar />
       <main className="flex-1">
         <section className="mx-auto max-w-6xl px-4 pt-6">
-          <div className="relative overflow-hidden rounded-3xl bg-brand-950">
+          <div className="relative overflow-hidden rounded-3xl bg-band">
             <Image
               src="/hero-car.jpg"
               alt=""
@@ -78,7 +78,7 @@ export default async function HomePage() {
         <nav className="mx-auto flex max-w-6xl flex-wrap gap-2 px-4 pt-6">
           <Link
             href="/search"
-            className="rounded-full bg-brand-950 px-4 py-1.5 text-sm font-medium text-white"
+            className="rounded-full bg-band px-4 py-1.5 text-sm font-medium text-white"
           >
             {t.cats.all}
           </Link>
@@ -86,7 +86,7 @@ export default async function HomePage() {
             <Link
               key={c.key}
               href={`/search?category=${c.key}`}
-              className="rounded-full bg-brand-950/5 px-4 py-1.5 text-sm font-medium text-brand-950 hover:bg-brand-950/10"
+              className="rounded-full bg-ink/5 px-4 py-1.5 text-sm font-medium text-ink hover:bg-ink/10"
             >
               {t.cats[c.key]}
             </Link>
@@ -124,15 +124,15 @@ export default async function HomePage() {
           cars={vans}
         />
 
-        <section id="villes" className="bg-brand-950/[0.03] py-12">
+        <section id="villes" className="bg-ink/[0.03] py-12">
           <div className="mx-auto max-w-6xl px-4">
-            <h2 className="mb-6 text-2xl font-bold text-brand-950">{t.cities}</h2>
+            <h2 className="mb-6 text-2xl font-bold text-ink">{t.cities}</h2>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
               {CITIES.map((c) => (
                 <Link
                   key={c}
                   href={`/search?city=${encodeURIComponent(c)}`}
-                  className="rounded-xl border border-brand-950/10 bg-white px-4 py-6 text-center font-semibold text-brand-950 transition hover:border-accent-400 hover:shadow"
+                  className="rounded-xl border border-ink/10 bg-card px-4 py-6 text-center font-semibold text-ink transition hover:border-accent-400 hover:shadow"
                 >
                   {c}
                 </Link>
@@ -142,20 +142,20 @@ export default async function HomePage() {
         </section>
 
         <section className="mx-auto max-w-6xl px-4 py-12">
-          <h2 className="mb-8 text-center text-2xl font-bold text-brand-950">
+          <h2 className="mb-8 text-center text-2xl font-bold text-ink">
             {t.how.title}
           </h2>
           <div className="grid gap-6 sm:grid-cols-3">
             {t.how.steps.map(([h, d]) => (
-              <div key={h} className="rounded-2xl border border-brand-950/10 p-6">
-                <p className="text-lg font-bold text-brand-950">{h}</p>
-                <p className="mt-2 text-brand-950/70">{d}</p>
+              <div key={h} className="rounded-2xl border border-ink/10 p-6">
+                <p className="text-lg font-bold text-ink">{h}</p>
+                <p className="mt-2 text-ink/70">{d}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section id="agences" className="bg-brand-950 py-14 text-white">
+        <section id="agences" className="bg-band py-14 text-white">
           <div className="mx-auto max-w-6xl px-4 text-center">
             <h2 className="text-2xl font-bold">{t.cta.title}</h2>
             <p className="mx-auto mt-3 max-w-xl text-brand-100/80">{t.cta.sub}</p>

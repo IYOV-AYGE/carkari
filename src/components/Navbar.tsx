@@ -3,6 +3,7 @@ import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "@/app/auth/actions";
 import { getDict, getLang } from "@/lib/i18n/server";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { AccountMenu } from "@/components/AccountMenu";
 
 export async function Navbar() {
@@ -29,7 +30,7 @@ export async function Navbar() {
   const showBecomeHost = !user;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-brand-950/10 bg-white/90 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-ink/10 bg-card/90 backdrop-blur">
       <nav className="mx-auto flex h-20 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="flex items-center">
           {/* Rendered at the file's native 958x128 and sized with CSS height:
@@ -45,19 +46,20 @@ export async function Navbar() {
             className="h-9 w-auto sm:h-11"
           />
         </Link>
-        <div className="hidden items-center gap-6 text-sm font-medium text-brand-950/80 sm:flex">
-          <Link href="/search" className="hover:text-brand-950">{t.nav.cars}</Link>
-          <Link href="/#villes" className="hover:text-brand-950">{t.nav.cities}</Link>
+        <div className="hidden items-center gap-6 text-sm font-medium text-ink/80 sm:flex">
+          <Link href="/search" className="hover:text-ink">{t.nav.cars}</Link>
+          <Link href="/#villes" className="hover:text-ink">{t.nav.cities}</Link>
           {showBecomeHost && (
-            <Link href="/partenaires" className="hover:text-brand-950">
+            <Link href="/partenaires" className="hover:text-ink">
               {t.nav.partner}
             </Link>
           )}
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
+          <ThemeToggle label={t.nav.theme} />
           <a
             href={lang === "fr" ? "/lang/en" : "/lang/fr"}
-            className="rounded-full px-2 py-1 text-sm font-semibold text-brand-950/60 hover:bg-brand-950/5"
+            className="rounded-full px-2 py-1 text-sm font-semibold text-ink/60 hover:bg-ink/5"
             title={lang === "fr" ? "Switch to English" : "Passer en français"}
           >
             {lang === "fr" ? "EN" : "FR"}
@@ -69,7 +71,7 @@ export async function Navbar() {
             hasAgency={hasAgency}
             onSignOut={
               <form action={signOut}>
-                <button className="w-full rounded-lg px-3 py-2.5 text-left text-[15px] text-brand-950 hover:bg-brand-950/5">
+                <button className="w-full rounded-lg px-3 py-2.5 text-left text-[15px] text-ink hover:bg-ink/5">
                   {t.nav.logout}
                 </button>
               </form>

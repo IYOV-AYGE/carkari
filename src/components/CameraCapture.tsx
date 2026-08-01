@@ -119,8 +119,8 @@ export function CameraCapture({
               onClick={() => open(s)}
               className={`relative flex aspect-4/3 flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-dashed p-2 text-center transition ${
                 has
-                  ? "border-green-500/40 bg-green-50/40"
-                  : "border-brand-950/20 hover:border-accent-400 hover:bg-brand-950/[0.02]"
+                  ? "border-green-500/40 bg-green-50 dark:bg-green-500/15/40"
+                  : "border-ink/20 hover:border-accent-400 hover:bg-ink/[0.02]"
               }`}
             >
               {previews[s.key] && (
@@ -138,7 +138,7 @@ export function CameraCapture({
                   {s.label} {has ? "✓" : s.optional ? "" : "*"}
                 </p>
                 {!previews[s.key] && (
-                  <p className="mt-0.5 text-[11px] leading-tight text-brand-950/50">
+                  <p className="mt-0.5 text-[11px] leading-tight text-ink/50">
                     {s.hint}
                     {s.optional ? ` · ${t.optional}` : ""}
                   </p>
@@ -153,7 +153,7 @@ export function CameraCapture({
       </div>
 
       {error && (
-        <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p className="mt-3 rounded-lg bg-red-50 dark:bg-red-500/15 px-3 py-2 text-sm text-red-700 dark:text-red-300">
           {error}
         </p>
       )}
@@ -165,7 +165,7 @@ export function CameraCapture({
             <button
               type="button"
               onClick={close}
-              className="rounded-full px-3 py-1 text-sm hover:bg-white/10"
+              className="rounded-full px-3 py-1 text-sm hover:bg-card/10"
             >
               {t.cancel}
             </button>
@@ -195,7 +195,7 @@ export function CameraCapture({
               onClick={shoot}
               disabled={busy}
               aria-label={t.capture}
-              className="h-16 w-16 rounded-full border-4 border-white bg-white/20 transition active:scale-95 disabled:opacity-50"
+              className="h-16 w-16 rounded-full border-4 border-white bg-card/20 transition active:scale-95 disabled:opacity-50"
             />
           </div>
         </div>

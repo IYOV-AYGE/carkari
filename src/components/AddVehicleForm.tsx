@@ -99,12 +99,12 @@ export function AddVehicleForm({
   }
 
   const input =
-    "mt-1 w-full rounded-lg border border-brand-950/15 px-3 py-2 text-brand-950";
-  const label = "block text-sm font-medium text-brand-950";
+    "mt-1 w-full rounded-lg border border-ink/15 px-3 py-2 text-ink";
+  const label = "block text-sm font-medium text-ink";
 
   return (
     <form onSubmit={onSubmit} className="space-y-5">
-      <p className="font-bold text-brand-950">{L.heading}</p>
+      <p className="font-bold text-ink">{L.heading}</p>
       <div className="grid gap-4 sm:grid-cols-2">
         <label className={label}>
           {L.make}
@@ -154,14 +154,14 @@ export function AddVehicleForm({
 
       <div>
         <p className={label}>{L.photos}</p>
-        <p className="mb-2 text-xs text-brand-950/50">{L.photosHint}</p>
+        <p className="mb-2 text-xs text-ink/50">{L.photosHint}</p>
         <PhotoSlots slots={slots} value={photos} onChange={setPhotos} labels={L.slots} />
       </div>
 
-      <p className="text-xs text-brand-950/50">{city}</p>
+      <p className="text-xs text-ink/50">{city}</p>
 
       {error && (
-        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>
+        <p className="rounded-lg bg-red-50 dark:bg-red-500/15 px-3 py-2 text-sm text-red-700 dark:text-red-300">{error}</p>
       )}
       <button
         type="submit"

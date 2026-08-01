@@ -9,7 +9,7 @@ export async function VehicleCard({ v }: { v: MockVehicle }) {
   return (
     <Link
       href={`/vehicles/${v.id}`}
-      className="group overflow-hidden rounded-2xl border border-brand-950/10 bg-white transition hover:-translate-y-0.5 hover:shadow-lg"
+      className="group overflow-hidden rounded-2xl border border-ink/10 bg-card transition hover:-translate-y-0.5 hover:shadow-lg"
     >
       <div className="relative h-44 overflow-hidden">
         <Image
@@ -24,23 +24,23 @@ export async function VehicleCard({ v }: { v: MockVehicle }) {
         </span>
       </div>
       <div className="space-y-2 p-4">
-        <div className="flex items-center justify-between text-sm text-brand-950/70">
+        <div className="flex items-center justify-between text-sm text-ink/70">
           <span className="flex items-center gap-1.5">
             {v.city} · {v.agency} <VerifiedBadge small />
           </span>
-          <span className="font-medium text-brand-950">
-            ★ {v.rating} <span className="text-brand-950/50">({v.reviewCount})</span>
+          <span className="font-medium text-ink">
+            ★ {v.rating} <span className="text-ink/50">({v.reviewCount})</span>
           </span>
         </div>
-        <div className="flex flex-wrap gap-1.5 text-xs text-brand-950/70">
-          <span className="rounded-full bg-brand-950/5 px-2 py-0.5">{v.year}</span>
-          <span className="rounded-full bg-brand-950/5 px-2 py-0.5">{v.transmission}</span>
-          <span className="rounded-full bg-brand-950/5 px-2 py-0.5">{v.fuel}</span>
-          <span className="rounded-full bg-brand-950/5 px-2 py-0.5">{v.seats} {t.card.seats}</span>
+        <div className="flex flex-wrap gap-1.5 text-xs text-ink/70">
+          <span className="rounded-full bg-ink/5 px-2 py-0.5">{v.year}</span>
+          <span className="rounded-full bg-ink/5 px-2 py-0.5">{v.transmission}</span>
+          <span className="rounded-full bg-ink/5 px-2 py-0.5">{v.fuel}</span>
+          <span className="rounded-full bg-ink/5 px-2 py-0.5">{v.seats} {t.card.seats}</span>
         </div>
-        <p className="pt-1 text-brand-950">
+        <p className="pt-1 text-ink">
           <span className="text-lg font-bold">{formatMad(v.dailyPriceMad)}</span>
-          <span className="text-sm text-brand-950/60"> {t.card.perDay}</span>
+          <span className="text-sm text-ink/60"> {t.card.perDay}</span>
         </p>
       </div>
     </Link>
@@ -53,7 +53,7 @@ export async function VehicleCardCompact({ v }: { v: MockVehicle }) {
   return (
     <Link
       href={`/vehicles/${v.id}`}
-      className="group overflow-hidden rounded-xl border border-brand-950/10 bg-white transition hover:-translate-y-0.5 hover:shadow-md"
+      className="group overflow-hidden rounded-xl border border-ink/10 bg-card transition hover:-translate-y-0.5 hover:shadow-md"
     >
       <div className="relative h-32 overflow-hidden">
         <Image
@@ -65,13 +65,13 @@ export async function VehicleCardCompact({ v }: { v: MockVehicle }) {
         />
       </div>
       <div className="p-3">
-        <p className="truncate font-semibold text-brand-950">{v.make} {v.model}</p>
-        <p className="mt-0.5 text-xs text-brand-950/60">
+        <p className="truncate font-semibold text-ink">{v.make} {v.model}</p>
+        <p className="mt-0.5 text-xs text-ink/60">
           {v.year} · ★ {v.rating} ({v.reviewCount})
         </p>
-        <p className="mt-1 text-sm text-brand-950">
+        <p className="mt-1 text-sm text-ink">
           <span className="font-bold">{formatMad(v.dailyPriceMad)}</span>
-          <span className="text-brand-950/60"> {t.card.perDay}</span>
+          <span className="text-ink/60"> {t.card.perDay}</span>
         </p>
       </div>
     </Link>

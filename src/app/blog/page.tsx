@@ -18,11 +18,11 @@ export default function BlogPage() {
           <Link
             key={p.slug}
             href={`/blog/${p.slug}`}
-            className="block rounded-2xl border border-brand-950/10 p-6 transition hover:border-accent-400 hover:shadow"
+            className="block rounded-2xl border border-ink/10 p-6 transition hover:border-accent-400 hover:shadow"
           >
-            <p className="text-xs text-brand-950/50">{p.date}</p>
-            <h2 className="mt-1 text-xl font-bold text-brand-950">{p.title}</h2>
-            <p className="mt-2 text-sm text-brand-950/70">{p.description}</p>
+            <p className="text-xs text-ink/50">{p.date}</p>
+            <h2 className="mt-1 text-xl font-bold text-ink">{p.title}</h2>
+            <p className="mt-2 text-sm text-ink/70">{p.description}</p>
           </Link>
         ))}
       </div>

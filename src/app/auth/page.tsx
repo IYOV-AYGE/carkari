@@ -20,7 +20,7 @@ export default async function AuthPage({
   const asHost = Boolean(target?.startsWith("/partenaires"));
 
   return (
-    <main className="flex flex-1 items-center justify-center bg-brand-950/[0.03] px-4 py-16">
+    <main className="flex flex-1 items-center justify-center bg-ink/[0.03] px-4 py-16">
       <AuthForm
         t={t.auth}
         defaultMode={mode === "signup" ? "signup" : "login"}

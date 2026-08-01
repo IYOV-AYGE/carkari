@@ -141,7 +141,7 @@ export default async function PartnersPage() {
     <>
       <Navbar />
       <main className="flex-1">
-        <section className="relative overflow-hidden bg-brand-950 px-4 py-20 text-center text-white">
+        <section className="relative overflow-hidden bg-band px-4 py-20 text-center text-white">
           <Image src="/hero-car.jpg" alt="" fill sizes="100vw" className="object-cover opacity-20" />
           <div className="relative mx-auto max-w-3xl">
             <h1 className="text-4xl font-extrabold sm:text-5xl">{t.h1}</h1>
@@ -155,7 +155,7 @@ export default async function PartnersPage() {
               </Link>
               <Link
                 href="/contact"
-                className="rounded-full border border-white/30 px-8 py-3 font-semibold text-white transition hover:bg-white/10"
+                className="rounded-full border border-white/30 px-8 py-3 font-semibold text-white transition hover:bg-card/10"
               >
                 {t.ctaSecondary}
               </Link>
@@ -163,39 +163,39 @@ export default async function PartnersPage() {
           </div>
         </section>
 
-        <section className="border-b border-brand-950/10 bg-white py-8">
+        <section className="border-b border-ink/10 bg-card py-8">
           <div className="mx-auto grid max-w-5xl grid-cols-2 gap-6 px-4 text-center lg:grid-cols-4">
             {t.stats.map(([n, label]) => (
               <div key={label}>
-                <p className="text-2xl font-extrabold text-brand-950">{n}</p>
-                <p className="mt-1 text-xs text-brand-950/60">{label}</p>
+                <p className="text-2xl font-extrabold text-ink">{n}</p>
+                <p className="mt-1 text-xs text-ink/60">{label}</p>
               </div>
             ))}
           </div>
         </section>
 
         <section className="mx-auto max-w-6xl px-4 py-14">
-          <h2 className="mb-8 text-center text-2xl font-bold text-brand-950">
+          <h2 className="mb-8 text-center text-2xl font-bold text-ink">
             {t.benefitsTitle}
           </h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {t.benefits.map(([h, d]) => (
-              <div key={h} className="rounded-2xl border border-brand-950/10 p-6">
-                <p className="font-bold text-brand-950">{h}</p>
-                <p className="mt-2 text-sm text-brand-950/70">{d}</p>
+              <div key={h} className="rounded-2xl border border-ink/10 p-6">
+                <p className="font-bold text-ink">{h}</p>
+                <p className="mt-2 text-sm text-ink/70">{d}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="bg-brand-950/[0.03] py-14">
+        <section className="bg-ink/[0.03] py-14">
           <div className="mx-auto max-w-6xl px-4">
-            <h2 className="mb-8 text-center text-2xl font-bold text-brand-950">{t.how}</h2>
+            <h2 className="mb-8 text-center text-2xl font-bold text-ink">{t.how}</h2>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {t.steps.map(([h, d]) => (
-                <div key={h} className="rounded-2xl bg-white p-6 ring-1 ring-brand-950/10">
-                  <p className="font-bold text-brand-950">{h}</p>
-                  <p className="mt-2 text-sm text-brand-950/70">{d}</p>
+                <div key={h} className="rounded-2xl bg-card p-6 ring-1 ring-ink/10">
+                  <p className="font-bold text-ink">{h}</p>
+                  <p className="mt-2 text-sm text-ink/70">{d}</p>
                 </div>
               ))}
             </div>
@@ -204,10 +204,10 @@ export default async function PartnersPage() {
 
         <section className="mx-auto grid max-w-6xl gap-10 px-4 py-14 lg:grid-cols-2">
           <div>
-            <h2 className="text-2xl font-bold text-brand-950">{t.reqTitle}</h2>
+            <h2 className="text-2xl font-bold text-ink">{t.reqTitle}</h2>
             <ul className="mt-4 space-y-3">
               {t.reqs.map((r) => (
-                <li key={r} className="flex gap-3 text-brand-950/80">
+                <li key={r} className="flex gap-3 text-ink/80">
                   <span className="mt-0.5 text-green-600">✓</span>
                   {r}
                 </li>
@@ -215,26 +215,26 @@ export default async function PartnersPage() {
             </ul>
           </div>
           <div>
-            <h2 className="mb-4 text-2xl font-bold text-brand-950">{t.calcTitle}</h2>
+            <h2 className="mb-4 text-2xl font-bold text-ink">{t.calcTitle}</h2>
             <CarculatorWidget L={carc[lang]} />
           </div>
         </section>
 
-        <section className="bg-brand-950/[0.03] py-14">
+        <section className="bg-ink/[0.03] py-14">
           <div className="mx-auto max-w-3xl px-4">
-            <h2 className="mb-6 text-2xl font-bold text-brand-950">{t.faqTitle}</h2>
+            <h2 className="mb-6 text-2xl font-bold text-ink">{t.faqTitle}</h2>
             <div className="space-y-4">
               {t.faq.map(([q, a]) => (
-                <div key={q} className="rounded-2xl bg-white p-5 ring-1 ring-brand-950/10">
-                  <p className="font-semibold text-brand-950">{q}</p>
-                  <p className="mt-1 text-sm text-brand-950/70">{a}</p>
+                <div key={q} className="rounded-2xl bg-card p-5 ring-1 ring-ink/10">
+                  <p className="font-semibold text-ink">{q}</p>
+                  <p className="mt-1 text-sm text-ink/70">{a}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="bg-brand-950 py-14 text-center text-white">
+        <section className="bg-band py-14 text-center text-white">
           <h2 className="text-2xl font-bold">{t.finalCta}</h2>
           <Link
             href="/partenaires/inscription"

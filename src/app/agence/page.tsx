@@ -115,7 +115,7 @@ export default async function AgencyDashboard() {
       <>
         <Navbar />
         <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-16 text-center">
-          <p className="text-brand-950/70">{t.noAgency}</p>
+          <p className="text-ink/70">{t.noAgency}</p>
           <Link
             href="/partenaires/inscription"
             className="mt-6 inline-block rounded-full bg-accent-500 px-6 py-3 font-semibold text-white hover:bg-accent-400"
@@ -143,16 +143,16 @@ export default async function AgencyDashboard() {
     <>
       <Navbar />
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
-        <h1 className="text-2xl font-extrabold text-brand-950">{t.title}</h1>
-        <p className="mt-1 text-brand-950/60">
+        <h1 className="text-2xl font-extrabold text-ink">{t.title}</h1>
+        <p className="mt-1 text-ink/60">
           {agency.legal_name} · {agency.city} ·{" "}
           <span
             className={`rounded-full px-2 py-0.5 text-xs font-medium ${
               agency.status === "verified"
-                ? "bg-green-50 text-green-800"
+                ? "bg-green-50 dark:bg-green-500/15 text-green-800 dark:text-green-300"
                 : agency.status === "suspended"
-                  ? "bg-red-50 text-red-700"
-                  : "bg-amber-50 text-amber-800"
+                  ? "bg-red-50 dark:bg-red-500/15 text-red-700 dark:text-red-300"
+                  : "bg-amber-50 dark:bg-amber-400/15 text-amber-800 dark:text-amber-200"
             }`}
           >
             {agency.status}
@@ -160,49 +160,49 @@ export default async function AgencyDashboard() {
         </p>
 
         {agency.status !== "verified" ? (
-          <p className="mt-8 rounded-2xl bg-amber-50 p-6 text-amber-800">
+          <p className="mt-8 rounded-2xl bg-amber-50 dark:bg-amber-400/15 p-6 text-amber-800 dark:text-amber-200">
             {agency.status === "suspended" ? t.suspended : t.pending}
           </p>
         ) : (
           <>
-            <h2 className="mt-10 text-xl font-bold text-brand-950">{t.bookings}</h2>
+            <h2 className="mt-10 text-xl font-bold text-ink">{t.bookings}</h2>
             {((agencyBookings ?? []) as AgencyBooking[]).length === 0 ? (
-              <p className="mt-3 rounded-2xl border border-dashed border-brand-950/20 p-6 text-center text-sm text-brand-950/60">
+              <p className="mt-3 rounded-2xl border border-dashed border-ink/20 p-6 text-center text-sm text-ink/60">
                 {t.noBookings}
               </p>
             ) : (
               <div className="mt-4 space-y-2">
                 {((agencyBookings ?? []) as AgencyBooking[]).map((b) => (
-                  <div key={b.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-brand-950/10 bg-white p-4 text-sm">
+                  <div key={b.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-ink/10 bg-card p-4 text-sm">
                     <div>
-                      <p className="font-semibold text-brand-950">{b.make} {b.model}</p>
-                      <p className="text-brand-950/60">
+                      <p className="font-semibold text-ink">{b.make} {b.model}</p>
+                      <p className="text-ink/60">
                         {b.start_date} → {b.end_date} · {b.customer_name ?? "—"} · {b.customer_phone ?? "—"}
                         {b.customer_verified ? (
-                          <span className="ml-2 rounded-full bg-green-100 px-2 py-0.5 text-[11px] font-medium text-green-800">
+                          <span className="ml-2 rounded-full bg-green-100 dark:bg-green-500/20 px-2 py-0.5 text-[11px] font-medium text-green-800 dark:text-green-300">
                             ✓ identité vérifiée
                           </span>
                         ) : (
-                          <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-medium text-amber-800">
+                          <span className="ml-2 rounded-full bg-amber-100 dark:bg-amber-400/20 px-2 py-0.5 text-[11px] font-medium text-amber-800 dark:text-amber-200">
                             identité non vérifiée
                           </span>
                         )}
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="font-semibold text-brand-950">
+                      <p className="font-semibold text-ink">
                         {(b.balance_due_mad / 100).toLocaleString("fr-MA")} MAD
                       </p>
-                      <p className="text-xs text-brand-950/50">{b.status}</p>
+                      <p className="text-xs text-ink/50">{b.status}</p>
                     </div>
                   </div>
                 ))}
               </div>
             )}
 
-            <h2 className="mt-10 text-xl font-bold text-brand-950">{t.fleet}</h2>
+            <h2 className="mt-10 text-xl font-bold text-ink">{t.fleet}</h2>
             {(vehicles ?? []).length === 0 ? (
-              <p className="mt-3 rounded-2xl border border-dashed border-brand-950/20 p-8 text-center text-brand-950/60">
+              <p className="mt-3 rounded-2xl border border-dashed border-ink/20 p-8 text-center text-ink/60">
                 {t.empty}
               </p>
             ) : (
@@ -215,7 +215,7 @@ export default async function AgencyDashboard() {
                   return (
                     <div
                       key={v.id}
-                      className="flex flex-wrap items-center gap-4 rounded-2xl border border-brand-950/10 bg-white p-4"
+                      className="flex flex-wrap items-center gap-4 rounded-2xl border border-ink/10 bg-card p-4"
                     >
                       <div className="relative h-16 w-24 shrink-0 overflow-hidden rounded-lg bg-brand-100">
                         {url && (
@@ -223,11 +223,11 @@ export default async function AgencyDashboard() {
                         )}
                       </div>
                       <div className="min-w-40 flex-1">
-                        <p className="font-semibold text-brand-950">
+                        <p className="font-semibold text-ink">
                           {v.make} {v.model}{" "}
-                          <span className="font-normal text-brand-950/50">{v.year}</span>
+                          <span className="font-normal text-ink/50">{v.year}</span>
                         </p>
-                        <p className="text-xs text-brand-950/60">
+                        <p className="text-xs text-ink/60">
                           {v.category} · {v.transmission} · {v.fuel} · {v.seats}
                           {" · "}
                           <span className="font-medium">{statusLabel(v.status)}</span>
@@ -235,7 +235,7 @@ export default async function AgencyDashboard() {
                       </div>
                       <form action={updateVehiclePrice} className="flex items-end gap-2">
                         <input type="hidden" name="id" value={v.id} />
-                        <label className="text-xs text-brand-950/60">
+                        <label className="text-xs text-ink/60">
                           {t.price}
                           <input
                             name="price_mad"
@@ -243,10 +243,10 @@ export default async function AgencyDashboard() {
                             min={1}
                             step={10}
                             defaultValue={Math.round(v.daily_price_mad / 100)}
-                            className="mt-1 w-24 rounded-lg border border-brand-950/15 px-2 py-1.5 text-sm text-brand-950"
+                            className="mt-1 w-24 rounded-lg border border-ink/15 px-2 py-1.5 text-sm text-ink"
                           />
                         </label>
-                        <button className="rounded-lg border border-brand-950/15 px-3 py-1.5 text-sm font-medium text-brand-950 hover:bg-brand-950/5">
+                        <button className="rounded-lg border border-ink/15 px-3 py-1.5 text-sm font-medium text-ink hover:bg-ink/5">
                           {t.save}
                         </button>
                       </form>
@@ -275,7 +275,7 @@ export default async function AgencyDashboard() {
               </div>
             )}
 
-            <div className="mt-10 rounded-2xl border border-brand-950/10 bg-white p-6">
+            <div className="mt-10 rounded-2xl border border-ink/10 bg-card p-6">
               <AddVehicleForm L={t.form} lang={lang} agencyId={agency.id} city={agency.city} />
             </div>
           </>

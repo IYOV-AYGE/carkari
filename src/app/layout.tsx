@@ -1,4 +1,5 @@
 import "./globals.css";
+import { cookies } from "next/headers";
 import { AnnouncementBanner, WhatsAppButton } from "@/components/badges";
 import { getLang } from "@/lib/i18n/server";
 
@@ -46,8 +47,27 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const lang = await getLang();
+  // Read the saved choice server-side so the first paint is already correct.
+  const theme = (await cookies()).get("theme")?.value;
+
   return (
-    <html lang={lang} className="h-full antialiased">
+    <html
+      lang={lang}
+      className={`h-full antialiased${theme === "dark" ? " dark" : ""}`}
+      suppressHydrationWarning
+    >
+      <head>
+        {/*
+          First-time visitors have no cookie. This runs before paint, follows
+          their OS preference, and writes the cookie so every later request is
+          server-rendered in the right theme.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{if(document.cookie.indexOf('theme=')===-1&&window.matchMedia('(prefers-color-scheme: dark)').matches){document.documentElement.classList.add('dark');document.cookie='theme=dark; path=/; max-age=31536000; samesite=lax';}}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col font-sans">
         <AnnouncementBanner />
         {children}

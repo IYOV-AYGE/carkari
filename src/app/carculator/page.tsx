@@ -53,7 +53,7 @@ export default async function CarculatorPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-1 bg-brand-950/[0.03] px-4 py-12">
+      <main className="flex-1 bg-ink/[0.03] px-4 py-12">
         <CarculatorWidget L={L[lang]} />
       </main>
       <Footer />

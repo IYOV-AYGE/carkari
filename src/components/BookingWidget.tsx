@@ -118,17 +118,17 @@ export function BookingWidget({
     !isMock && days >= 1 && accepted && (quote?.available ?? false) && !busy;
 
   const input =
-    "mt-1 w-full rounded-lg border border-brand-950/15 px-3 py-2 text-brand-950";
+    "mt-1 w-full rounded-lg border border-ink/15 px-3 py-2 text-ink";
 
   return (
-    <aside className="h-fit rounded-2xl border border-brand-950/10 p-6 shadow-sm lg:sticky lg:top-24">
-      <p className="text-brand-950">
+    <aside className="h-fit rounded-2xl border border-ink/10 p-6 shadow-sm lg:sticky lg:top-24">
+      <p className="text-ink">
         <span className="text-3xl font-extrabold">{fmt(dailyPriceMad)}</span>
-        <span className="text-brand-950/60"> {t.perDay}</span>
+        <span className="text-ink/60"> {t.perDay}</span>
       </p>
 
       <div className="mt-4 grid grid-cols-2 gap-3">
-        <label className="text-sm font-medium text-brand-950">
+        <label className="text-sm font-medium text-ink">
           {t.from}
           <input
             type="date"
@@ -138,7 +138,7 @@ export function BookingWidget({
             className={input}
           />
         </label>
-        <label className="text-sm font-medium text-brand-950">
+        <label className="text-sm font-medium text-ink">
           {t.to}
           <input
             type="date"
@@ -151,12 +151,12 @@ export function BookingWidget({
       </div>
 
       {days >= 1 ? (
-        <div className="mt-4 space-y-2 border-t border-brand-950/10 pt-4 text-sm text-brand-950/80">
+        <div className="mt-4 space-y-2 border-t border-ink/10 pt-4 text-sm text-ink/80">
           <div className="flex justify-between">
             <span>{t.days.replace("{n}", String(days))}</span>
             <span className="font-semibold">{fmt(total)}</span>
           </div>
-          <div className="flex justify-between text-brand-950">
+          <div className="flex justify-between text-ink">
             <span className="font-medium">{t.deposit}</span>
             <span className="font-bold text-accent-600">{fmt(deposit)}</span>
           </div>
@@ -166,24 +166,24 @@ export function BookingWidget({
           </div>
         </div>
       ) : (
-        <p className="mt-4 text-sm text-brand-950/50">{t.pickDates}</p>
+        <p className="mt-4 text-sm text-ink/50">{t.pickDates}</p>
       )}
 
       {quote && !quote.available && (
-        <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p className="mt-3 rounded-lg bg-red-50 dark:bg-red-500/15 px-3 py-2 text-sm text-red-700 dark:text-red-300">
           {t.unavailable}
         </p>
       )}
 
       {days >= 1 && (
-        <div className="mt-4 rounded-xl bg-brand-950/[0.04] p-3 text-xs text-brand-950/70">
-          <p className="font-semibold text-brand-950">{t.policyTitle}</p>
+        <div className="mt-4 rounded-xl bg-ink/[0.04] p-3 text-xs text-ink/70">
+          <p className="font-semibold text-ink">{t.policyTitle}</p>
           <p className="mt-1">{pickupSoon ? t.noRefund : t.freeCancel}</p>
         </div>
       )}
 
       {!isMock && (
-        <label className="mt-4 flex items-start gap-2 text-xs text-brand-950/70">
+        <label className="mt-4 flex items-start gap-2 text-xs text-ink/70">
           <input
             type="checkbox"
             checked={accepted}
@@ -195,7 +195,7 @@ export function BookingWidget({
       )}
 
       {error && (
-        <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p className="mt-3 rounded-lg bg-red-50 dark:bg-red-500/15 px-3 py-2 text-sm text-red-700 dark:text-red-300">
           {error}
         </p>
       )}
@@ -209,7 +209,7 @@ export function BookingWidget({
       </button>
 
       {isMock && (
-        <p className="mt-3 text-center text-xs text-brand-950/50">{t.mockNote}</p>
+        <p className="mt-3 text-center text-xs text-ink/50">{t.mockNote}</p>
       )}
     </aside>
   );

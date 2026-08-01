@@ -137,26 +137,26 @@ export default async function VehiclePage({
     <>
       <Navbar />
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6">
-        <nav className="mb-4 text-sm text-brand-950/50">
+        <nav className="mb-4 text-sm text-ink/50">
           <Link href="/search" className="hover:underline">{t.crumb}</Link>
           {" / "}
-          <span className="text-brand-950">{v.make} {v.model}</span>
+          <span className="text-ink">{v.make} {v.model}</span>
         </nav>
 
         <VehicleGallery images={photos} alt={`${v.make} ${v.model}`} labels={t.gallery} />
 
         <div className="mt-8 grid gap-10 lg:grid-cols-[1fr_380px]">
           <div>
-            <h1 className="text-3xl font-extrabold text-brand-950 sm:text-4xl">
+            <h1 className="text-3xl font-extrabold text-ink sm:text-4xl">
               {v.make} {v.model}
             </h1>
-            <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-brand-950/70">
-              <span className="font-medium text-brand-950">{v.year}</span>
-              <span className="text-brand-950/30">·</span>
+            <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-ink/70">
+              <span className="font-medium text-ink">{v.year}</span>
+              <span className="text-ink/30">·</span>
               {v.reviewCount > 0 ? (
-                <span className="font-medium text-brand-950">
+                <span className="font-medium text-ink">
                   ★ {v.rating}{" "}
-                  <span className="font-normal text-brand-950/60">
+                  <span className="font-normal text-ink/60">
                     ({v.reviewCount} {t.reviews})
                   </span>
                 </span>
@@ -165,28 +165,28 @@ export default async function VehiclePage({
                   {t.newListing}
                 </span>
               )}
-              <span className="text-brand-950/30">·</span>
+              <span className="text-ink/30">·</span>
               <span>{v.city}</span>
             </p>
 
             {/* agency card */}
-            <div className="mt-6 flex items-center gap-4 rounded-2xl border border-brand-950/10 p-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-950 text-lg font-bold text-white">
+            <div className="mt-6 flex items-center gap-4 rounded-2xl border border-ink/10 p-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-band text-lg font-bold text-white">
                 {v.agency.slice(0, 1).toUpperCase()}
               </div>
               <div className="min-w-0">
-                <p className="text-xs uppercase tracking-wide text-brand-950/50">
+                <p className="text-xs uppercase tracking-wide text-ink/50">
                   {t.by}
                 </p>
-                <p className="flex items-center gap-2 font-semibold text-brand-950">
+                <p className="flex items-center gap-2 font-semibold text-ink">
                   <span className="truncate">{v.agency}</span> <VerifiedBadge small />
                 </p>
-                <p className="text-xs text-brand-950/55">{t.hostVerified}</p>
+                <p className="text-xs text-ink/55">{t.hostVerified}</p>
               </div>
             </div>
 
             {/* specs */}
-            <h2 className="mt-10 text-lg font-bold text-brand-950">{t.specs}</h2>
+            <h2 className="mt-10 text-lg font-bold text-ink">{t.specs}</h2>
             <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
               {[
                 [t.gearbox, v.transmission],
@@ -196,24 +196,24 @@ export default async function VehiclePage({
                 [t.year, `${v.year}`],
                 [t.city, v.city],
               ].map(([k, val]) => (
-                <div key={k} className="rounded-xl bg-brand-950/[0.04] p-3">
-                  <p className="text-[11px] uppercase tracking-wide text-brand-950/50">{k}</p>
-                  <p className="mt-0.5 font-semibold capitalize text-brand-950">{val}</p>
+                <div key={k} className="rounded-xl bg-ink/[0.04] p-3">
+                  <p className="text-[11px] uppercase tracking-wide text-ink/50">{k}</p>
+                  <p className="mt-0.5 font-semibold capitalize text-ink">{val}</p>
                 </div>
               ))}
             </div>
 
             {/* included */}
-            <h2 className="mt-10 text-lg font-bold text-brand-950">{t.includedTitle}</h2>
+            <h2 className="mt-10 text-lg font-bold text-ink">{t.includedTitle}</h2>
             <div className="mt-3 grid gap-4 sm:grid-cols-2">
               {t.included.map(([h, d]) => (
                 <div key={h} className="flex gap-3">
-                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-green-100 text-sm font-bold text-green-700">
+                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-green-100 dark:bg-green-500/20 text-sm font-bold text-green-700 dark:text-green-300">
                     ✓
                   </span>
                   <div>
-                    <p className="font-semibold text-brand-950">{h}</p>
-                    <p className="text-sm text-brand-950/65">{d}</p>
+                    <p className="font-semibold text-ink">{h}</p>
+                    <p className="text-sm text-ink/65">{d}</p>
                   </div>
                 </div>
               ))}
@@ -221,8 +221,8 @@ export default async function VehiclePage({
 
             {/* cancellation */}
             <div className="mt-10 rounded-2xl border border-accent-500/25 bg-accent-500/[0.06] p-6">
-              <p className="font-bold text-brand-950">{t.policyTitle}</p>
-              <ul className="mt-2 space-y-1.5 text-sm text-brand-950/75">
+              <p className="font-bold text-ink">{t.policyTitle}</p>
+              <ul className="mt-2 space-y-1.5 text-sm text-ink/75">
                 {t.policy.map((p) => (
                   <li key={p} className="flex gap-2">
                     <span className="text-accent-600">•</span>
@@ -233,12 +233,12 @@ export default async function VehiclePage({
             </div>
 
             {/* rules */}
-            <h2 className="mt-10 text-lg font-bold text-brand-950">{t.rulesTitle}</h2>
-            <div className="mt-3 divide-y divide-brand-950/10 rounded-2xl border border-brand-950/10">
+            <h2 className="mt-10 text-lg font-bold text-ink">{t.rulesTitle}</h2>
+            <div className="mt-3 divide-y divide-ink/10 rounded-2xl border border-ink/10">
               {t.rules.map(([h, d]) => (
                 <div key={h} className="p-4">
-                  <p className="font-semibold text-brand-950">{h}</p>
-                  <p className="text-sm text-brand-950/65">{d}</p>
+                  <p className="font-semibold text-ink">{h}</p>
+                  <p className="text-sm text-ink/65">{d}</p>
                 </div>
               ))}
             </div>
@@ -256,7 +256,7 @@ export default async function VehiclePage({
 
         {similar.length > 0 && (
           <section className="mt-14">
-            <h2 className="mb-4 text-xl font-bold text-brand-950">{t.similar}</h2>
+            <h2 className="mb-4 text-xl font-bold text-ink">{t.similar}</h2>
             <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
               {similar.map((s) => (
                 <VehicleCardCompact key={s.id} v={s} />

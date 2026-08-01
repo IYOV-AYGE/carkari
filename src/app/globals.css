@@ -1,25 +1,90 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
-/* CarKari brand — from the original logo: silver chrome + steel blue.
-   Light Turo-style theme: white surfaces, navy text, azure accent. */
-@theme {
+/* Dark mode is driven by a class on <html>, set server-side from the `theme`
+   cookie so the first paint is already correct (no white flash). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------------------
+   CarKari palette. Colours are lifted from the logo artwork: chrome silver,
+   steel navy, and the deep azure of the wheel rim.
+
+   Three tokens do almost all the work and they FLIP between modes:
+     ink      — text, hairlines, subtle tints (always used as ink/NN too)
+     card     — raised surfaces (cards, navbar, inputs)
+     surface  — the page behind the cards
+
+   Everything else (brand-*, accent-*) is a fixed ramp used for deliberate
+   dark bands and accents, so a navy CTA band stays navy in both modes.
+--------------------------------------------------------------------------- */
+:root {
+  --ink: #16202c; /* deeper, less grey than the old #232c39 */
+  --card: #ffffff;
+  --surface: #ffffff;
+
+  --accent-400: #3e93e0;
+  --accent-500: #1668c4; /* richer chrome-blue, pulled from the wheel rim */
+  --accent-600: #0f4d95;
+
+  --band: #16202c; /* navy CTA / footer bands */
+  --band-2: #22304180;
+}
+
+.dark {
+  --ink: #e6ecf4;
+  --card: #161f2b;
+  --surface: #0d141c;
+
+  /* Accents lift in dark mode — the light-mode blue goes muddy on navy. */
+  --accent-400: #7bb8f0;
+  --accent-500: #4c9be8;
+  --accent-600: #7bb8f0;
+
+  --band: #101923;
+  --band-2: #1e2b3a80;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-card: var(--card);
+  --color-surface: var(--surface);
+  --color-band: var(--band);
+  --color-band-2: var(--band-2);
+
+  --color-accent-400: var(--accent-400);
+  --color-accent-500: var(--accent-500);
+  --color-accent-600: var(--accent-600);
+
+  /* Fixed steel ramp — does not flip. */
   --color-brand-50: #f4f7fa;
   --color-brand-100: #e8edf3;
   --color-brand-200: #cfd9e4;
   --color-brand-500: #5a6b80;
-  --color-brand-800: #334153;
-  --color-brand-900: #2b3646;
-  --color-brand-950: #232c39;
-  --color-accent-400: #4a9fe8;
-  --color-accent-500: #2278c9;
-  --color-accent-600: #1b62a6;
+  --color-brand-800: #2a3746;
+  --color-brand-900: #1e2836;
+  --color-brand-950: #16202c;
+
   --color-gold: #f2b705;
   --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
-  background: #ffffff;
-  color: var(--color-brand-950);
+  background: var(--surface);
+  color: var(--ink);
   font-family: var(--font-sans);
+}
+
+/* Form controls are painted by the OS; without this they stay light-on-light
+   in dark mode and the text in a date picker disappears. */
+:root {
+  color-scheme: light;
+}
+.dark {
+  color-scheme: dark;
+}
+
+/* Photos and the logo are authored for a light page; knock them back a touch
+   in dark mode so they don't glare. */
+.dark img:not([data-no-dim]) {
+  filter: brightness(0.92);
 }

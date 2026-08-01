@@ -6,7 +6,7 @@ export async function VerifiedBadge({ small = false }: { small?: boolean }) {
   const t = await getDict();
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full bg-green-100 font-medium text-green-800 ${small ? "px-1.5 py-0 text-[11px]" : "px-2 py-0.5 text-xs"}`}
+      className={`inline-flex items-center gap-1 rounded-full bg-green-100 dark:bg-green-500/20 font-medium text-green-800 dark:text-green-300 ${small ? "px-1.5 py-0 text-[11px]" : "px-2 py-0.5 text-xs"}`}
       title={`CarKari — ${t.card.verified}`}
     >
       ✓ {t.card.verified}

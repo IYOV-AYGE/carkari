@@ -107,15 +107,15 @@ export default async function AgencyApplyPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-1 bg-brand-950/[0.03] px-4 py-12">
-        <div className="mx-auto max-w-2xl rounded-2xl border border-brand-950/10 bg-white p-8 shadow-sm">
-          <h1 className="text-2xl font-extrabold text-brand-950">{t.title}</h1>
-          <p className="mt-1 text-sm text-brand-950/60">{t.sub}</p>
+      <main className="flex-1 bg-ink/[0.03] px-4 py-12">
+        <div className="mx-auto max-w-2xl rounded-2xl border border-ink/10 bg-card p-8 shadow-sm">
+          <h1 className="text-2xl font-extrabold text-ink">{t.title}</h1>
+          <p className="mt-1 text-sm text-ink/60">{t.sub}</p>
 
           <div className="mt-8">
             {!user ? (
               <div className="space-y-4">
-                <p className="text-brand-950/80">{t.loginFirst}</p>
+                <p className="text-ink/80">{t.loginFirst}</p>
                 <Link
                   href="/auth?mode=signup&next=%2Fpartenaires%2Finscription"
                   className="block rounded-xl bg-accent-500 py-3 text-center font-semibold text-white transition hover:bg-accent-400"
@@ -125,16 +125,16 @@ export default async function AgencyApplyPage() {
               </div>
             ) : existing ? (
               <div>
-                <p className="font-semibold text-brand-950">
+                <p className="font-semibold text-ink">
                   {t.statusTitle}: {existing.legal_name}
                 </p>
                 <p
                   className={`mt-3 rounded-xl p-4 text-sm ${
                     existing.status === "verified"
-                      ? "bg-green-50 text-green-800"
+                      ? "bg-green-50 dark:bg-green-500/15 text-green-800 dark:text-green-300"
                       : existing.status === "suspended"
-                        ? "bg-red-50 text-red-700"
-                        : "bg-amber-50 text-amber-800"
+                        ? "bg-red-50 dark:bg-red-500/15 text-red-700 dark:text-red-300"
+                        : "bg-amber-50 dark:bg-amber-400/15 text-amber-800 dark:text-amber-200"
                   }`}
                 >
                   {existing.status === "verified"

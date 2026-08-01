@@ -136,9 +136,9 @@ export function VerificationForm({
   }
 
   const input =
-    "mt-1 w-full rounded-lg border border-brand-950/15 px-3 py-2.5 text-brand-950";
-  const label = "block text-sm font-medium text-brand-950";
-  const section = "text-sm font-bold uppercase tracking-wide text-brand-950/50";
+    "mt-1 w-full rounded-lg border border-ink/15 px-3 py-2.5 text-ink";
+  const label = "block text-sm font-medium text-ink";
+  const section = "text-sm font-bold uppercase tracking-wide text-ink/50";
 
   // Step 0: who are you? Drives which documents we ask for.
   if (resident === null) {
@@ -149,18 +149,18 @@ export function VerificationForm({
           <button
             type="button"
             onClick={() => setResident(true)}
-            className="rounded-2xl border border-brand-950/15 p-5 text-left transition hover:border-accent-400 hover:shadow"
+            className="rounded-2xl border border-ink/15 p-5 text-left transition hover:border-accent-400 hover:shadow"
           >
-            <p className="font-bold text-brand-950">{t.resident}</p>
-            <p className="mt-1 text-sm text-brand-950/65">{t.residentHint}</p>
+            <p className="font-bold text-ink">{t.resident}</p>
+            <p className="mt-1 text-sm text-ink/65">{t.residentHint}</p>
           </button>
           <button
             type="button"
             onClick={() => setResident(false)}
-            className="rounded-2xl border border-brand-950/15 p-5 text-left transition hover:border-accent-400 hover:shadow"
+            className="rounded-2xl border border-ink/15 p-5 text-left transition hover:border-accent-400 hover:shadow"
           >
-            <p className="font-bold text-brand-950">{t.visitor}</p>
-            <p className="mt-1 text-sm text-brand-950/65">{t.visitorHint}</p>
+            <p className="font-bold text-ink">{t.visitor}</p>
+            <p className="mt-1 text-sm text-ink/65">{t.visitorHint}</p>
           </button>
         </div>
       </div>
@@ -209,7 +209,7 @@ export function VerificationForm({
               className={input}
               placeholder="+212 6…"
             />
-            <span className="mt-1 block text-xs font-normal text-brand-950/50">
+            <span className="mt-1 block text-xs font-normal text-ink/50">
               {t.phoneHint}
             </span>
           </label>
@@ -276,7 +276,7 @@ export function VerificationForm({
           </label>
         </div>
         {!resident && (
-          <p className="rounded-lg bg-accent-500/[0.08] px-3 py-2 text-xs text-brand-950/70">
+          <p className="rounded-lg bg-accent-500/[0.08] px-3 py-2 text-xs text-ink/70">
             {t.idpNote}
           </p>
         )}
@@ -284,18 +284,18 @@ export function VerificationForm({
 
       <div className="space-y-3">
         <p className={section}>{t.secDocs}</p>
-        <p className="text-xs text-brand-950/55">{t.docsHint}</p>
-        <p className="rounded-lg bg-amber-50 px-3 py-2 text-xs font-medium text-amber-900">
+        <p className="text-xs text-ink/55">{t.docsHint}</p>
+        <p className="rounded-lg bg-amber-50 dark:bg-amber-400/15 px-3 py-2 text-xs font-medium text-amber-900 dark:text-amber-100">
           {t.cameraOnly}
         </p>
         <CameraCapture slots={slots} value={photos} onChange={setPhotos} t={t.cam} />
-        <p className="rounded-lg bg-brand-950/[0.04] px-3 py-2 text-xs text-brand-950/60">
+        <p className="rounded-lg bg-ink/[0.04] px-3 py-2 text-xs text-ink/60">
           {t.privacy}
         </p>
       </div>
 
       {error && (
-        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>
+        <p className="rounded-lg bg-red-50 dark:bg-red-500/15 px-3 py-2 text-sm text-red-700 dark:text-red-300">{error}</p>
       )}
 
       <button

@@ -28,10 +28,10 @@ export function AuthForm({
   const pending = mode === "login" ? loginPending : signupPending;
 
   const input =
-    "mt-1 w-full rounded-lg border border-brand-950/15 px-3 py-2.5 text-brand-950";
+    "mt-1 w-full rounded-lg border border-ink/15 px-3 py-2.5 text-ink";
 
   return (
-    <div className="w-full max-w-md rounded-2xl border border-brand-950/10 bg-white p-8 shadow-sm">
+    <div className="w-full max-w-md rounded-2xl border border-ink/10 bg-card p-8 shadow-sm">
       <Link href="/" className="inline-block">
         <Image
           src="/carkari-logo.png"
@@ -46,18 +46,18 @@ export function AuthForm({
 
       {asHost && (
         <div className="mt-6 rounded-xl bg-accent-500/[0.08] p-4">
-          <p className="text-sm font-bold text-brand-950">{t.hostTitle}</p>
-          <p className="mt-1 text-sm text-brand-950/70">{t.hostBody}</p>
+          <p className="text-sm font-bold text-ink">{t.hostTitle}</p>
+          <p className="mt-1 text-sm text-ink/70">{t.hostBody}</p>
         </div>
       )}
 
-      <div className="mt-6 grid grid-cols-2 rounded-lg bg-brand-950/5 p-1 text-sm font-semibold">
+      <div className="mt-6 grid grid-cols-2 rounded-lg bg-ink/5 p-1 text-sm font-semibold">
         {(["login", "signup"] as const).map((m) => (
           <button
             key={m}
             type="button"
             onClick={() => setMode(m)}
-            className={`rounded-md py-2 transition ${mode === m ? "bg-white text-brand-950 shadow" : "text-brand-950/60"}`}
+            className={`rounded-md py-2 transition ${mode === m ? "bg-card text-ink shadow" : "text-ink/60"}`}
           >
             {m === "login" ? t.login : t.signup}
           </button>
@@ -68,10 +68,10 @@ export function AuthForm({
         <GoogleButton label={t.google} next={next} />
       </div>
 
-      <div className="my-5 flex items-center gap-3 text-xs uppercase tracking-wide text-brand-950/40">
-        <span className="h-px flex-1 bg-brand-950/10" />
+      <div className="my-5 flex items-center gap-3 text-xs uppercase tracking-wide text-ink/40">
+        <span className="h-px flex-1 bg-ink/10" />
         {t.or}
-        <span className="h-px flex-1 bg-brand-950/10" />
+        <span className="h-px flex-1 bg-ink/10" />
       </div>
 
       <form action={mode === "login" ? loginAction : signupAction} className="space-y-4">
@@ -79,16 +79,16 @@ export function AuthForm({
             flow, so signing in returns them there instead of the homepage. */}
         {next && <input type="hidden" name="next" value={next} />}
         {mode === "signup" && (
-          <label className="block text-sm font-medium text-brand-950">
+          <label className="block text-sm font-medium text-ink">
             {t.fullName}
             <input name="full_name" required className={input} />
           </label>
         )}
-        <label className="block text-sm font-medium text-brand-950">
+        <label className="block text-sm font-medium text-ink">
           {t.email}
           <input type="email" name="email" required className={input} />
         </label>
-        <label className="block text-sm font-medium text-brand-950">
+        <label className="block text-sm font-medium text-ink">
           {t.password}
           <input
             type="password"
@@ -100,12 +100,12 @@ export function AuthForm({
         </label>
 
         {state.error && (
-          <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+          <p className="rounded-lg bg-red-50 dark:bg-red-500/15 px-3 py-2 text-sm text-red-700 dark:text-red-300">
             {state.error}
           </p>
         )}
         {state.message && (
-          <p className="rounded-lg bg-brand-50 px-3 py-2 text-sm text-brand-800">
+          <p className="rounded-lg bg-brand-50 dark:bg-ink/10 px-3 py-2 text-sm text-brand-800 dark:text-ink/80">
             {state.message}
           </p>
         )}
@@ -128,11 +128,11 @@ export function AuthForm({
       {/* Only shown to people who did NOT arrive from the host flow — pointing
           a host back at "become a host" would just loop them. */}
       {!asHost && (
-        <p className="mt-6 text-center text-xs text-brand-950/50">
+        <p className="mt-6 text-center text-xs text-ink/50">
           {t.agencyQ}{" "}
           <Link
             href="/partenaires"
-            className="font-semibold text-brand-800 hover:underline"
+            className="font-semibold text-brand-800 dark:text-ink/80 hover:underline"
           >
             {t.agencyLink}
           </Link>{" "}

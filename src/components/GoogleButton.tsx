@@ -133,7 +133,7 @@ export function GoogleButton({
         type="button"
         onClick={redirectFlow}
         disabled={busy}
-        className="flex w-full items-center justify-center gap-3 rounded-xl border border-brand-950/15 bg-white py-3 font-semibold text-brand-950 transition hover:bg-brand-950/[0.03] disabled:opacity-60"
+        className="flex w-full items-center justify-center gap-3 rounded-xl border border-ink/15 bg-card py-3 font-semibold text-ink transition hover:bg-ink/[0.03] disabled:opacity-60"
       >
         <GoogleMark />
         {label}
@@ -144,9 +144,9 @@ export function GoogleButton({
   return (
     <div className="flex flex-col items-center">
       <div ref={holder} className="min-h-[44px]" />
-      {busy && <p className="mt-2 text-sm text-brand-950/60">…</p>}
+      {busy && <p className="mt-2 text-sm text-ink/60">…</p>}
       {error && (
-        <p className="mt-2 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p className="mt-2 rounded-lg bg-red-50 dark:bg-red-500/15 px-3 py-2 text-sm text-red-700 dark:text-red-300">
           {error}
         </p>
       )}

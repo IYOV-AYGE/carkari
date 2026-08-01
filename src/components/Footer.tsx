@@ -18,7 +18,7 @@ export async function Footer() {
     ? t.footer.links1.filter(([href]) => href !== "/partenaires")
     : t.footer.links1;
   return (
-    <footer className="mt-auto border-t border-brand-950/10 bg-brand-950 text-brand-100">
+    <footer className="mt-auto border-t border-ink/10 bg-band text-brand-100">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <Image

@@ -86,28 +86,28 @@ export default async function BookingPage({
 
   const banner =
     b.status === "pending_payment"
-      ? { text: t.pending, cls: "bg-amber-50 text-amber-800" }
+      ? { text: t.pending, cls: "bg-amber-50 dark:bg-amber-400/15 text-amber-800 dark:text-amber-200" }
       : b.status.startsWith("cancelled")
-        ? { text: t.cancelled, cls: "bg-red-50 text-red-700" }
-        : { text: t.confirmed, cls: "bg-green-50 text-green-800" };
+        ? { text: t.cancelled, cls: "bg-red-50 dark:bg-red-500/15 text-red-700 dark:text-red-300" }
+        : { text: t.confirmed, cls: "bg-green-50 dark:bg-green-500/15 text-green-800 dark:text-green-300" };
 
   return (
     <>
       <Navbar />
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-12">
-        <h1 className="text-2xl font-extrabold text-brand-950">{t.title}</h1>
+        <h1 className="text-2xl font-extrabold text-ink">{t.title}</h1>
         <p className={`mt-4 rounded-xl p-4 text-sm ${banner.cls}`}>{banner.text}</p>
 
         {!b.status.startsWith("cancelled") && kyc !== "verified" && (
-          <div className="mt-4 rounded-2xl border border-amber-400/40 bg-amber-50 p-5">
-            <p className="font-semibold text-amber-900">{t.kycTitle}</p>
-            <p className="mt-1 text-sm text-amber-900/80">
+          <div className="mt-4 rounded-2xl border border-amber-400/40 bg-amber-50 dark:bg-amber-400/15 p-5">
+            <p className="font-semibold text-amber-900 dark:text-amber-100">{t.kycTitle}</p>
+            <p className="mt-1 text-sm text-amber-900 dark:text-amber-100/80">
               {kyc === "pending" ? t.kycPending : t.kycBody}
             </p>
             {kyc !== "pending" && (
               <Link
                 href="/verification"
-                className="mt-3 inline-block rounded-xl bg-brand-950 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-800"
+                className="mt-3 inline-block rounded-xl bg-band px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-800"
               >
                 {t.kycBtn}
               </Link>
@@ -115,11 +115,11 @@ export default async function BookingPage({
           </div>
         )}
 
-        <div className="mt-6 space-y-3 rounded-2xl border border-brand-950/10 bg-white p-6 text-sm">
+        <div className="mt-6 space-y-3 rounded-2xl border border-ink/10 bg-card p-6 text-sm">
           <Row k={t.vehicle} v={`${b.make} ${b.model} ${b.year} — ${b.agency_name}, ${b.city}`} />
           <Row k={t.dates} v={`${b.start_date} → ${b.end_date}`} />
           <Row k={t.total} v={fmt(b.total_mad)} />
-          <div className="border-t border-brand-950/10 pt-3">
+          <div className="border-t border-ink/10 pt-3">
             <Row k={t.deposit} v={fmt(b.deposit_mad)} strong />
             <Row k={t.balance} v={fmt(b.balance_due_mad)} />
           </div>
@@ -128,12 +128,12 @@ export default async function BookingPage({
         {b.status === "pending_payment" && (
           <div className="mt-6">
             <PayDepositButton bookingId={b.id} label={t.pay} />
-            <p className="mt-2 text-center text-xs text-brand-950/50">{t.payNote}</p>
+            <p className="mt-2 text-center text-xs text-ink/50">{t.payNote}</p>
           </div>
         )}
 
-        <div className="mt-8 rounded-2xl bg-brand-950/[0.04] p-5 text-sm text-brand-950/75">
-          <p className="font-semibold text-brand-950">{t.policyTitle}</p>
+        <div className="mt-8 rounded-2xl bg-ink/[0.04] p-5 text-sm text-ink/75">
+          <p className="font-semibold text-ink">{t.policyTitle}</p>
           <ul className="mt-2 list-disc space-y-1 pl-5">
             {t.policy.map((p) => <li key={p}>{p}</li>)}
           </ul>
@@ -153,8 +153,8 @@ export default async function BookingPage({
 function Row({ k, v, strong }: { k: string; v: string; strong?: boolean }) {
   return (
     <div className="flex justify-between gap-4">
-      <span className="text-brand-950/60">{k}</span>
-      <span className={strong ? "font-bold text-accent-600" : "font-medium text-brand-950"}>
+      <span className="text-ink/60">{k}</span>
+      <span className={strong ? "font-bold text-accent-600" : "font-medium text-ink"}>
         {v}
       </span>
     </div>

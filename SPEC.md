@@ -89,6 +89,16 @@ favorites(profile_id, vehicle_id)
 - Languages: FR + EN live (auto-detect by IP country via x-vercel-ip-country in
   middleware, FR_COUNTRIES set in src/lib/i18n/dict.ts, cookie `lang`, manual
   switcher /lang/[code]). AR (RTL) later. Currency display: MAD.
+- **Theming**: three flipping tokens in globals.css drive both modes —
+  `ink` (text, hairlines, subtle tints, always usable as `ink/NN`), `card`
+  (raised surfaces) and `surface` (page behind the cards). The `brand-*` ramp
+  is FIXED and used for deliberate navy bands (`bg-band`) that stay dark in
+  both modes. Never write `bg-white` or `text-brand-950` again — use
+  `bg-card` / `text-ink`, or dark mode silently breaks on that element.
+- **Dark mode**: class-based (`.dark` on <html>), chosen by the visitor via the
+  navbar toggle, stored in a `theme` cookie so the SERVER renders the right
+  class and there is no white flash. First visit with no cookie follows the OS
+  setting via a tiny pre-paint script in layout.tsx.
 - UI strings live in src/lib/i18n/dict.ts — add keys to BOTH fr and en.
 - SEO matters: server-render public pages, per-city landing pages later.
 

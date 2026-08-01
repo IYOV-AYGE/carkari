@@ -12,8 +12,8 @@ export default function NotFound() {
         quality={95}
         className="h-12 w-auto sm:h-16"
       />
-      <h1 className="mt-8 text-4xl font-extrabold text-brand-950">404</h1>
-      <p className="mt-2 max-w-md text-brand-950/70">
+      <h1 className="mt-8 text-4xl font-extrabold text-ink">404</h1>
+      <p className="mt-2 max-w-md text-ink/70">
         Cette page n&apos;existe pas — mais nos voitures, si. / This page
         doesn&apos;t exist — but our cars do.
       </p>

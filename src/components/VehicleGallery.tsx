@@ -101,7 +101,7 @@ export function VehicleGallery({
                 className="object-cover transition duration-500 group-hover:scale-[1.05]"
               />
               {i === 1 && count > 1 && (
-                <span className="absolute bottom-3 right-3 rounded-full bg-white/95 px-3 py-1.5 text-xs font-semibold text-brand-950 shadow">
+                <span className="absolute bottom-3 right-3 rounded-full bg-card/95 px-3 py-1.5 text-xs font-semibold text-ink shadow">
                   {labels.viewAll.replace("{n}", String(count))}
                 </span>
               )}
@@ -136,7 +136,7 @@ export function VehicleGallery({
             <button
               onClick={() => setOpen(false)}
               aria-label={labels.close}
-              className="rounded-full p-2 text-2xl leading-none hover:bg-white/10"
+              className="rounded-full p-2 text-2xl leading-none hover:bg-card/10"
             >
               ×
             </button>
@@ -154,14 +154,14 @@ export function VehicleGallery({
                 <button
                   onClick={() => go(-1)}
                   aria-label={labels.prev}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/15 p-3 text-white backdrop-blur hover:bg-white/25"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-card/15 p-3 text-white backdrop-blur hover:bg-card/25"
                 >
                   ‹
                 </button>
                 <button
                   onClick={() => go(1)}
                   aria-label={labels.next}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/15 p-3 text-white backdrop-blur hover:bg-white/25"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-card/15 p-3 text-white backdrop-blur hover:bg-card/25"
                 >
                   ›
                 </button>

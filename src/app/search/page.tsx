@@ -67,13 +67,13 @@ export default async function SearchPage({
   };
 
   const sel =
-    "rounded-lg border border-brand-950/15 bg-white px-3 py-2 text-sm text-brand-950";
+    "rounded-lg border border-ink/15 bg-card px-3 py-2 text-sm text-ink";
 
   return (
     <>
       <Navbar />
       <main className="flex-1">
-        <div className="bg-brand-950 px-4 py-8">
+        <div className="bg-band px-4 py-8">
           <div className="mx-auto max-w-6xl">
             <SearchBar defaultCity={city} />
           </div>
@@ -83,7 +83,7 @@ export default async function SearchPage({
           <div className="mb-4 flex flex-wrap gap-2">
             <Link
               href={`/search${qs({ category: "" })}`}
-              className={`rounded-full px-4 py-1.5 text-sm font-medium ${!category ? "bg-brand-950 text-white" : "bg-brand-950/5 text-brand-950 hover:bg-brand-950/10"}`}
+              className={`rounded-full px-4 py-1.5 text-sm font-medium ${!category ? "bg-band text-white" : "bg-ink/5 text-ink hover:bg-ink/10"}`}
             >
               {t.cats.all}
             </Link>
@@ -91,7 +91,7 @@ export default async function SearchPage({
               <Link
                 key={c.key}
                 href={`/search${qs({ category: c.key })}`}
-                className={`rounded-full px-4 py-1.5 text-sm font-medium ${category === c.key ? "bg-brand-950 text-white" : "bg-brand-950/5 text-brand-950 hover:bg-brand-950/10"}`}
+                className={`rounded-full px-4 py-1.5 text-sm font-medium ${category === c.key ? "bg-band text-white" : "bg-ink/5 text-ink hover:bg-ink/10"}`}
               >
                 {t.cats[c.key]}
               </Link>
@@ -122,26 +122,26 @@ export default async function SearchPage({
               <option value="price_desc">{t.filters.priceDesc}</option>
               <option value="rating">{t.filters.rating}</option>
             </select>
-            <button className="rounded-lg bg-brand-950 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-800">
+            <button className="rounded-lg bg-band px-4 py-2 text-sm font-semibold text-white hover:bg-brand-800">
               {t.filters.apply}
             </button>
             {(price || trans || sort) && (
               <Link
                 href={`/search${qs({ price: "", trans: "", sort: "" })}`}
-                className="text-sm text-brand-950/60 hover:underline"
+                className="text-sm text-ink/60 hover:underline"
               >
                 {t.filters.reset}
               </Link>
             )}
           </form>
 
-          <p className="mb-4 text-sm text-brand-950/60">
+          <p className="mb-4 text-sm text-ink/60">
             {tpl(t.results.count, { n: results.length })}{" "}
             {city ? `${t.results.at} ${city}` : t.results.inMorocco}
           </p>
 
           {results.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-brand-950/20 p-12 text-center text-brand-950/60">
+            <div className="rounded-2xl border border-dashed border-ink/20 p-12 text-center text-ink/60">
               {t.results.none}
             </div>
           ) : (
