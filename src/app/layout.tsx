@@ -37,7 +37,7 @@ export async function generateMetadata() {
 
 // Colours the browser chrome on Android and the status bar on iOS PWAs.
 export const viewport = {
-  themeColor: "#2278c9",
+  themeColor: "#0d1b2a",
 };
 
 export default async function RootLayout({
