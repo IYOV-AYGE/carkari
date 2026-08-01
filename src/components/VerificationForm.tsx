@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { CameraCapture, type CamSlot, type CamLabels } from "@/components/CameraCapture";
+import { LivenessCapture, type LivenessLabels } from "@/components/LivenessCapture";
 
 export type VerifLabels = {
   secWho: string; secIdentity: string; secAddress: string;
@@ -18,7 +19,10 @@ export type VerifLabels = {
   licenceNumber: string; licenceCountry: string; licenceIssued: string;
   docsHint: string; cameraOnly: string; privacy: string;
   idpNote: string;
+  secLive: string;
+  liveRequired: string;
   cam: CamLabels;
+  live: LivenessLabels;
   docLabels: {
     licenceFront: string; licenceBack: string;
     cinFront: string; cinBack: string; passport: string; idp: string;
@@ -45,6 +49,8 @@ export function VerificationForm({
   const router = useRouter();
   const [resident, setResident] = useState<boolean | null>(null);
   const [photos, setPhotos] = useState<Record<string, File>>({});
+  // The selfie now comes from the liveness run, not a plain snapshot.
+  const [live, setLive] = useState<{ passed: boolean; framePaths: string[] } | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
@@ -54,14 +60,12 @@ export function VerificationForm({
         { key: "licence_back", label: t.docLabels.licenceBack, hint: t.docHints.licenceBack, facing: "environment" },
         { key: "id_front", label: t.docLabels.cinFront, hint: t.docHints.cinFront, facing: "environment" },
         { key: "id_back", label: t.docLabels.cinBack, hint: t.docHints.cinBack, facing: "environment" },
-        { key: "selfie", label: t.docLabels.selfie, hint: t.docHints.selfie, facing: "user" },
       ]
     : [
         { key: "licence_front", label: t.docLabels.licenceFront, hint: t.docHints.licenceFront, facing: "environment" },
         { key: "licence_back", label: t.docLabels.licenceBack, hint: t.docHints.licenceBack, facing: "environment" },
         { key: "id_front", label: t.docLabels.passport, hint: t.docHints.passport, facing: "environment" },
         { key: "idp", label: t.docLabels.idp, hint: t.docHints.idp, facing: "environment", optional: true },
-        { key: "selfie", label: t.docLabels.selfie, hint: t.docHints.selfie, facing: "user" },
       ];
 
   const missing = slots.filter((s) => !s.optional && !photos[s.key]).length;
@@ -71,6 +75,10 @@ export function VerificationForm({
     if (resident === null) return;
     if (missing > 0) {
       setError(t.errDocs);
+      return;
+    }
+    if (!live?.framePaths.length) {
+      setError(t.liveRequired);
       return;
     }
     setBusy(true);
@@ -125,7 +133,7 @@ export function VerificationForm({
         p_id_front: paths.id_front,
         p_id_back: paths.id_back ?? null,
         p_idp: paths.idp ?? null,
-        p_selfie: paths.selfie,
+        p_selfie: live.framePaths[0],
       });
       if (rpcErr) throw rpcErr;
       router.refresh();
@@ -292,6 +300,11 @@ export function VerificationForm({
         <p className="rounded-lg bg-ink/[0.04] px-3 py-2 text-xs text-ink/60">
           {t.privacy}
         </p>
+      </div>
+
+      <div className="space-y-3">
+        <p className={section}>{t.secLive}</p>
+        <LivenessCapture t={t.live} userId={userId} onDone={setLive} />
       </div>
 
       {error && (

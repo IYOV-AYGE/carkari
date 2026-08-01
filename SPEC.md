@@ -155,6 +155,38 @@ favorites(profile_id, vehicle_id)
   monitoring here, not at the homepage, which can serve from cache while
   Postgres is down.
 
+## 5d. Selfie liveness (presentation attack detection)
+
+Threat tiers and what we actually defend against — stated plainly so nobody
+over-trusts the badge:
+
+| Tier | Attack | Status |
+|---|---|---|
+| 1 | printed photo, face on a phone screen | **blocked** |
+| 2 | replayed video of the real person | **mostly blocked** |
+| 3 | deepfake injected via a virtual camera driver | **NOT blocked** |
+
+- **Mechanism**: the SERVER issues a random 4-colour sequence + head-pose order
+  (`issue_liveness_challenge`, 2-minute expiry, single use). The browser flashes
+  those colours at the face and measures the reflected change from a neutral
+  baseline. A pre-recorded video cannot react to a sequence that did not exist
+  when it was filmed; a matte print reflects nothing.
+- **`classifyResponse()` returns "N" for no-reaction as a distinct verdict** —
+  folding it into "W" would hand a print a free match on every white flash.
+- Pass gate: ≥75% colour match AND ≥0.15 motion. Result on
+  `profiles.liveness_passed/score/notes`.
+- **The measurements are computed client-side**, so someone who rewrites our JS
+  can forge them. That is why the three pose frames are stored: the automated
+  score filters the lazy, a human catches the rest. Never treat
+  `liveness_passed` alone as proof of identity.
+- Virtual cameras are rejected by device label (OBS, ManyCam, DroidCam…). This
+  is a speed bump, not a defence.
+- **Escalation path**: Stripe Identity (~$1.50/verification) covers tier 3 and
+  adds selfie-to-ID face matching. The schema needs no change to adopt it.
+- Remember the real chokepoint: the agency inspects the licence and the person
+  at pickup. Online liveness is deterrence plus dispute evidence, not the final
+  gate.
+
 ## 6. Build phases
 
 - **P1 (MVP)**: public search/browse/vehicle pages, auth, booking + Stripe

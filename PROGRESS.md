@@ -88,6 +88,9 @@ keys not yet set).
    https://www.carkari.com/api/health every 5 minutes. It checks the database,
    so it catches outages the homepage would hide.
 
+10. **Migration 00008_liveness.sql** — run it, then redo /verification on a
+    phone: the screen flashes colours and asks you to turn your head.
+
 ## TO DO — build queue (next features)
 
 - Photo gallery/carousel on vehicle pages (cars now have 5 photos each)
