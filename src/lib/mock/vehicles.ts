@@ -6,7 +6,11 @@ export type MockVehicle = {
   make: string;
   model: string;
   year: number;
-  category: "citadine" | "compacte" | "suv" | "luxe" | "utilitaire";
+  category: "citadine" | "compacte" | "suv" | "luxe" | "utilitaire" | "quad" | "jetski";
+  /** Quads and jet skis are sold by the hour, cars by the day. */
+  rentalUnit?: "day" | "hour";
+  hourlyPriceMad?: number;
+  minHours?: number;
   transmission: "manuelle" | "automatique";
   fuel: "diesel" | "essence" | "hybride" | "électrique";
   seats: number;
@@ -37,6 +41,8 @@ export const CATEGORIES: { key: MockVehicle["category"]; label: string }[] = [
   { key: "suv", label: "SUV" },
   { key: "luxe", label: "Luxe" },
   { key: "utilitaire", label: "Utilitaire" },
+  { key: "quad", label: "Quad / ATV" },
+  { key: "jetski", label: "Jet ski" },
 ];
 
 export const MOCK_VEHICLES: MockVehicle[] = [
@@ -71,6 +77,11 @@ export const MOCK_VEHICLES: MockVehicle[] = [
   { id: "v29", image: "/vehicles/maybach.jpg", make: "Mercedes-Maybach", model: "Classe S", year: 2024, category: "luxe", transmission: "automatique", fuel: "essence", seats: 4, dailyPriceMad: 700000, city: "Casablanca", agency: "Prestige Line", rating: 5.0, reviewCount: 9, tone: "" },
   { id: "v30", image: "/vehicles/fiat-doblo.jpg", make: "Fiat", model: "Doblo", year: 2023, category: "utilitaire", transmission: "manuelle", fuel: "diesel", seats: 2, dailyPriceMad: 30000, city: "Casablanca", agency: "Atlas Cars", rating: 4.4, reviewCount: 33, tone: "" },
   { id: "v31", image: "/vehicles/ford-tourneo.jpg", make: "Ford", model: "Tourneo (9 pl.)", year: 2024, category: "utilitaire", transmission: "manuelle", fuel: "diesel", seats: 9, dailyPriceMad: 60000, city: "Agadir", agency: "Souss Auto", rating: 4.6, reviewCount: 48, tone: "" },
+  // Quads and jet skis: priced per HOUR, which is how these actually sell.
+  { id: "v40", image: "/vehicles/quad-raptor.jpg", make: "Yamaha", model: "Raptor 700", year: 2024, category: "quad", transmission: "automatique", fuel: "essence", seats: 1, dailyPriceMad: 90000, rentalUnit: "hour", hourlyPriceMad: 25000, minHours: 1, city: "Marrakech", agency: "Palmeraie Aventure", rating: 4.8, reviewCount: 64, tone: "from-orange-600 to-amber-800" },
+  { id: "v41", image: "/vehicles/quad-cforce.jpg", make: "CFMoto", model: "CForce 520", year: 2023, category: "quad", transmission: "automatique", fuel: "essence", seats: 2, dailyPriceMad: 80000, rentalUnit: "hour", hourlyPriceMad: 20000, minHours: 1, city: "Agadir", agency: "Souss Aventure", rating: 4.6, reviewCount: 38, tone: "from-lime-600 to-green-900" },
+  { id: "v42", image: "/vehicles/jetski-seadoo.jpg", make: "Sea-Doo", model: "GTI 130", year: 2024, category: "jetski", transmission: "automatique", fuel: "essence", seats: 3, dailyPriceMad: 200000, rentalUnit: "hour", hourlyPriceMad: 60000, minHours: 1, city: "Agadir", agency: "Atlantic Jet", rating: 4.9, reviewCount: 52, tone: "from-cyan-500 to-blue-900" },
+  { id: "v43", image: "/vehicles/jetski-yamaha.jpg", make: "Yamaha", model: "VX Cruiser", year: 2023, category: "jetski", transmission: "automatique", fuel: "essence", seats: 3, dailyPriceMad: 190000, rentalUnit: "hour", hourlyPriceMad: 55000, minHours: 1, city: "Tanger", agency: "Detroit Marine", rating: 4.7, reviewCount: 29, tone: "from-sky-600 to-indigo-900" },
 ];
 
 export const COMMISSION_RATE = 0.175;

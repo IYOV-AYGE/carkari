@@ -45,7 +45,9 @@ const L = {
     similar: "Véhicules similaires",
     gallery: { viewAll: "Voir les {n} photos", close: "Fermer", prev: "Précédent", next: "Suivant", of: "sur" },
     booking: {
-      perDay: "/ jour", from: "Départ", to: "Retour",
+      perDay: "/ jour", perHour: "/ heure",
+      startTime: "Heure de départ", duration: "Durée",
+      hours: "{n} heure(s)", from: "Départ", to: "Retour",
       days: "{n} jour(s)", total: "Total", deposit: "Acompte en ligne",
       balance: "Solde à l'agence",
       policyTitle: "Annulation", policyLines: [],
@@ -93,7 +95,9 @@ const L = {
     similar: "Similar vehicles",
     gallery: { viewAll: "View all {n} photos", close: "Close", prev: "Previous", next: "Next", of: "of" },
     booking: {
-      perDay: "/ day", from: "Pick-up", to: "Return",
+      perDay: "/ day", perHour: "/ hour",
+      startTime: "Start time", duration: "Duration",
+      hours: "{n} hour(s)", from: "Pick-up", to: "Return",
       days: "{n} day(s)", total: "Total", deposit: "Online deposit",
       balance: "Balance at agency",
       policyTitle: "Cancellation", policyLines: [],
@@ -248,6 +252,9 @@ export default async function VehiclePage({
             t={t.booking}
             vehicleId={v.id}
             dailyPriceMad={v.dailyPriceMad}
+            rentalUnit={v.rentalUnit ?? "day"}
+            hourlyPriceMad={v.hourlyPriceMad}
+            minHours={v.minHours ?? 1}
             commissionRate={COMMISSION_RATE}
             isMock={isMock}
             signedIn={Boolean(user)}

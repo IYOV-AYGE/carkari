@@ -16,11 +16,14 @@ type Row = {
   fuel: string;
   seats: number;
   daily_price_mad: number;
+  rental_unit: string | null;
+  hourly_price_mad: number | null;
+  min_hours: number | null;
   agencies: { legal_name: string; city: string; status: string } | null;
   vehicle_images: { path: string; sort: number }[] | null;
 };
 
-const CATS = ["citadine", "compacte", "suv", "luxe", "utilitaire"] as const;
+const CATS = ["citadine", "compacte", "suv", "luxe", "utilitaire", "quad", "jetski"] as const;
 
 export async function getLiveVehicles(): Promise<MockVehicle[]> {
   try {
@@ -28,7 +31,7 @@ export async function getLiveVehicles(): Promise<MockVehicle[]> {
     const { data, error } = await supabase
       .from("vehicles")
       .select(
-        "id, make, model, year, category, transmission, fuel, seats, daily_price_mad, agencies(legal_name, city, status), vehicle_images(path, sort)"
+        "id, make, model, year, category, transmission, fuel, seats, daily_price_mad, rental_unit, hourly_price_mad, min_hours, agencies(legal_name, city, status), vehicle_images(path, sort)"
       )
       .eq("status", "live")
       .limit(200);
@@ -70,6 +73,9 @@ export async function getLiveVehicles(): Promise<MockVehicle[]> {
             : "diesel") as MockVehicle["fuel"],
           seats: r.seats,
           dailyPriceMad: r.daily_price_mad,
+          rentalUnit: r.rental_unit === "hour" ? "hour" : "day",
+          hourlyPriceMad: r.hourly_price_mad ?? undefined,
+          minHours: r.min_hours ?? 1,
           city: r.agencies?.city ?? "Casablanca",
           agency: r.agencies?.legal_name ?? "CarKari",
           rating: 5,

@@ -100,6 +100,10 @@ keys not yet set).
       cp -r node_modules/@vladmandic/face-api/model public/models
     then set NEXT_PUBLIC_FACE_MODEL_URL=/models in Vercel.
 
+13. **Migration 00013_hourly_rentals.sql** — adds quads and jet skis, rented
+    by the hour. After running it, agencies can pick Quad / ATV or Jet ski when
+    listing and the form asks for a price per hour plus a minimum duration.
+
 ## TO DO — build queue (next features)
 
 - Photo gallery/carousel on vehicle pages (cars now have 5 photos each)

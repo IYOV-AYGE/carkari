@@ -39,8 +39,8 @@ export async function VehicleCard({ v }: { v: MockVehicle }) {
           <span className="rounded-full bg-ink/5 px-2 py-0.5">{v.seats} {t.card.seats}</span>
         </div>
         <p className="pt-1 text-ink">
-          <span className="text-lg font-bold">{formatMad(v.dailyPriceMad)}</span>
-          <span className="text-sm text-ink/60"> {t.card.perDay}</span>
+          <span className="text-lg font-bold">{formatMad(v.rentalUnit === "hour" ? (v.hourlyPriceMad ?? v.dailyPriceMad) : v.dailyPriceMad)}</span>
+          <span className="text-sm text-ink/60"> {v.rentalUnit === "hour" ? t.card.perHour : t.card.perDay}</span>
         </p>
       </div>
     </Link>
@@ -70,8 +70,8 @@ export async function VehicleCardCompact({ v }: { v: MockVehicle }) {
           {v.year} · ★ {v.rating} ({v.reviewCount})
         </p>
         <p className="mt-1 text-sm text-ink">
-          <span className="font-bold">{formatMad(v.dailyPriceMad)}</span>
-          <span className="text-ink/60"> {t.card.perDay}</span>
+          <span className="font-bold">{formatMad(v.rentalUnit === "hour" ? (v.hourlyPriceMad ?? v.dailyPriceMad) : v.dailyPriceMad)}</span>
+          <span className="text-ink/60"> {v.rentalUnit === "hour" ? t.card.perHour : t.card.perDay}</span>
         </p>
       </div>
     </Link>

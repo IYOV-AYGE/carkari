@@ -35,6 +35,35 @@ Let `booked_at` = booking creation time, `pickup_at` = rental start.
 4. Customer must tick policy checkbox at checkout; store
    `policy_accepted_at` on the booking (chargeback defense).
 
+### 2b. Rental units — day vs hour
+
+Cars are priced and booked **per day**. Quads (ATV) and jet skis are priced and
+booked **per hour**, because that is how the market sells them; pricing a
+1-hour jet ski as a "day" would confuse every customer who books one.
+
+- The unit lives on the VEHICLE (`vehicles.rental_unit`), never on the booking.
+  A jet ski is never rented by the day and a car never by the hour, so the two
+  paths never meet on the same vehicle — which is what lets them have separate
+  overlap constraints without ever fighting.
+- Hourly vehicles carry `hourly_price_mad` (enforced non-null by a check) and
+  `min_hours`. `daily_price_mad` stays populated at 10x the hourly rate purely
+  so price sorting and filters keep working across mixed results.
+- Hourly bookings set `unit='hour'`, `start_at`/`end_at` timestamps and `hours`,
+  with `start_date = end_date`. The original `end_date > start_date` table check
+  was replaced by one that understands both shapes.
+- Double-booking: cars keep the `no_overlap` daterange constraint; hourly rows
+  get `no_overlap_hourly` on `tstzrange(start_at, end_at)`. An hourly row makes
+  an empty daterange, so it never trips the day constraint.
+- `quote_booking_hours()` / `create_booking_hours()` mirror the daily pair.
+  Money is still computed server-side only.
+- Refund timing measures from `coalesce(start_at, start_date)` — for an hourly
+  booking the 48-hour rule counts from the actual start time, not midnight.
+
+**Identity rules are identical to cars**: same KYC, same liveness, same counter
+check, licence held 1+ year, 21+. A quad on a public road is a vehicle like any
+other, and we would rather lose a rental than discover afterwards that the
+standard was lower for the fast toys.
+
 ### Future transition
 
 `PaymentProvider` interface in `src/lib/payments/`. Stripe is the only

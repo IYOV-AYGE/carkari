@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export type BookingLabels = {
-  perDay: string; from: string; to: string;
-  days: string; total: string; deposit: string; balance: string;
+  perDay: string; perHour: string; from: string; to: string;
+  days: string; hours: string; startTime: string; duration: string;
+  total: string; deposit: string; balance: string;
   policyTitle: string; policyLines: string[];
   accept: string; book: string; booking: string;
   loginFirst: string; unavailable: string; pickDates: string;
@@ -15,7 +16,8 @@ export type BookingLabels = {
 };
 
 type Quote = {
-  days: number;
+  days?: number;
+  hours?: number;
   total_mad: number;
   deposit_mad: number;
   balance_mad: number;
@@ -32,18 +34,30 @@ export function BookingWidget({
   commissionRate,
   isMock,
   signedIn,
+  rentalUnit = "day",
+  hourlyPriceMad,
+  minHours = 1,
 }: {
   t: BookingLabels;
   vehicleId: string;
   dailyPriceMad: number;
+  /** "hour" for quads and jet skis — changes the picker AND the RPCs used. */
+  rentalUnit?: "day" | "hour";
+  hourlyPriceMad?: number;
+  minHours?: number;
   commissionRate: number;
   isMock: boolean;
   signedIn: boolean;
 }) {
   const router = useRouter();
+  const byHour = rentalUnit === "hour";
+  const unitPrice = byHour ? (hourlyPriceMad ?? dailyPriceMad) : dailyPriceMad;
   const today = new Date().toISOString().slice(0, 10);
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
+  // Hourly rentals: a start clock time plus a duration, instead of two dates.
+  const [time, setTime] = useState("10:00");
+  const [hours, setHours] = useState(String(Math.max(minHours, 1)));
   const [quote, setQuote] = useState<Quote | null>(null);
   const [accepted, setAccepted] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -61,33 +75,45 @@ export function BookingWidget({
       : 0;
 
   useEffect(() => {
-    if (isMock || !start || !end || localDays < 1) {
+    if (isMock) { setQuote(null); return; }
+    if (byHour ? !start : !start || !end || localDays < 1) {
       setQuote(null);
       return;
     }
     let cancelled = false;
     (async () => {
       const supabase = createClient();
-      const { data } = await supabase.rpc("quote_booking", {
-        p_vehicle: vehicleId,
-        p_start: start,
-        p_end: end,
-      });
+      const { data } = byHour
+        ? await supabase.rpc("quote_booking_hours", {
+            p_vehicle: vehicleId,
+            p_start: new Date(`${start}T${time}`).toISOString(),
+            p_hours: Number(hours),
+          })
+        : await supabase.rpc("quote_booking", {
+            p_vehicle: vehicleId,
+            p_start: start,
+            p_end: end,
+          });
       if (!cancelled) setQuote((data?.[0] as Quote) ?? null);
     })();
     return () => {
       cancelled = true;
     };
-  }, [vehicleId, start, end, localDays, isMock]);
+  }, [vehicleId, start, end, time, hours, localDays, isMock, byHour]);
 
-  const days = quote?.days ?? localDays;
-  const total = quote?.total_mad ?? dailyPriceMad * localDays;
+  const units = byHour
+    ? (quote?.hours ?? Number(hours))
+    : (quote?.days ?? localDays);
+  const days = units; // keeps the existing render happy for day rentals
+  const total = quote?.total_mad ?? unitPrice * units;
   const deposit = quote?.deposit_mad ?? Math.ceil(total * commissionRate);
   const balance = quote?.balance_mad ?? total - deposit;
 
   // Mirrors SPEC.md §2 so the customer knows before paying.
-  const pickupSoon =
-    start && new Date(start).getTime() - Date.now() <= 48 * 3600_000;
+  const pickupAt = start
+    ? new Date(byHour ? `${start}T${time}` : start).getTime()
+    : 0;
+  const pickupSoon = Boolean(start) && pickupAt - Date.now() <= 48 * 3600_000;
 
   async function book() {
     if (!signedIn) {
@@ -100,12 +126,19 @@ export function BookingWidget({
     setError("");
     try {
       const supabase = createClient();
-      const { data, error: rpcErr } = await supabase.rpc("create_booking", {
-        p_vehicle: vehicleId,
-        p_start: start,
-        p_end: end,
-        p_policy_accepted: true,
-      });
+      const { data, error: rpcErr } = byHour
+        ? await supabase.rpc("create_booking_hours", {
+            p_vehicle: vehicleId,
+            p_start: new Date(`${start}T${time}`).toISOString(),
+            p_hours: Number(hours),
+            p_policy_accepted: true,
+          })
+        : await supabase.rpc("create_booking", {
+            p_vehicle: vehicleId,
+            p_start: start,
+            p_end: end,
+            p_policy_accepted: true,
+          });
       if (rpcErr || !data) throw rpcErr ?? new Error("failed");
       router.push(`/reservation/${data}`);
     } catch {
@@ -115,7 +148,11 @@ export function BookingWidget({
   }
 
   const canBook =
-    !isMock && days >= 1 && accepted && (quote?.available ?? false) && !busy;
+    !isMock &&
+    units >= (byHour ? Math.max(minHours, 1) : 1) &&
+    accepted &&
+    (quote?.available ?? false) &&
+    !busy;
 
   const input =
     "mt-1 w-full rounded-lg border border-ink/15 px-3 py-2 text-ink";
@@ -123,37 +160,78 @@ export function BookingWidget({
   return (
     <aside className="h-fit rounded-2xl border border-ink/10 p-6 shadow-sm lg:sticky lg:top-24">
       <p className="text-ink">
-        <span className="text-3xl font-extrabold">{fmt(dailyPriceMad)}</span>
-        <span className="text-ink/60"> {t.perDay}</span>
+        <span className="text-3xl font-extrabold">{fmt(unitPrice)}</span>
+        <span className="text-ink/60"> {byHour ? t.perHour : t.perDay}</span>
       </p>
 
-      <div className="mt-4 grid grid-cols-2 gap-3">
-        <label className="text-sm font-medium text-ink">
-          {t.from}
-          <input
-            type="date"
-            min={today}
-            value={start}
-            onChange={(e) => setStart(e.target.value)}
-            className={input}
-          />
-        </label>
-        <label className="text-sm font-medium text-ink">
-          {t.to}
-          <input
-            type="date"
-            min={start || today}
-            value={end}
-            onChange={(e) => setEnd(e.target.value)}
-            className={input}
-          />
-        </label>
-      </div>
+      {byHour ? (
+        <div className="mt-4 grid grid-cols-3 gap-3">
+          <label className="text-sm font-medium text-ink">
+            {t.from}
+            <input
+              type="date"
+              min={today}
+              value={start}
+              onChange={(e) => setStart(e.target.value)}
+              className={input}
+            />
+          </label>
+          <label className="text-sm font-medium text-ink">
+            {t.startTime}
+            <input
+              type="time"
+              step={1800}
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              className={input}
+            />
+          </label>
+          <label className="text-sm font-medium text-ink">
+            {t.duration}
+            <select
+              value={hours}
+              onChange={(e) => setHours(e.target.value)}
+              className={input}
+            >
+              {[1, 2, 3, 4, 6, 8].
+                filter((h) => h >= Math.max(minHours, 1)).
+                map((h) => (
+                  <option key={h} value={h}>{h} h</option>
+                ))}
+            </select>
+          </label>
+        </div>
+      ) : (
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          <label className="text-sm font-medium text-ink">
+            {t.from}
+            <input
+              type="date"
+              min={today}
+              value={start}
+              onChange={(e) => setStart(e.target.value)}
+              className={input}
+            />
+          </label>
+          <label className="text-sm font-medium text-ink">
+            {t.to}
+            <input
+              type="date"
+              min={start || today}
+              value={end}
+              onChange={(e) => setEnd(e.target.value)}
+              className={input}
+            />
+          </label>
+        </div>
+      )}
 
-      {days >= 1 ? (
+      {units >= 1 ? (
         <div className="mt-4 space-y-2 border-t border-ink/10 pt-4 text-sm text-ink/80">
           <div className="flex justify-between">
-            <span>{t.days.replace("{n}", String(days))}</span>
+            <span>
+              {(byHour ? t.hours : t.days).replace("{n}", String(units))}
+            </span>
             <span className="font-semibold">{fmt(total)}</span>
           </div>
           <div className="flex justify-between text-ink">
@@ -175,7 +253,7 @@ export function BookingWidget({
         </p>
       )}
 
-      {days >= 1 && (
+      {units >= 1 && (
         <div className="mt-4 rounded-xl bg-ink/[0.04] p-3 text-xs text-ink/70">
           <p className="font-semibold text-ink">{t.policyTitle}</p>
           <p className="mt-1">{pickupSoon ? t.noRefund : t.freeCancel}</p>
