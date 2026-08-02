@@ -16,9 +16,9 @@ type Row = {
   fuel: string;
   seats: number;
   daily_price_mad: number;
-  rental_unit: string | null;
-  hourly_price_mad: number | null;
-  min_hours: number | null;
+  rental_unit?: string | null;
+  hourly_price_mad?: number | null;
+  min_hours?: number | null;
   agencies: { legal_name: string; city: string; status: string } | null;
   vehicle_images: { path: string; sort: number }[] | null;
 };
@@ -28,13 +28,30 @@ const CATS = ["citadine", "compacte", "suv", "luxe", "utilitaire", "quad", "jets
 export async function getLiveVehicles(): Promise<MockVehicle[]> {
   try {
     const supabase = await createClient();
-    const { data, error } = await supabase
+
+    // The hourly columns only exist once 00013 has run. Asking for a column
+    // that is not there fails the WHOLE query, which would silently empty the
+    // homepage — so try the full shape, then fall back to the legacy one.
+    // Migrations and deploys are not atomic; the site must survive the gap.
+    const FULL =
+      "id, make, model, year, category, transmission, fuel, seats, daily_price_mad, rental_unit, hourly_price_mad, min_hours, agencies(legal_name, city, status), vehicle_images(path, sort)";
+    const LEGACY =
+      "id, make, model, year, category, transmission, fuel, seats, daily_price_mad, agencies(legal_name, city, status), vehicle_images(path, sort)";
+
+    let res = await supabase
       .from("vehicles")
-      .select(
-        "id, make, model, year, category, transmission, fuel, seats, daily_price_mad, rental_unit, hourly_price_mad, min_hours, agencies(legal_name, city, status), vehicle_images(path, sort)"
-      )
+      .select(FULL)
       .eq("status", "live")
       .limit(200);
+
+    if (res.error) {
+      res = (await supabase
+        .from("vehicles")
+        .select(LEGACY)
+        .eq("status", "live")
+        .limit(200)) as typeof res;
+    }
+    const { data, error } = res;
     if (error || !data) return [];
 
     // Supabase types nested relations as arrays; normalize to a single object.
